@@ -13,15 +13,18 @@ Official guide: https://docs.siderolabs.com/talos/v1.12/getting-started/getting-
 Set environment variables, for example:
 
 ```bash
-CONTROL_PLANE_IP=192.168.178.33
-CLUSTER_NAME=homelab
-DISK_NAME=nvme0n1
+export CONTROL_PLANE_IP=192.168.178.33
+export CLUSTER_NAME=homelab
+export DISK_NAME=dev/nvme0n1
 ```
 
 Run the setup commands:
 
-- Generate config files: `talosctl gen config $CLUSTER_NAME https://$CONTROL_PLANE_IP:6443 --install-disk /dev/$DISK_NAME`
-- Check disk name: `talosctl get disks --nodes 192.168.xx.xx --endpoints 192.168.xx.xx --insecure`
+Run the setup commands:
+
+- Generate cluster secrets: `talosctl gen secrets -o secrets.yaml`
+- Generate config files: `talosctl gen config --with-secrets secrets.yaml $CLUSTER_NAME https://$CONTROL_PLANE_IP:6443 --install-disk /dev/$DISK_NAME`
+- Check disk name: `talosctl get disks --nodes 192.168.20.xx --endpoints 192.168.20.xx --insecure`
 - Apply config: `talosctl apply-config --insecure --nodes $CONTROL_PLANE_IP --file controlplane.yaml`
 
 The node should now restart. Remove the USB drive.  

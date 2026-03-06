@@ -1,0 +1,24 @@
+controlplane.yaml
+secrets.yaml
+talosconfig
+worker.yaml
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor temp files
+*.swp
+*.swo
+*~
+
+# Env / local secrets
+.env
+.env.*
+*.local
+
+# Logs / temp
+*.log
+tmp/
+.cache/
