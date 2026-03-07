@@ -15,9 +15,9 @@
 - Web:
     - Tuta:
         icon: tuta.png
-        href: https://mail.tuta.com
+        href: https://app.tuta.com/mail
         description: Secure email
     - PieFed:
-        icon: piefed.png
+        icon: https://piefed.social/static/media/logo_zI2kw_152.png
         href: https://piefed.social
         description: Federated community platform
