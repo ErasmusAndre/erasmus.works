@@ -1,0 +1,9 @@
+# Home LAN LoadBalancer range on VLAN 20, reserved for MetalLB services.
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: homelab-vlan20-pool
+  namespace: metallb-system
+spec:
+  addresses:
+    - 192.168.20.240-192.168.20.250
