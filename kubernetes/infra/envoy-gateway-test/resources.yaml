@@ -70,6 +70,8 @@ metadata:
 spec:
   parentRefs:
     - name: echo-gateway
+      group: gateway.networking.k8s.io
+      kind: Gateway
   hostnames:
     - echo.homelab
   rules:
@@ -79,4 +81,7 @@ spec:
             value: /
       backendRefs:
         - name: echo
+          group: ""
+          kind: Service
           port: 80
+          weight: 1
