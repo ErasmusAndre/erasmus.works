@@ -1,8 +1,9 @@
-## Packages you want
+## Init script
 
-```
-sudo apt update
-sudo apt install cryptomator
-sudo apt install fuse3
+This script installs the core packages needed for this repository and a few useful tools for Talos setup (`curl`, `cryptomator`, `fuse3`, and `talosctl`).
 
+Run:
+
+```bash
+./linux/init.sh
 ```

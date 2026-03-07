@@ -13,7 +13,7 @@ Official guide: https://docs.siderolabs.com/talos/v1.12/getting-started/getting-
 Set environment variables, for example:
 
 ```bash
-export CONTROL_PLANE_IP=192.168.178.33
+export CONTROL_PLANE_IP=192.168.20.33
 export CLUSTER_NAME=homelab
 export DISK_NAME=dev/nvme0n1
 ```
