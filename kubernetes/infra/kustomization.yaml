@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - namespace-apps.yaml
   - metallb
+  - gateway-api
   - envoy-gateway
