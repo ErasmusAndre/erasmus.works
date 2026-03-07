@@ -54,3 +54,42 @@ talosctl health \
   --endpoints 192.168.20.33 \
   --talosconfig ./talosconfig
 ```
+
+## Argo CD GitOps Bootstrap
+
+Export kubeconfig:
+
+```bash
+export KUBECONFIG=~/code/erasmus.works/talos/node-01/kubeconfig
+```
+
+Bootstrap Argo CD:
+
+```bash
+./kubernetes/bootstrap/argocd/bootstrap-argocd.sh
+```
+
+Watch Argo CD pods:
+
+```bash
+kubectl -n argocd get pods -w
+```
+
+Get the initial admin password:
+
+```bash
+kubectl -n argocd get secret argocd-initial-admin-secret \
+  -o jsonpath="{.data.password}" | base64 -d; echo
+```
+
+Port-forward Argo CD API/UI:
+
+```bash
+kubectl -n argocd port-forward svc/argocd-server 8080:443
+```
+
+Apply the root app:
+
+```bash
+kubectl apply -f kubernetes/clusters/homelab/root-app.yaml
+```
