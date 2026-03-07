@@ -4,10 +4,24 @@ set -euo pipefail
 step() { printf "\n==> %s\n" "$1"; }
 
 step "Updating apt package index"
-sudo apt update
+sudo apt-get update
 
-step "Installing required packages (curl, cryptomator, fuse3)"
-sudo apt install -y curl cryptomator fuse3
+step "Installing required packages (apt-transport-https, ca-certificates, curl, cryptomator, fuse3, gpg)"
+sudo apt-get install -y apt-transport-https ca-certificates curl cryptomator fuse3 gpg
+
+step "Configuring Kubernetes apt repository"
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key \
+  | gpg --dearmor \
+  | sudo tee /etc/apt/keyrings/kubernetes-apt-keyring.gpg >/dev/null
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /" \
+  | sudo tee /etc/apt/sources.list.d/kubernetes.list >/dev/null
+
+step "Updating apt package index after adding Kubernetes repository"
+sudo apt-get update
+
+step "Installing/updating kubectl"
+sudo apt-get install -y kubectl
 
 step "Installing/updating talosctl"
 curl -sL https://talos.dev/install | sh

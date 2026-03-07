@@ -15,15 +15,13 @@ Set environment variables, for example:
 ```bash
 export CONTROL_PLANE_IP=192.168.20.33
 export CLUSTER_NAME=homelab
-export DISK_NAME=dev/nvme0n1
+export DISK_NAME=/dev/nvme0n1
 ```
 
 Run the setup commands:
 
-Run the setup commands:
-
 - Generate cluster secrets: `talosctl gen secrets -o secrets.yaml`
-- Generate config files: `talosctl gen config --with-secrets secrets.yaml $CLUSTER_NAME https://$CONTROL_PLANE_IP:6443 --install-disk /dev/$DISK_NAME`
+- Generate config files: `talosctl gen config --with-secrets secrets.yaml $CLUSTER_NAME https://$CONTROL_PLANE_IP:6443 --install-disk "$DISK_NAME"`
 - Check disk name: `talosctl get disks --nodes 192.168.20.xx --endpoints 192.168.20.xx --insecure`
 - Apply config: `talosctl apply-config --insecure --nodes $CONTROL_PLANE_IP --file controlplane.yaml`
 
@@ -36,3 +34,23 @@ After restart, state should transition from Maintenance mode to Booting.
 Open the dashboard:
 
 `talosctl dashboard -n $CONTROL_PLANE_IP -e $CONTROL_PLANE_IP --talosconfig ./talosconfig`
+
+## Next Step (Generate kubeconfig + Verify Cluster)
+
+```bash
+cd ~/code/erasmus.works/talos/node-01
+
+talosctl kubeconfig . \
+  --nodes 192.168.20.33 \
+  --endpoints 192.168.20.33 \
+  --talosconfig ./talosconfig
+
+export KUBECONFIG=./kubeconfig
+
+kubectl get nodes -o wide
+kubectl get pods -A
+talosctl health \
+  --nodes 192.168.20.33 \
+  --endpoints 192.168.20.33 \
+  --talosconfig ./talosconfig
+```

@@ -1,22 +1,28 @@
+# Talos generated files (repo root)
 controlplane.yaml
+worker.yaml
 secrets.yaml
 talosconfig
-worker.yaml
+
+# Talos generated files (per-node)
+talos/node-*/kubeconfig
+talos/node-*/talosconfig
+talos/node-*/secrets.yaml
+
+# IDE / editor
 .idea/
-
-# OS junk
-.DS_Store
-Thumbs.db
-
-# Editor temp files
 *.swp
 *.swo
 *~
 
-# Env / local secrets
+# Environment / local secrets
 .env
 .env.*
 *.local
+
+# OS junk
+.DS_Store
+Thumbs.db
 
 # Logs / temp
 *.log
