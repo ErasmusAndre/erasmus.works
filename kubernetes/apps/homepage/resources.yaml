@@ -13,11 +13,33 @@ spec:
       labels:
         app: homepage
     spec:
+      initContainers:
+        - name: init-config
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              cat > /app/config/settings.yaml <<'EOF'
+              title: Homelab
+              EOF
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
       containers:
         - name: homepage
           image: ghcr.io/gethomepage/homepage:latest
+          env:
+            - name: HOMEPAGE_ALLOWED_HOSTS
+              value: homepage.homelab
           ports:
             - containerPort: 3000
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+      volumes:
+        - name: config
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
