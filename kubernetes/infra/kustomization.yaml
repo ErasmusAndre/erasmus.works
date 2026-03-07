@@ -4,4 +4,4 @@ resources:
   - namespace-apps.yaml
   - metallb
   - envoy-gateway
-  - envoy-gateway-test
+  - homepage
