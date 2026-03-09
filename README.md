@@ -20,11 +20,11 @@ Homelab Kubernetes repo for a Talos cluster, with a simple GitOps workflow using
 ## GitOps Flow
 
 1. Install Argo CD with `kubernetes/bootstrap/argocd/bootstrap-argocd.sh`.
-2. Apply `kubernetes/clusters/homelab/root-app.yaml`.
-3. The root app syncs `kubernetes/clusters/homelab`, which registers cluster-level child Applications.
+2. Apply `kubernetes/clusters/homelab/homelab-root.yaml`.
+3. The `homelab-root` app syncs `kubernetes/clusters/homelab`, which registers cluster-level child Applications.
 4. Child Applications sync:
-   - `kubernetes/infra` for infra components.
-   - `kubernetes/apps/homepage` for Homepage.
+   - `homelab-infra` -> `kubernetes/infra` for infra components.
+   - `homepage` -> `kubernetes/apps/homepage`.
 
 Homepage is the current example app managed through Argo CD and exposed at `homepage.homelab`.
 

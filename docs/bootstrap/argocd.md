@@ -53,7 +53,7 @@ kubectl -n argocd port-forward svc/argocd-server 8080:443
 ## Apply Root Application
 
 ```bash
-kubectl apply -f kubernetes/clusters/homelab/root-app.yaml
+kubectl apply -f kubernetes/clusters/homelab/homelab-root.yaml
 ```
 
 The root app now targets:
@@ -64,5 +64,5 @@ The root app now targets:
 
 That cluster-level path registers child Argo CD Applications, including:
 
-- `infra` -> `kubernetes/infra`
+- `homelab-infra` -> `kubernetes/infra`
 - `homepage` -> `kubernetes/apps/homepage`
