@@ -12,6 +12,14 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
+  # TODO: Remove this once the cloudflared token comes from Bitwarden instead of a manually managed Secret.
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: cloudflared
+      namespace: cloudflare-system
+      jsonPointers:
+        - /data
   syncPolicy:
     automated:
       prune: true
