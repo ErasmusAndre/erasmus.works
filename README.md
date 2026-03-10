@@ -26,7 +26,7 @@ Homelab Kubernetes repo for a Talos cluster, with a simple GitOps workflow using
    - `homelab-infra` -> `kubernetes/infra` for infra components.
    - `homepage` -> `kubernetes/apps/homepage`.
 
-Homepage is the current example app managed through Argo CD and exposed at `homepage.homelab`.
+Homepage is the current example app managed through Argo CD and exposed at `home.homelab` (`home.erasmus.works`).
 
 ## Documentation
 

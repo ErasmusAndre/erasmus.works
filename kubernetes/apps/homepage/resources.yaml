@@ -31,7 +31,7 @@ spec:
           image: ghcr.io/gethomepage/homepage:latest
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
-              value: homepage.homelab
+              value: home.homelab,home.erasmus.works
           ports:
             - containerPort: 3000
           volumeMounts:
@@ -69,7 +69,8 @@ spec:
       group: gateway.networking.k8s.io
       kind: Gateway
   hostnames:
-    - homepage.homelab
+    - home.homelab
+    - home.erasmus.works
   rules:
     - matches:
         - path:
