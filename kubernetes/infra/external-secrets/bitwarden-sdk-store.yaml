@@ -2,6 +2,8 @@ apiVersion: external-secrets.io/v1
 kind: ClusterSecretStore
 metadata:
   name: bitwarden-secrets-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   provider:
     bitwardensecretsmanager:
@@ -9,9 +11,12 @@ spec:
       identityURL: https://identity.bitwarden.com
       organizationID: 00e4c26a-2e61-4ca9-8ead-b40900e7e081
       projectID: f2215b03-7218-473e-a29f-b40901159f28
-      # This repo keeps the SDK server simple and Kustomize-only by running it
-      # in-cluster over HTTP with --insecure instead of adding cert-manager here.
-      bitwardenServerSDKURL: http://bitwarden-sdk-server.external-secrets.svc.cluster.local:9998
+      bitwardenServerSDKURL: https://bitwarden-sdk-server.external-secrets.svc.cluster.local:9998
+      caProvider:
+        type: Secret
+        name: bitwarden-tls-certs
+        key: ca.crt
+        namespace: external-secrets
       auth:
         secretRef:
           credentials:
