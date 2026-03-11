@@ -1,0 +1,62 @@
+# External Secrets v1.1.0 ships a static operator bundle, but the Bitwarden SDK server
+# still needs a small local manifest for this Kustomize-only setup.
+apiVersion: v1
+kind: Service
+metadata:
+  name: bitwarden-sdk-server
+spec:
+  selector:
+    app.kubernetes.io/name: bitwarden-sdk-server
+  ports:
+    - name: http
+      port: 9998
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bitwarden-sdk-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: bitwarden-sdk-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: bitwarden-sdk-server
+    spec:
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "2"
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: bitwarden-sdk-server
+          image: ghcr.io/external-secrets/bitwarden-sdk-server:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - --insecure
+          ports:
+            - containerPort: 9998
+              name: http
+          livenessProbe:
+            tcpSocket:
+              port: http
+          readinessProbe:
+            tcpSocket:
+              port: http
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 128Mi

@@ -4,5 +4,6 @@ resources:
   - namespace-apps.yaml
   - metallb
   - envoy-gateway
+  - external-secrets
   - cloudflared
   - argocd

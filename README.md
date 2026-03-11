@@ -17,6 +17,7 @@ This repository manages a single-node homelab Kubernetes cluster built around Ta
 | Load balancing | MetalLB |
 | In-cluster ingress | Envoy Gateway |
 | Public access | Cloudflare Tunnel |
+| Secret sync | External Secrets Operator + Bitwarden Secrets Manager |
 
 ## Hardware
 
@@ -62,4 +63,5 @@ Homepage is the current example app managed through Argo CD and exposed at `home
 
 - [Talos Bootstrap Runbook](docs/bootstrap/talos.md)
 - [Argo CD Bootstrap Runbook](docs/bootstrap/argocd.md)
+- [Bitwarden External Secrets Bootstrap](docs/bootstrap/bitwarden-external-secrets.md)
 - [Linux Init Script](linux/init.md)
