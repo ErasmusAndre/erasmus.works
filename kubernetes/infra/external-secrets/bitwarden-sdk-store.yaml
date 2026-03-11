@@ -7,8 +7,8 @@ metadata:
 spec:
   provider:
     bitwardensecretsmanager:
-      apiURL: https://api.bitwarden.com
-      identityURL: https://identity.bitwarden.com
+      apiURL: https://api.bitwarden.eu
+      identityURL: https://identity.bitwarden.eu
       organizationID: 00e4c26a-2e61-4ca9-8ead-b40900e7e081
       projectID: f2215b03-7218-473e-a29f-b40901159f28
       bitwardenServerSDKURL: https://bitwarden-sdk-server.external-secrets.svc.cluster.local:9998
