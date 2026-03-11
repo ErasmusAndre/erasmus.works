@@ -6,3 +6,38 @@ resources:
   - https://github.com/external-secrets/external-secrets/releases/download/v1.1.0/external-secrets.yaml
   - sdk-server.yaml
   - bitwarden-sdk-store.yaml
+patches:
+  - target:
+      kind: Deployment
+      name: external-secrets-cert-controller
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/args
+        value:
+          - certcontroller
+          - --crd-requeue-interval=5m
+          - --service-name=external-secrets-webhook
+          - --service-namespace=external-secrets
+          - --secret-name=external-secrets-webhook
+          - --secret-namespace=external-secrets
+          - --metrics-addr=:8080
+          - --healthz-addr=:8081
+          - --loglevel=info
+          - --zap-time-encoding=epoch
+          - --enable-partial-cache=true
+  - target:
+      kind: Deployment
+      name: external-secrets-webhook
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/args
+        value:
+          - webhook
+          - --port=10250
+          - --dns-name=external-secrets-webhook.external-secrets.svc
+          - --cert-dir=/tmp/certs
+          - --check-interval=5m
+          - --metrics-addr=:8080
+          - --healthz-addr=:8081
+          - --loglevel=info
+          - --zap-time-encoding=epoch
