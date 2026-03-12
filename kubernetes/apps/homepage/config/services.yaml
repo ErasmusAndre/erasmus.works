@@ -16,7 +16,7 @@
         href: https://prometheus.erasmus.works
         description: Metrics and monitoring
     - Alertmanager:
-        icon: alertmanager.png
+        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
         href: https://alertmanager.erasmus.works
         description: Alert routing
     - Cloudflare Dashboard:
