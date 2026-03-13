@@ -17,6 +17,7 @@ spec:
         defaultSettings:
           defaultDataPath: /var/lib/longhorn
           defaultReplicaCount: 1
+          storageReservedPercentageForDefaultDisk: 30
         preUpgradeChecker:
           jobEnabled: false
         persistence:
