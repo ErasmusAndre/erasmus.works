@@ -97,3 +97,24 @@ talosctl patch machineconfig \
   --talosconfig ./talos/node-01/talosconfig \
   --patch @./talos/patches/single-node-controlplane.yaml
 ```
+
+## Longhorn prerequisites on Talos
+
+Longhorn on Talos needs more than just the Kubernetes manifests in `kubernetes/infra/longhorn/`.
+
+Required prerequisites:
+
+1. Talos system extensions:
+   - `siderolabs/iscsi-tools`
+   - `siderolabs/util-linux-tools`
+2. The `longhorn-system` namespace must remain `privileged`.
+3. The Longhorn data path `/var/lib/longhorn` must be reachable from kubelet through Talos `machine.kubelet.extraMounts`.
+4. This repo intentionally uses `/var/lib/longhorn` on the node root disk for now. That is fine for a homelab start, but it is not ideal long term because Talos, Kubernetes, and Longhorn all share the same SSD.
+5. On a single-node cluster, Longhorn replica count must stay at `1`. Higher defaults can make volumes unschedulable because there is nowhere else to place replicas.
+
+Repo paths:
+
+- Longhorn Argo CD app: `kubernetes/infra/longhorn/application.yaml`
+- Talos image factory schematic: `talos/image-factory/longhorn.yaml`
+- Talos kubelet mount patch: `talos/patches/longhorn-host-path.yaml`
+

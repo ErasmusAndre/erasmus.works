@@ -18,6 +18,11 @@ spec:
           defaultDataPath: /var/lib/longhorn
           defaultReplicaCount: 1
           storageReservedPercentageForDefaultDisk: 30
+        csi:
+          attacherReplicaCount: 1
+          provisionerReplicaCount: 1
+          resizerReplicaCount: 1
+          snapshotterReplicaCount: 1
         preUpgradeChecker:
           jobEnabled: false
         persistence:

@@ -36,6 +36,13 @@ publishes selected services externally.
 **Secrets:** [External Secrets Operator](https://external-secrets.io/) reads
 from Bitwarden Secrets Manager and creates in-cluster Kubernetes secrets.
 
+## Storage
+
+Longhorn is installed for persistent storage. This is currently a single-node
+setup, so the default replica count is `1` by design. Longhorn data currently
+lives at `/var/lib/longhorn` on the node SSD, and backups are still a required
+next step.
+
 ## Cloud Dependencies
 
 This setup is mostly self-hosted, but it still depends on a few cloud services.
