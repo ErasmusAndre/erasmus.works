@@ -16,6 +16,7 @@ spec:
       values: |
         defaultSettings:
           defaultDataPath: /var/lib/longhorn
+          defaultReplicaCount: 1
         preUpgradeChecker:
           jobEnabled: false
         persistence:
