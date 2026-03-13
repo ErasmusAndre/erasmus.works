@@ -47,19 +47,12 @@ spec:
       type: Opaque
       data:
         database-url: postgresql://affine:{{ .password }}@affine-postgres-rw.apps.svc.cluster.local:5432/affine
-        admin-password: "{{ .admin_password }}"
   data:
     - secretKey: password
       remoteRef:
         conversionStrategy: Default
         decodingStrategy: None
         key: affine-postgres-password
-        metadataPolicy: None
-    - secretKey: admin_password
-      remoteRef:
-        conversionStrategy: Default
-        decodingStrategy: None
-        key: affine-admin-password
         metadataPolicy: None
 ---
 apiVersion: postgresql.cnpg.io/v1
@@ -194,13 +187,6 @@ spec:
             - -c
             - node ./scripts/self-host-predeploy.js
           env:
-            - name: AFFINE_ADMIN_EMAIL
-              value: admin@erasmus.works
-            - name: AFFINE_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: affine-app-secrets
-                  key: admin-password
             - name: AFFINE_SERVER_HOST
               value: affine.erasmus.works
             - name: AFFINE_SERVER_EXTERNAL_URL
@@ -223,13 +209,6 @@ spec:
         - name: affine
           image: ghcr.io/toeverything/affine:0.26.4
           env:
-            - name: AFFINE_ADMIN_EMAIL
-              value: admin@erasmus.works
-            - name: AFFINE_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: affine-app-secrets
-                  key: admin-password
             - name: AFFINE_SERVER_HOST
               value: affine.erasmus.works
             - name: AFFINE_SERVER_EXTERNAL_URL
