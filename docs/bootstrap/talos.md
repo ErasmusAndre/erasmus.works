@@ -79,3 +79,9 @@ talosctl health \
 
 For single-node clusters using MetalLB in L2 mode, do not set the node label `node.kubernetes.io/exclude-from-external-load-balancers` in Talos machine config.  
 If Talos owns that label via `machine.nodeLabels`, it will be reapplied and MetalLB traffic to `LoadBalancer` services can stop working.
+
+## Single-Node Control-Plane Scheduling Note
+
+For this cluster shape, keep `cluster.allowSchedulingOnControlPlanes: true` in the Talos machine config.
+
+If that setting is omitted, Talos leaves the `node-role.kubernetes.io/control-plane:NoSchedule` taint in place. On a single-node cluster that means normal workloads such as Argo CD, Envoy, cloudflared, and app pods can stay `Pending` after a reboot even though the node itself is `Ready`.
