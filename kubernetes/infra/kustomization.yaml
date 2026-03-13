@@ -6,6 +6,7 @@ resources:
   - envoy-gateway
   - external-secrets
   - external-dns
+  - cloudnative-pg
   - longhorn
   - kube-prometheus-stack
   - cloudflared
