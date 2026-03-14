@@ -11,6 +11,15 @@ spec:
     targetRevision: 82.10.3
     helm:
       releaseName: kube-prometheus-stack
+      values: |
+        grafana:
+          persistence:
+            enabled: true
+            type: pvc
+            storageClassName: longhorn
+            accessModes:
+              - ReadWriteOnce
+            size: 5Gi
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
