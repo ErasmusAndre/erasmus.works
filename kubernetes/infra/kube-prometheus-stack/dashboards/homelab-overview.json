@@ -293,12 +293,12 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (namespace, app) (label_replace(rate(container_cpu_usage_seconds_total{container!=\"\", image!=\"\", pod=~\".+(?:-[a-f0-9]{8,10}-[a-z0-9]{5}|-[0-9]+)$\"}[5m]), \"app\", \"$1\", \"pod\", \"^(.*?)(?:-[a-f0-9]{8,10}-[a-z0-9]{5}|-[0-9]+)$\"))",
-          "legendFormat": "{{namespace}}/{{app}}",
+          "expr": "sum by (namespace, workload) (label_replace(rate(container_cpu_usage_seconds_total{namespace=~\"apps|argocd|cnpg-system|envoy-gateway-system|external-dns|external-secrets|longhorn-system|monitoring\",container!=\"\",image!=\"\"}[5m]) * on(namespace,pod) group_left(owner_name) kube_pod_owner{owner_is_controller=\"true\"}, \"workload\", \"$1\", \"owner_name\", \"^(.*?)(?:-[a-f0-9]{8,10}|-[0-9]+)?$\"))",
+          "legendFormat": "{{namespace}}/{{workload}}",
           "refId": "A"
         }
       ],
-      "title": "Application CPU Usage",
+      "title": "Managed Workload CPU Usage",
       "type": "timeseries"
     },
     {
@@ -382,12 +382,12 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (namespace, app) (label_replace(container_memory_working_set_bytes{container!=\"\", image!=\"\", pod=~\".+(?:-[a-f0-9]{8,10}-[a-z0-9]{5}|-[0-9]+)$\"}, \"app\", \"$1\", \"pod\", \"^(.*?)(?:-[a-f0-9]{8,10}-[a-z0-9]{5}|-[0-9]+)$\"))",
-          "legendFormat": "{{namespace}}/{{app}}",
+          "expr": "sum by (namespace, workload) (label_replace(container_memory_working_set_bytes{namespace=~\"apps|argocd|cnpg-system|envoy-gateway-system|external-dns|external-secrets|longhorn-system|monitoring\",container!=\"\",image!=\"\"} * on(namespace,pod) group_left(owner_name) kube_pod_owner{owner_is_controller=\"true\"}, \"workload\", \"$1\", \"owner_name\", \"^(.*?)(?:-[a-f0-9]{8,10}|-[0-9]+)?$\"))",
+          "legendFormat": "{{namespace}}/{{workload}}",
           "refId": "A"
         }
       ],
-      "title": "Application Memory Working Set",
+      "title": "Managed Workload Memory Working Set",
       "type": "timeseries"
     }
   ],

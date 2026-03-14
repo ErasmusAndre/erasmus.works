@@ -15,3 +15,9 @@ configMapGenerator:
   - name: grafana-dashboard-docmost-observability
     files:
       - docmost-observability.json
+  - name: grafana-dashboard-kubernetes-dashboard
+    files:
+      - kubernetes-dashboard.json
+  - name: grafana-dashboard-kubernetes-ram-cpu-utilization
+    files:
+      - kubernetes-ram-cpu-utilization.json

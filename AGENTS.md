@@ -62,6 +62,7 @@ When making changes:
 - Keep manifests plain and readable
 - Prefer simple manifests and Kustomize where possible
 - Helm is already used through Argo CD Applications where explicitly added
+- Argo CD `Application` manifests should include the `resources-finalizer.argocd.argoproj.io` finalizer so app removal prunes managed resources cleanly
 
 ## Documentation rules
 
