@@ -21,6 +21,6 @@ configMapGenerator:
   - name: grafana-dashboard-node-exporter-full
     files:
       - node-exporter-full.json
-  - name: grafana-dashboard-argocd-operational-overview
+  - name: grafana-dashboard-argocd
     files:
-      - argocd-operational-overview.json
+      - argocd.json
