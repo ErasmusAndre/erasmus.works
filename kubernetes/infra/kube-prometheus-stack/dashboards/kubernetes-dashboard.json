@@ -3087,7 +3087,8 @@
   "refresh": "30s",
   "schemaVersion": 40,
   "tags": [
-    "custom"
+    "custom",
+    "community"
   ],
   "templating": {
     "list": [

@@ -892,6 +892,7 @@
   "style": "dark",
   "tags": [
     "custom",
+    "community",
     "kubernetes",
     "prometheus",
     "node exporter",

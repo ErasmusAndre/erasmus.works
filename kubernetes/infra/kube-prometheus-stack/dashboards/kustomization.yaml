@@ -9,15 +9,15 @@ generatorOptions:
     app.kubernetes.io/part-of: kube-prometheus-stack
 
 configMapGenerator:
-  - name: grafana-dashboard-homelab-overview
-    files:
-      - homelab-overview.json
-  - name: grafana-dashboard-docmost-observability
-    files:
-      - docmost-observability.json
   - name: grafana-dashboard-kubernetes-dashboard
     files:
       - kubernetes-dashboard.json
   - name: grafana-dashboard-kubernetes-ram-cpu-utilization
     files:
       - kubernetes-ram-cpu-utilization.json
+  - name: grafana-dashboard-longhorn-dashboard
+    files:
+      - longhorn-dashboard.json
+  - name: grafana-dashboard-node-exporter-full
+    files:
+      - node-exporter-full.json
