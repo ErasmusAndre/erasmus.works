@@ -14,12 +14,6 @@ spec:
     helm:
       releaseName: kube-prometheus-stack
       values: |
-        prometheus:
-          prometheusSpec:
-            retention: 5d
-            scrapeInterval: 60s
-            evaluationInterval: 60s
-
         grafana:
           admin:
             existingSecret: kube-prometheus-stack-grafana
