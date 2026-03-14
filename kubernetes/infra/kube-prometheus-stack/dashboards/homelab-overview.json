@@ -264,7 +264,7 @@
               }
             ]
           },
-          "unit": "percentunit"
+          "unit": "cores"
         },
         "overrides": []
       },
@@ -293,12 +293,12 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(rate(container_cpu_usage_seconds_total{container!=\"\", image!=\"\"}[5m]))",
-          "legendFormat": "cluster",
+          "expr": "sum by (namespace, app) (label_replace(rate(container_cpu_usage_seconds_total{container!=\"\", image!=\"\", pod=~\".+(?:-[a-f0-9]{8,10}-[a-z0-9]{5}|-[0-9]+)$\"}[5m]), \"app\", \"$1\", \"pod\", \"^(.*?)(?:-[a-f0-9]{8,10}-[a-z0-9]{5}|-[0-9]+)$\"))",
+          "legendFormat": "{{namespace}}/{{app}}",
           "refId": "A"
         }
       ],
-      "title": "Cluster CPU Usage",
+      "title": "Application CPU Usage",
       "type": "timeseries"
     },
     {
@@ -382,12 +382,12 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(container_memory_working_set_bytes{container!=\"\", image!=\"\"})",
-          "legendFormat": "cluster",
+          "expr": "sum by (namespace, app) (label_replace(container_memory_working_set_bytes{container!=\"\", image!=\"\", pod=~\".+(?:-[a-f0-9]{8,10}-[a-z0-9]{5}|-[0-9]+)$\"}, \"app\", \"$1\", \"pod\", \"^(.*?)(?:-[a-f0-9]{8,10}-[a-z0-9]{5}|-[0-9]+)$\"))",
+          "legendFormat": "{{namespace}}/{{app}}",
           "refId": "A"
         }
       ],
-      "title": "Cluster Memory Working Set",
+      "title": "Application Memory Working Set",
       "type": "timeseries"
     }
   ],
