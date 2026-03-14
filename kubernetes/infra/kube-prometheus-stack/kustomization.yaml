@@ -4,3 +4,4 @@ resources:
   - namespace.yaml
   - application.yaml
   - httproutes.yaml
+  - dashboards
