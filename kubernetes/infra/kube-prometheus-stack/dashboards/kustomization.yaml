@@ -24,9 +24,6 @@ configMapGenerator:
   - name: grafana-dashboard-argocd-operational-overview
     files:
       - argocd-operational-overview.json
-  - name: grafana-dashboard-loki-istio-service-mesh
-    files:
-      - loki-istio-service-mesh.json
   - name: grafana-dashboard-envoy-gateway-overview
     files:
       - envoy-gateway-overview.json

@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - server-cmd-params.yaml
   - httproute.yaml
+  - metrics-servicemonitor.yaml

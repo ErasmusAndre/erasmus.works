@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - application.yaml
   - gateway.yaml
+  - metrics-servicemonitor.yaml
