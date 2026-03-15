@@ -1,20 +1,3 @@
-- Projects:
-    - erasmus.works:
-        icon: https://raw.githubusercontent.com/NoBadDays/erasmus.works/main/Erasmus-Works-Logo.png
-        href: https://github.com/NoBadDays/erasmus.works
-        description: Erasmus Works GitHub repository
-    - Argo CD:
-        icon: argo-cd.png
-        href: https://argocd.erasmus.works
-        description: GitOps dashboard
-    - TrueNAS:
-        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/truenas-scale.png
-        href: http://truenas.homelab
-        description: NAS management
-    - Cloudflare Dashboard:
-        icon: cloudflare.png
-        href: https://dash.cloudflare.com
-        description: DNS and tunnel management
 - Cloud:
     - Nextcloud:
         icon: nextcloud.png
@@ -32,6 +15,36 @@
         icon: home-assistant.png
         href: https://ha.erasmuscloud.com
         description: Home automation
+- Web:
+    - Bitwarden Vault:
+        icon: bitwarden.png
+        href: https://vault.bitwarden.eu
+        description: Password manager vault
+    - Tuta:
+        icon: tuta.png
+        href: https://app.tuta.com/mail
+        description: Secure email
+    - PieFed:
+        icon: https://piefed.social/static/media/logo_zI2kw_152.png
+        href: https://piefed.social
+        description: Federated community platform
+- Projects:
+    - erasmus.works:
+        icon: https://raw.githubusercontent.com/NoBadDays/erasmus.works/main/Erasmus-Works-Logo.png
+        href: https://github.com/NoBadDays/erasmus.works
+        description: Erasmus Works GitHub repository
+    - Argo CD:
+        icon: argo-cd.png
+        href: https://argocd.erasmus.works
+        description: GitOps dashboard
+    - TrueNAS:
+        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/truenas-scale.png
+        href: http://truenas.homelab
+        description: NAS management
+    - Cloudflare Dashboard:
+        icon: cloudflare.png
+        href: https://dash.cloudflare.com
+        description: DNS and tunnel management
 - Monitoring:
     - Grafana:
         icon: grafana.png
@@ -49,16 +62,3 @@
         icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/longhorn.png
         href: https://longhorn.erasmus.works
         description: Kubernetes storage dashboard
-- Web:
-    - Bitwarden Vault:
-        icon: bitwarden.png
-        href: https://vault.bitwarden.eu
-        description: Password manager vault
-    - Tuta:
-        icon: tuta.png
-        href: https://app.tuta.com/mail
-        description: Secure email
-    - PieFed:
-        icon: https://piefed.social/static/media/logo_zI2kw_152.png
-        href: https://piefed.social
-        description: Federated community platform
