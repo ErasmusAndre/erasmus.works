@@ -7,22 +7,6 @@
         icon: argo-cd.png
         href: https://argocd.erasmus.works
         description: GitOps dashboard
-    - Grafana:
-        icon: grafana.png
-        href: https://grafana.erasmus.works/dashboards?tag=custom&starred=true
-        description: Metrics dashboards
-    - Prometheus:
-        icon: prometheus.png
-        href: https://prometheus.erasmus.works
-        description: Metrics and monitoring
-    - Alertmanager:
-        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
-        href: https://alertmanager.erasmus.works
-        description: Alert routing
-    - Longhorn:
-        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/longhorn.png
-        href: https://longhorn.erasmus.works
-        description: Kubernetes storage dashboard
     - TrueNAS:
         icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/truenas-scale.png
         href: http://truenas.homelab
@@ -44,11 +28,27 @@
         icon: https://docmost.com/favicon.ico
         href: https://docmost.erasmus.works
         description: Collaborative wiki and docs
-- Home:
     - Home Assistant:
         icon: home-assistant.png
         href: https://ha.erasmuscloud.com
         description: Home automation
+- Monitoring:
+    - Grafana:
+        icon: grafana.png
+        href: https://grafana.erasmus.works/dashboards?tag=custom&starred=true
+        description: Metrics dashboards
+    - Prometheus:
+        icon: prometheus.png
+        href: https://prometheus.erasmus.works
+        description: Metrics and monitoring
+    - Alertmanager:
+        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
+        href: https://alertmanager.erasmus.works
+        description: Alert routing
+    - Longhorn:
+        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/longhorn.png
+        href: https://longhorn.erasmus.works
+        description: Kubernetes storage dashboard
 - Web:
     - Bitwarden Vault:
         icon: bitwarden.png
