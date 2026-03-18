@@ -98,4 +98,5 @@ This setup is mostly self-hosted, but it still depends on a few cloud services.
 - [Argo CD Bootstrap Runbook](docs/bootstrap/argocd.md)
 - [Bitwarden External Secrets Bootstrap](docs/bootstrap/bitwarden-external-secrets.md)
 - [Longhorn Bootstrap Notes](docs/bootstrap/longhorn.md)
+- [VolSync Restic Notes](docs/volsync-restic.md)
 - [Linux Init Script](linux/init.md)

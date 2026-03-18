@@ -8,6 +8,7 @@ resources:
   - external-dns
   - cloudnative-pg
   - longhorn
+  - volsync
   - kube-prometheus-stack
   - victorialogs
   - fluent-bit
