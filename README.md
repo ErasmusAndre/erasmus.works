@@ -18,6 +18,7 @@ GitOps setup built around Talos Linux, Kubernetes, and Argo CD.
 | In-cluster ingress | Envoy Gateway |
 | Public access | Cloudflare Tunnel |
 | Storage | Longhorn |
+| Backup | VolSync |
 | Database operator | CloudNativePG |
 | Secret sync | External Secrets Operator + Bitwarden Secrets Manager |
 | Metrics | kube-prometheus-stack |
@@ -41,7 +42,8 @@ publishes selected services externally.
 from Bitwarden Secrets Manager and creates in-cluster Kubernetes secrets.
 
 **Data Services:** [Longhorn](https://longhorn.io/) provides persistent storage,
-and [CloudNativePG](https://cloudnative-pg.io/) manages PostgreSQL workloads.
+[VolSync](https://volsync.readthedocs.io/) handles scheduled PVC backups, and
+[CloudNativePG](https://cloudnative-pg.io/) manages PostgreSQL workloads.
 
 **Observability:** [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
 provides Prometheus, Grafana, and Alertmanager. [VictoriaLogs](https://docs.victoriametrics.com/victorialogs/)
@@ -52,9 +54,9 @@ forwards them for search through Grafana.
 
 Longhorn is installed for persistent storage. This is currently a single-node
 setup, so the default replica count is `1` by design. Longhorn data currently
-lives at `/var/lib/longhorn` on the node SSD, and backups are still a required
-next step. CloudNativePG is installed as the PostgreSQL operator for in-cluster
-database workloads.
+lives at `/var/lib/longhorn` on the node SSD. VolSync is installed for
+scheduled filesystem backups of app PVCs. CloudNativePG is installed as the
+PostgreSQL operator for in-cluster database workloads.
 
 ## Cloud Dependencies
 
