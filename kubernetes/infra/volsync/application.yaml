@@ -15,6 +15,13 @@ spec:
     targetRevision: 0.14.0
     helm:
       releaseName: volsync
+      values: |
+        metrics:
+          disableAuth: false
+          serviceMonitor:
+            enabled: true
+            labels:
+              release: kube-prometheus-stack
   destination:
     server: https://kubernetes.default.svc
     namespace: volsync-system
