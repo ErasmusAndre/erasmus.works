@@ -4,5 +4,6 @@ resources:
   - project-infra.yaml
   - project-apps.yaml
   - server-cmd-params.yaml
+  - github-webhook-secret.yaml
   - httproute.yaml
   - metrics-servicemonitor.yaml
