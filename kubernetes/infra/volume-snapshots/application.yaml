@@ -23,6 +23,17 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
+  ignoreDifferences:
+    - kind: Secret
+      name: snapshot-controller-conversion-webhook
+      namespace: kube-system
+      jsonPointers:
+        - /data
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      name: volumegroupsnapshotcontents.groupsnapshot.storage.k8s.io
+      jsonPointers:
+        - /spec/conversion/webhook/clientConfig/caBundle
   syncPolicy:
     automated:
       prune: true
