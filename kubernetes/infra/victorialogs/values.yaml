@@ -1,0 +1,20 @@
+vector:
+  enabled: false
+
+server:
+  replicaCount: 1
+  fullnameOverride: victorialogs
+  retentionPeriod: 14d
+  service:
+    clusterIP: ""
+  persistentVolume:
+    enabled: true
+    storageClassName: longhorn
+    size: 10Gi
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi

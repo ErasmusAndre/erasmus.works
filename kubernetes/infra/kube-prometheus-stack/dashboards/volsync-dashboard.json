@@ -124,7 +124,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "count (volsync_volume_out_of_sync{obj_namespace=~\"$namespace\",role=\"source\"})",
+          "expr": "count(volsync_replicationsource_info{obj_namespace=~\"$namespace\"})",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -190,14 +190,14 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "count (volsync_volume_out_of_sync{obj_namespace=~\"$namespace\",role=\"destination\"})",
+          "expr": "count(volsync_replicationsource_info{obj_namespace=~\"$namespace\",latest_result=\"Successful\"})",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Restore Destinations",
+      "title": "Last Run OK",
       "type": "stat"
     },
     {
@@ -310,14 +310,14 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(kube_job_status_active{namespace=~\"$namespace\",job_name=~\"volsync-.*\"})",
+          "expr": "count(volsync_replicationsource_info{obj_namespace=~\"$namespace\",last_sync_time=\"\"})",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Active Jobs",
+      "title": "Never Backed Up",
       "type": "stat"
     },
     {
@@ -450,14 +450,14 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(kube_job_status_succeeded{namespace=~\"$namespace\",job_name=~\"volsync-.*\"})",
+          "expr": "count((kube_job_status_active{namespace=~\"$namespace\",job_name=~\"volsync-.*\"}) > bool 0)",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Succeeded Jobs",
+      "title": "Active Jobs",
       "type": "stat"
     },
     {
@@ -522,14 +522,14 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(kube_job_status_failed{namespace=~\"$namespace\",job_name=~\"volsync-.*\"})",
+          "expr": "count((kube_job_status_failed{namespace=~\"$namespace\",job_name=~\"volsync-.*\"}) > bool 0)",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Failed Jobs",
+      "title": "Current Failed Jobs",
       "type": "stat"
     },
     {
@@ -592,7 +592,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max by (obj_namespace, obj_name, method) (volsync_volume_out_of_sync{obj_namespace=~\"$namespace\",role=\"source\"})",
+          "expr": "volsync_replicationsource_info{obj_namespace=~\"$namespace\"}",
           "format": "table",
           "instant": true,
           "legendFormat": "{{label_name}}",
@@ -600,7 +600,7 @@
           "refId": "A"
         }
       ],
-      "title": "Backup Sources",
+      "title": "Backup Status",
       "transformations": [
         {
           "id": "organize",
@@ -620,9 +620,13 @@
             "includeByName": {},
             "indexByName": {},
             "renameByName": {
-              "method": "Method",
+              "last_sync_duration": "Last Duration",
+              "last_sync_time": "Last Backup",
+              "latest_result": "Result",
               "obj_name": "Name",
-              "obj_namespace": "Namespace"
+              "obj_namespace": "Namespace",
+              "next_sync_time": "Next Backup",
+              "source_pvc": "PVC"
             }
           }
         }

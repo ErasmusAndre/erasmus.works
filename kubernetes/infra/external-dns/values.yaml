@@ -1,0 +1,45 @@
+provider:
+  name: cloudflare
+sources:
+  - gateway-httproute
+domainFilters:
+  - erasmus.works
+registry: txt
+txtOwnerId: homelab-cloudflare
+txtPrefix: _externaldns.
+policy: sync
+interval: 10m
+triggerLoopOnEvent: true
+env:
+  - name: CF_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: cloudflare-api-token
+        key: api-token
+extraArgs:
+  cloudflare-dns-records-per-page: "5000"
+rbac:
+  additionalPermissions:
+    - apiGroups:
+        - ""
+      resources:
+        - namespaces
+      verbs:
+        - get
+        - watch
+        - list
+    - apiGroups:
+        - gateway.networking.k8s.io
+      resources:
+        - gateways
+        - httproutes
+      verbs:
+        - get
+        - watch
+        - list
+resources:
+  requests:
+    cpu: 25m
+    memory: 64Mi
+  limits:
+    memory: 128Mi

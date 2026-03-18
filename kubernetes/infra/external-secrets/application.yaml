@@ -9,17 +9,16 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: infra
-  source:
-    repoURL: https://charts.external-secrets.io
-    chart: external-secrets
-    targetRevision: 2.1.0
-    helm:
-      values: |
-        bitwarden-sdk-server:
-          enabled: true
-          image:
-            tls:
-              secretName: bitwarden-tls-certs
+  sources:
+    - repoURL: https://charts.external-secrets.io
+      chart: external-secrets
+      targetRevision: 2.1.0
+      helm:
+        valueFiles:
+          - $values/kubernetes/infra/external-secrets/values.yaml
+    - repoURL: https://github.com/NoBadDays/erasmus.works.git
+      targetRevision: main
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: external-secrets

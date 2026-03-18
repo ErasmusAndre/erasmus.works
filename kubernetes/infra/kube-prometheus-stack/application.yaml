@@ -7,30 +7,17 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: infra
-  source:
-    repoURL: https://prometheus-community.github.io/helm-charts
-    chart: kube-prometheus-stack
-    targetRevision: 82.10.3
-    helm:
-      releaseName: kube-prometheus-stack
-      values: |
-        prometheus:
-          prometheusSpec:
-            serviceMonitorSelectorNilUsesHelmValues: false
-        grafana:
-          admin:
-            existingSecret: kube-prometheus-stack-grafana
-            userKey: admin-user
-            passwordKey: admin-password
-          plugins:
-            - victoriametrics-logs-datasource@0.26.3
-          persistence:
-            enabled: true
-            type: pvc
-            storageClassName: longhorn
-            accessModes:
-              - ReadWriteOnce
-            size: 5Gi
+  sources:
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: kube-prometheus-stack
+      targetRevision: 82.10.3
+      helm:
+        releaseName: kube-prometheus-stack
+        valueFiles:
+          - $values/kubernetes/infra/kube-prometheus-stack/values.yaml
+    - repoURL: https://github.com/NoBadDays/erasmus.works.git
+      targetRevision: main
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

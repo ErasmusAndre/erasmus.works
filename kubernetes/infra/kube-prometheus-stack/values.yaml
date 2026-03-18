@@ -1,0 +1,59 @@
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+kube-state-metrics:
+  customResourceState:
+    enabled: true
+    config:
+      kind: CustomResourceStateMetrics
+      spec:
+        resources:
+          - groupVersionKind:
+              group: volsync.backube
+              version: v1alpha1
+              kind: ReplicationSource
+            metricNamePrefix: volsync
+            labelsFromPath:
+              obj_name:
+                - metadata
+                - name
+              obj_namespace:
+                - metadata
+                - namespace
+            metrics:
+              - name: replicationsource_info
+                help: VolSync ReplicationSource status
+                each:
+                  type: Info
+                  info:
+                    labelsFromPath:
+                      source_pvc:
+                        - spec
+                        - sourcePVC
+                      last_sync_time:
+                        - status
+                        - lastSyncTime
+                      last_sync_duration:
+                        - status
+                        - lastSyncDuration
+                      next_sync_time:
+                        - status
+                        - nextSyncTime
+                      latest_result:
+                        - status
+                        - latestMoverStatus
+                        - result
+grafana:
+  admin:
+    existingSecret: kube-prometheus-stack-grafana
+    userKey: admin-user
+    passwordKey: admin-password
+  plugins:
+    - victoriametrics-logs-datasource@0.26.3
+  persistence:
+    enabled: true
+    type: pvc
+    storageClassName: longhorn
+    accessModes:
+      - ReadWriteOnce
+    size: 5Gi

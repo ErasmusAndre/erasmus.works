@@ -62,6 +62,8 @@ When making changes:
 - Keep manifests plain and readable
 - Prefer simple manifests and Kustomize where possible
 - Helm is already used through Argo CD Applications where explicitly added
+- Prefer using upstream Helm charts for supported infra components over maintaining equivalent custom manifests when that keeps the setup simpler
+- For Helm-based Argo CD Applications, prefer a separate `values.yaml` file over large inline `helm.values` blocks when custom values are needed
 - Argo CD `Application` manifests should include the `resources-finalizer.argocd.argoproj.io` finalizer so app removal prunes managed resources cleanly
 
 ## Documentation rules

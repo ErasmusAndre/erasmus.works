@@ -9,26 +9,17 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: infra
-  source:
-    repoURL: https://charts.longhorn.io/
-    chart: longhorn
-    targetRevision: v1.10.1
-    helm:
-      releaseName: longhorn
-      values: |
-        defaultSettings:
-          defaultDataPath: /var/lib/longhorn
-          defaultReplicaCount: 1
-          storageReservedPercentageForDefaultDisk: 30
-        csi:
-          attacherReplicaCount: 1
-          provisionerReplicaCount: 1
-          resizerReplicaCount: 1
-          snapshotterReplicaCount: 1
-        preUpgradeChecker:
-          jobEnabled: false
-        persistence:
-          defaultClassReplicaCount: 1
+  sources:
+    - repoURL: https://charts.longhorn.io/
+      chart: longhorn
+      targetRevision: v1.10.1
+      helm:
+        releaseName: longhorn
+        valueFiles:
+          - $values/kubernetes/infra/longhorn/values.yaml
+    - repoURL: https://github.com/NoBadDays/erasmus.works.git
+      targetRevision: main
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system

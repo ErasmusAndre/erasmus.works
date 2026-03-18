@@ -1,0 +1,5 @@
+bitwarden-sdk-server:
+  enabled: true
+  image:
+    tls:
+      secretName: bitwarden-tls-certs

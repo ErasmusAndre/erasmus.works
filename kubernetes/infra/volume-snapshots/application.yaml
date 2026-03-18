@@ -9,24 +9,17 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: infra
-  source:
-    repoURL: https://piraeus.io/helm-charts/
-    chart: snapshot-controller
-    targetRevision: 5.0.2
-    helm:
-      releaseName: snapshot-controller
-      values: |
-        installCRDs: true
-        controller:
-          replicaCount: 1
-        volumeSnapshotClasses:
-          - name: longhorn-snapshot-vsc
-            annotations:
-              snapshot.storage.kubernetes.io/is-default-class: "true"
-            driver: driver.longhorn.io
-            deletionPolicy: Delete
-            parameters:
-              type: snap
+  sources:
+    - repoURL: https://piraeus.io/helm-charts/
+      chart: snapshot-controller
+      targetRevision: 5.0.2
+      helm:
+        releaseName: snapshot-controller
+        valueFiles:
+          - $values/kubernetes/infra/volume-snapshots/values.yaml
+    - repoURL: https://github.com/NoBadDays/erasmus.works.git
+      targetRevision: main
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system

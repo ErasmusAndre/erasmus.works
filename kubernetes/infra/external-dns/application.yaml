@@ -9,57 +9,16 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: infra
-  source:
-    repoURL: https://kubernetes-sigs.github.io/external-dns/
-    chart: external-dns
-    targetRevision: 1.19.0
-    helm:
-      values: |
-        provider:
-          name: cloudflare
-        sources:
-          - gateway-httproute
-        domainFilters:
-          - erasmus.works
-        registry: txt
-        txtOwnerId: homelab-cloudflare
-        txtPrefix: _externaldns.
-        policy: sync
-        interval: 10m
-        triggerLoopOnEvent: true
-        env:
-          - name: CF_API_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: cloudflare-api-token
-                key: api-token
-        extraArgs:
-          cloudflare-dns-records-per-page: "5000"
-        rbac:
-          additionalPermissions:
-            - apiGroups:
-                - ""
-              resources:
-                - namespaces
-              verbs:
-                - get
-                - watch
-                - list
-            - apiGroups:
-                - gateway.networking.k8s.io
-              resources:
-                - gateways
-                - httproutes
-              verbs:
-                - get
-                - watch
-                - list
-        resources:
-          requests:
-            cpu: 25m
-            memory: 64Mi
-          limits:
-            memory: 128Mi
+  sources:
+    - repoURL: https://kubernetes-sigs.github.io/external-dns/
+      chart: external-dns
+      targetRevision: 1.19.0
+      helm:
+        valueFiles:
+          - $values/kubernetes/infra/external-dns/values.yaml
+    - repoURL: https://github.com/NoBadDays/erasmus.works.git
+      targetRevision: main
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: external-dns
