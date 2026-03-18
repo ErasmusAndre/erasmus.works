@@ -27,3 +27,6 @@ configMapGenerator:
   - name: grafana-dashboard-victorialogs-explorer
     files:
       - victorialogs-explorer.json
+  - name: grafana-dashboard-volsync-dashboard
+    files:
+      - volsync-dashboard.json
