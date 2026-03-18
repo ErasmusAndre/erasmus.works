@@ -124,14 +124,14 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "count (volsync_volume_out_of_sync{obj_namespace=~\"$namespace\"})",
+          "expr": "count (volsync_volume_out_of_sync{obj_namespace=~\"$namespace\",role=\"source\"})",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Total VolSyncs",
+      "title": "Backup Sources",
       "type": "stat"
     },
     {
@@ -190,14 +190,14 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "count (volsync_volume_out_of_sync{obj_namespace=~\"$namespace\",obj_name!~\"$replicationDestName\",role!~\"destination\"})",
+          "expr": "count (volsync_volume_out_of_sync{obj_namespace=~\"$namespace\",role=\"destination\"})",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Non-Destinations",
+      "title": "Restore Destinations",
       "type": "stat"
     },
     {
@@ -262,14 +262,14 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "count(volsync_volume_out_of_sync{obj_namespace=~\"$namespace\"} != 0)",
+          "expr": "count(volsync_missed_intervals_total{obj_namespace=~\"$namespace\",role=\"source\"} != 0)",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Out of Sync",
+      "title": "Missed Backups",
       "type": "stat"
     },
     {
@@ -437,7 +437,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max by (obj_namespace, obj_name, role, method) (volsync_volume_out_of_sync{obj_namespace=~\"$namespace\",obj_name!~\"$replicationDestName\"})",
+          "expr": "max by (obj_namespace, obj_name, method) (volsync_volume_out_of_sync{obj_namespace=~\"$namespace\",role=\"source\"})",
           "format": "table",
           "instant": true,
           "legendFormat": "{{label_name}}",
@@ -445,7 +445,7 @@
           "refId": "A"
         }
       ],
-      "title": "Volumes",
+      "title": "Backup Sources",
       "transformations": [
         {
           "id": "organize",
@@ -467,8 +467,7 @@
             "renameByName": {
               "method": "Method",
               "obj_name": "Name",
-              "obj_namespace": "Namespace",
-              "role": "Role"
+              "obj_namespace": "Namespace"
             }
           }
         }
@@ -544,7 +543,7 @@
           "refId": "A"
         }
       ],
-      "title": "Missed Intervals",
+      "title": "Missed Backups",
       "transformations": [
         {
           "id": "organize",
