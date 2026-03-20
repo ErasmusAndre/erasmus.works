@@ -67,10 +67,6 @@ persistence:
     path: /mnt/tank/k8s-garage
     globalMounts:
       - path: /var/lib/garage
-    advancedMounts:
-      garage:
-        init-storage:
-          - path: /var/lib/garage
   tmp:
     enabled: true
     type: emptyDir
