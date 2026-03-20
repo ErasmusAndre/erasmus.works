@@ -6,9 +6,10 @@ configMapGenerator:
     files:
       - garage.toml=garage.toml
 generatorOptions:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
   disableNameSuffixHash: true
 resources:
   - namespace.yaml
   - externalsecret.yaml
-  - service.yaml
-  - deployment.yaml
+  - application.yaml

@@ -1,0 +1,81 @@
+controllers:
+  garage:
+    initContainers:
+      init-storage:
+        image:
+          repository: busybox
+          tag: 1.36
+        command:
+          - sh
+          - -c
+          - mkdir -p /var/lib/garage/data /var/lib/garage/meta
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+        volumeMounts:
+          - name: storage
+            mountPath: /var/lib/garage
+    containers:
+      app:
+        image:
+          repository: dxflrs/garage
+          tag: v2.2.0@sha256:45a61ce3f7c9c24fc23d9ed2b09b27ed560ab87b34605d175d5c588f539c24e4
+        command:
+          - garage
+        args:
+          - server
+          - --single-node
+        envFrom:
+          - secretRef:
+              name: garage-secrets
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            memory: 512Mi
+
+service:
+  app:
+    ports:
+      s3:
+        port: 3900
+      rpc:
+        port: 3901
+      admin:
+        port: 3903
+
+persistence:
+  config:
+    enabled: true
+    type: configMap
+    name: garage-config
+    globalMounts:
+      - path: /etc/garage.toml
+        subPath: garage.toml
+        readOnly: true
+  storage:
+    enabled: true
+    type: nfs
+    server: 192.168.20.40
+    path: /mnt/tank/k8s-garage
+    globalMounts:
+      - path: /var/lib/garage
+    advancedMounts:
+      garage:
+        init-storage:
+          - path: /var/lib/garage
+  tmp:
+    enabled: true
+    type: emptyDir
+    globalMounts:
+      - path: /tmp

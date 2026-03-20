@@ -5,6 +5,9 @@ Garage is deployed in-cluster and uses TrueNAS only as the backing NFS storage.
 This keeps the service itself in GitOps while still landing CNPG backup objects on
 the NAS.
 
+The workload itself is deployed through Argo CD with the `app-template` Helm
+chart
+
 ## TrueNAS
 
 Create a dedicated dataset and NFS export:
@@ -15,12 +18,8 @@ Create a dedicated dataset and NFS export:
 
 That dataset should be writable from the Kubernetes node at `192.168.20.40`.
 
-Garage stores both object data and metadata inside that export:
-
-```text
-/mnt/tank/k8s-garage/data
-/mnt/tank/k8s-garage/meta
-```
+Garage creates its own `data` and `meta` directories inside that dataset on
+first start.
 
 ## Bitwarden Secrets
 
