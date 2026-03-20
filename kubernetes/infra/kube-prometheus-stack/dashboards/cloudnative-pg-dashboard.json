@@ -9216,7 +9216,11 @@
         "type": "datasource"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "cnpg-system",
+          "value": "cnpg-system"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "prometheus"
@@ -9241,7 +9245,11 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "apps",
+          "value": "apps"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "prometheus"
@@ -9265,7 +9273,11 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "docmost-postgres",
+          "value": "docmost-postgres"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "prometheus"
