@@ -1001,7 +1001,10 @@
   "refresh": "30s",
   "schemaVersion": 37,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "custom",
+    "community"
+  ],
   "templating": {
     "list": []
   },
