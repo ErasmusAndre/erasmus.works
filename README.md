@@ -16,10 +16,12 @@ GitOps setup built around Talos Linux, Kubernetes, and Argo CD.
 | GitOps | Argo CD |
 | Load balancing | MetalLB |
 | In-cluster ingress | Envoy Gateway |
+| DNS automation | ExternalDNS |
 | Public access | Cloudflare Tunnel |
 | Storage | Longhorn |
 | Object Storage | Garage |
 | Backup | VolSync |
+| Volume snapshots | CSI external snapshotter |
 | Database operator | CloudNativePG |
 | Secret sync | External Secrets Operator + Bitwarden Secrets Manager |
 | Metrics | kube-prometheus-stack |
@@ -33,8 +35,10 @@ GitOps setup built around Talos Linux, Kubernetes, and Argo CD.
 **GitOps:** [Argo CD](https://argo-cd.readthedocs.io/) manages the repo with an
 app-of-apps layout rooted at `kubernetes/clusters/homelab`.
 
-**Networking:** [MetalLB](https://metallb.io/) provides `LoadBalancer` IPs, and
-[Envoy Gateway](https://gateway.envoyproxy.io/) handles in-cluster ingress.
+**Networking:** [MetalLB](https://metallb.io/) provides `LoadBalancer` IPs,
+[Envoy Gateway](https://gateway.envoyproxy.io/) handles in-cluster ingress, and
+[ExternalDNS](https://kubernetes-sigs.github.io/external-dns/latest/) syncs DNS
+records to Cloudflare.
 
 **Edge Access:** [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
 publishes selected services externally.
@@ -58,7 +62,8 @@ forwards them for search through Grafana.
 Longhorn is installed for persistent storage. This is currently a single-node
 setup, so the default replica count is `1` by design. Longhorn data currently
 lives at `/var/lib/longhorn` on the node SSD. VolSync is installed for
-scheduled filesystem backups of app PVCs. CloudNativePG is installed as the
+scheduled filesystem backups of app PVCs. CSI volume snapshot support is
+installed for snapshot-capable workloads. CloudNativePG is installed as the
 PostgreSQL operator for in-cluster database workloads. Garage runs in-cluster
 and stores its backup objects on a dedicated TrueNAS NFS export.
 

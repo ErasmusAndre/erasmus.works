@@ -4,7 +4,7 @@ These dashboards are provisioned into Grafana through the existing `ConfigMap` +
 
 ## Source
 
-The following files were imported from Grafana community dashboards and kept stock unless noted otherwise:
+The following files are provisioned from this directory. Most were imported from Grafana community dashboards and kept stock unless noted otherwise:
 
 - `kubernetes-dashboard.json`
   - Source: https://grafana.com/grafana/dashboards/22523-eks-dashboard/
@@ -12,6 +12,10 @@ The following files were imported from Grafana community dashboards and kept sto
   - Source: https://grafana.com/grafana/dashboards/16734-kubernetes-cluster-ram-and-cpu-utilization/
 - `longhorn-dashboard.json`
   - Source: https://grafana.com/grafana/dashboards/22705-longhorn-dashboard/
+- `garage-dashboard.json`
+  - Source URL not recorded in this repo
+- `cloudnative-pg-dashboard.json`
+  - Source URL not recorded in this repo
 - `node-exporter-full.json`
   - Source: https://grafana.com/grafana/dashboards/1860-node-exporter-full
 - `argocd.json`
@@ -19,6 +23,8 @@ The following files were imported from Grafana community dashboards and kept sto
 - `victorialogs-explorer.json`
   - Source: https://grafana.com/grafana/dashboards/22759-victorialogs-explorer/
   - Adjusted to match this repo's Fluent Bit -> VictoriaLogs field names
+- `volsync-dashboard.json`
+  - Source: https://grafana.com/grafana/dashboards/21356-volsync-dashboard/
 
 ## Local tags
 
