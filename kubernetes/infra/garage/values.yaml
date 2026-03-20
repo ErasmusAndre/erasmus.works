@@ -24,7 +24,6 @@ controllers:
           - /garage
         args:
           - server
-          - --single-node
         envFrom:
           - secretRef:
               name: garage-secrets

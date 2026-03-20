@@ -33,8 +33,3 @@ Use these formats:
 - `garage-rpc-secret`: 32-byte hex string, for example `openssl rand -hex 32`
 - `garage-admin-token`: long random token, for example `openssl rand -base64 32`
 
-## Single-Node Mode
-
-This deployment starts Garage with `server --single-node`.
-
-That matches this cluster and avoids a separate manual layout bootstrap step.
