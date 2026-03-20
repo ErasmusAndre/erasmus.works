@@ -7,6 +7,7 @@ resources:
   - external-secrets
   - external-dns
   - cloudnative-pg
+  - garage
   - longhorn
   - volume-snapshots
   - volsync

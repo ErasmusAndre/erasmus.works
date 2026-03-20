@@ -1,0 +1,19 @@
+metadata_dir = "/var/lib/garage/meta"
+data_dir = "/var/lib/garage/data"
+db_engine = "lmdb"
+metadata_auto_snapshot_interval = "6h"
+
+block_size = "10MiB"
+
+replication_factor = 1
+compression_level = 2
+
+rpc_bind_addr = "[::]:3901"
+rpc_public_addr = "garage.garage.svc.cluster.local:3901"
+
+[s3_api]
+api_bind_addr = "[::]:3900"
+s3_region = "homelab"
+
+[admin]
+api_bind_addr = "[::]:3903"

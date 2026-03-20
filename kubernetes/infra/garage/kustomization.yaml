@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+configMapGenerator:
+  - name: garage-config
+    namespace: garage
+    files:
+      - garage.toml=garage.toml
+generatorOptions:
+  disableNameSuffixHash: true
+resources:
+  - namespace.yaml
+  - externalsecret.yaml
+  - service.yaml
+  - deployment.yaml
