@@ -6,3 +6,4 @@ resources:
   - redis.yaml
   - app.yaml
   - volsync.yaml
+  - restore-drill
