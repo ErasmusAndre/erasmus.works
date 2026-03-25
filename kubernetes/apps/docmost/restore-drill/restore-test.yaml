@@ -1,3 +1,5 @@
+# Temporary restore drill resources for Docmost.
+# This file is kept in git but is not deployed by default.
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
@@ -129,7 +131,7 @@ spec:
             - name: SMTP_FROM_ADDRESS
               value: notifications@erasmus.works
             - name: SMTP_FROM_NAME
-              value: Docmost Restore Test
+              value: Docmost Restore Drill
           ports:
             - name: http
               containerPort: 3000
