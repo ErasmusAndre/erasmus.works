@@ -1,0 +1,176 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: backup-alerts
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: backup-alerts
+      rules:
+        - alert: VolSyncMissedBackupInterval
+          expr: increase(volsync_missed_intervals_total{role="source"}[30h]) >= 1
+          for: 1h
+          labels:
+            severity: warning
+            category: backup
+            component: volsync
+          annotations:
+            summary: VolSync source missed a scheduled backup interval
+            description: VolSync source {{ $labels.obj_namespace }}/{{ $labels.obj_name }} has missed at least one scheduled backup interval in the last 30 hours.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: VolSyncMultipleMissedBackupIntervals
+          expr: increase(volsync_missed_intervals_total{role="source"}[54h]) >= 2
+          for: 1h
+          labels:
+            severity: critical
+            category: backup
+            component: volsync
+          annotations:
+            summary: VolSync source missed multiple scheduled backup intervals
+            description: VolSync source {{ $labels.obj_namespace }}/{{ $labels.obj_name }} has missed at least two scheduled backup intervals in the last 54 hours.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: VolSyncVolumeOutOfSync
+          expr: volsync_volume_out_of_sync{role="source"} > 0
+          for: 2h
+          labels:
+            severity: warning
+            category: backup
+            component: volsync
+          annotations:
+            summary: VolSync source volume is out of sync
+            description: VolSync source {{ $labels.obj_namespace }}/{{ $labels.obj_name }} reports an out-of-sync volume state for more than 2 hours.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: VolSyncVolumeOutOfSyncCritical
+          expr: volsync_volume_out_of_sync{role="source"} > 0
+          for: 12h
+          labels:
+            severity: critical
+            category: backup
+            component: volsync
+          annotations:
+            summary: VolSync source volume has remained out of sync
+            description: VolSync source {{ $labels.obj_namespace }}/{{ $labels.obj_name }} has remained out of sync for more than 12 hours.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: VolSyncSourceNeverCompletedBackup
+          expr: volsync_replicationsource_info{last_sync_time=""} == 1
+          for: 36h
+          labels:
+            severity: warning
+            category: backup
+            component: volsync
+          annotations:
+            summary: VolSync source has not completed its first backup
+            description: VolSync source {{ $labels.obj_namespace }}/{{ $labels.obj_name }} still has no recorded successful sync after 36 hours. This uses the kube-state-metrics ReplicationSource status because lastSyncTime is exposed as a label, not a numeric timestamp.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: VolSyncSourceNeverCompletedBackupCritical
+          expr: volsync_replicationsource_info{last_sync_time=""} == 1
+          for: 60h
+          labels:
+            severity: critical
+            category: backup
+            component: volsync
+          annotations:
+            summary: VolSync source still has no completed backup
+            description: VolSync source {{ $labels.obj_namespace }}/{{ $labels.obj_name }} still has no recorded successful sync after 60 hours. This uses the kube-state-metrics ReplicationSource status because lastSyncTime is exposed as a label, not a numeric timestamp.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: VolSyncBackupRepositoryAlmostFull
+          expr: (1 - kubelet_volume_stats_available_bytes{namespace="apps", persistentvolumeclaim="volsync-repository"} / kubelet_volume_stats_capacity_bytes{namespace="apps", persistentvolumeclaim="volsync-repository"}) > 0.85
+          for: 2h
+          labels:
+            severity: warning
+            category: backup
+            component: volsync
+          annotations:
+            summary: VolSync backup repository PVC is running low on space
+            description: The VolSync backup repository PVC apps/volsync-repository is above 85% used. This only covers the PVC-backed VolSync repository, not object storage capacity.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: CNPGBaseBackupTooOld
+          expr: time() - max by (namespace, cluster) (cnpg_collector_last_available_backup_timestamp) > 36 * 60 * 60
+          for: 30m
+          labels:
+            severity: warning
+            category: backup
+            component: cnpg
+          annotations:
+            summary: CloudNativePG base backup is older than expected
+            description: CloudNativePG cluster {{ $labels.namespace }}/{{ $labels.cluster }} has no base backup newer than 36 hours, which is beyond the expected window for a daily 03:00 backup.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: CNPGBaseBackupTooOldCritical
+          expr: time() - max by (namespace, cluster) (cnpg_collector_last_available_backup_timestamp) > 60 * 60 * 60
+          for: 30m
+          labels:
+            severity: critical
+            category: backup
+            component: cnpg
+          annotations:
+            summary: CloudNativePG base backup is critically old
+            description: CloudNativePG cluster {{ $labels.namespace }}/{{ $labels.cluster }} has no base backup newer than 60 hours.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: CNPGWalArchiveStale
+          expr: max by (namespace, cluster) ((1 - cnpg_pg_replication_in_recovery) * (time() - timestamp(cnpg_pg_stat_archiver_seconds_since_last_archival) + cnpg_pg_stat_archiver_seconds_since_last_archival)) > 24 * 60 * 60
+          for: 1h
+          labels:
+            severity: warning
+            category: backup
+            component: cnpg
+          annotations:
+            summary: CloudNativePG WAL archiving looks stale
+            description: CloudNativePG cluster {{ $labels.namespace }}/{{ $labels.cluster }} has not archived WAL for more than 24 hours on the primary. This assumes the workload normally generates WAL and may need tuning for very idle databases.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: CNPGWalArchiveStaleCritical
+          expr: max by (namespace, cluster) ((1 - cnpg_pg_replication_in_recovery) * (time() - timestamp(cnpg_pg_stat_archiver_seconds_since_last_archival) + cnpg_pg_stat_archiver_seconds_since_last_archival)) > 48 * 60 * 60
+          for: 1h
+          labels:
+            severity: critical
+            category: backup
+            component: cnpg
+          annotations:
+            summary: CloudNativePG WAL archiving is critically stale
+            description: CloudNativePG cluster {{ $labels.namespace }}/{{ $labels.cluster }} has not archived WAL for more than 48 hours on the primary. This assumes the workload normally generates WAL and may need tuning for very idle databases.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: CNPGBackupReconcileErrors
+          expr: sum by (namespace, controller) (increase(controller_runtime_reconcile_total{namespace="cnpg-system", result="error", controller="backup"}[30m])) > 0
+          for: 15m
+          labels:
+            severity: warning
+            category: backup
+            component: cnpg
+          annotations:
+            summary: CloudNativePG backup controller is reporting reconcile errors
+            description: The CloudNativePG operator in namespace {{ $labels.namespace }} reported backup controller reconcile errors in the last 30 minutes.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: CNPGBackupReconcileErrorsCritical
+          expr: sum by (namespace, controller) (increase(controller_runtime_reconcile_total{namespace="cnpg-system", result="error", controller="backup"}[2h])) >= 3
+          for: 15m
+          labels:
+            severity: critical
+            category: backup
+            component: cnpg
+          annotations:
+            summary: CloudNativePG backup controller is repeatedly failing to reconcile
+            description: The CloudNativePG operator in namespace {{ $labels.namespace }} reported at least three backup controller reconcile errors in the last 2 hours.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: CNPGScheduledBackupReconcileErrors
+          expr: sum by (namespace, controller) (increase(controller_runtime_reconcile_total{namespace="cnpg-system", result="error", controller=~"scheduledbackup|scheduled-backup"}[30m])) > 0
+          for: 15m
+          labels:
+            severity: warning
+            category: backup
+            component: cnpg
+          annotations:
+            summary: CloudNativePG scheduled backup controller is reporting reconcile errors
+            description: The CloudNativePG operator in namespace {{ $labels.namespace }} reported scheduled backup controller reconcile errors in the last 30 minutes.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: CNPGScheduledBackupReconcileErrorsCritical
+          expr: sum by (namespace, controller) (increase(controller_runtime_reconcile_total{namespace="cnpg-system", result="error", controller=~"scheduledbackup|scheduled-backup"}[2h])) >= 3
+          for: 15m
+          labels:
+            severity: critical
+            category: backup
+            component: cnpg
+          annotations:
+            summary: CloudNativePG scheduled backup controller is repeatedly failing to reconcile
+            description: The CloudNativePG operator in namespace {{ $labels.namespace }} reported at least three scheduled backup controller reconcile errors in the last 2 hours.
+            runbook_url: https://todo.local/runbooks/backup-alerts

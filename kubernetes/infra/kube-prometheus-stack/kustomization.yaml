@@ -5,6 +5,7 @@ resources:
   - externalsecret.yaml
   - application.yaml
   - httproutes.yaml
+  - backup-alerts.yaml
   - kube-state-metrics-volsync-rbac.yaml
   - victorialogs-datasource.yaml
   - dashboards
