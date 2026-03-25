@@ -25,7 +25,7 @@ metadata:
 spec:
   trigger:
     # Change this to any new value to trigger another restore run.
-    manual: restore-once
+    manual: restore-20260325T152524Z
   restic:
     repository: docmost-data-restic-config
     destinationPVC: docmost-data-restore
