@@ -34,7 +34,7 @@ jobs:
 
     steps:
       - name: Check Out Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Write Requested State
         id: request
@@ -83,12 +83,12 @@ jobs:
           git push
 
   process:
-    if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
       - name: Check Out Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Process Restore Drill State
         id: process
