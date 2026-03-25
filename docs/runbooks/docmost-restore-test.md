@@ -17,6 +17,10 @@ note: ""
 
 Commit and push.
 
+Or run the `Docmost Restore Drill` workflow in GitHub Actions with `state=start`.
+
+The manual workflow path expects a repository Actions secret named `WORKFLOW_PUSH_TOKEN`.
+
 GitHub Actions then:
 
 - adds `restore-drill` to [kubernetes/apps/docmost/kustomization.yaml](../../kubernetes/apps/docmost/kustomization.yaml)
@@ -65,6 +69,8 @@ note: ""
 ```
 
 Commit and push.
+
+Or run the `Docmost Restore Drill` workflow in GitHub Actions with `state=cleanup`.
 
 GitHub Actions then:
 
