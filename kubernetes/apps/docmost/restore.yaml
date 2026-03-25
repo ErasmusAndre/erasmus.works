@@ -28,3 +28,8 @@ spec:
     repository: docmost-data-restic-config
     destinationPVC: docmost-data-restore
     copyMethod: Direct
+    moverVolumes:
+      - mountPath: /mnt/repo
+        volumeSource:
+          persistentVolumeClaim:
+            claimName: volsync-repository
