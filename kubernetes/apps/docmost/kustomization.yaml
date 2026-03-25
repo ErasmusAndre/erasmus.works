@@ -6,3 +6,8 @@ resources:
   - redis.yaml
   - app.yaml
   - volsync.yaml
+  # Temporary restore drill resources. Remove these entries after the test
+  # so Argo CD prunes the throwaway restore objects.
+  # TODO
+  - restore.yaml
+  - restore-test.yaml
