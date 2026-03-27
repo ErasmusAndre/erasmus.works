@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Track Talos image references outside Kubernetes manifests",
+      "managerFilePatterns": [
+        "/(^|/)talos/.+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "image:\\s+(?<depName>ghcr\\.io\\/siderolabs\\/kubelet):(?<currentValue>[^\\s#]+)",
+        "image:\\s+(?<depName>factory\\.talos\\.dev\\/installer\\/[^:]+):(?<currentValue>[^\\s#]+)"
+      ],
+      "datasourceTemplate": "docker"
+    }
+  ]
+}

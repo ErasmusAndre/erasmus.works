@@ -1,0 +1,36 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "description": "Never automerge major updates",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "platformAutomerge": false
+    },
+    {
+      "description": "Keep cluster-critical infrastructure on manual review",
+      "matchPackageNames": [
+        "longhorn",
+        "cloudnative-pg",
+        "volsync",
+        "external-secrets",
+        "external-dns",
+        "snapshot-controller",
+        "envoyproxy/gateway-helm",
+        "ghcr.io/siderolabs/installer",
+        "ghcr.io/siderolabs/kubelet",
+        "cloudflare/cloudflared",
+        "/(^|\\/)(argocd|argo-cd)(\\/|$)/",
+        "/(^|\\/)(metallb)(\\/|$)/"
+      ],
+      "automerge": false,
+      "platformAutomerge": false
+    },
+    {
+      "description": "Normalize Talos image-factory installer names",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["/factory\\.talos\\.dev\\/installer\\//"],
+      "overridePackageName": "ghcr.io/siderolabs/installer"
+    }
+  ]
+}

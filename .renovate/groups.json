@@ -1,0 +1,28 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "description": "Keep GitHub Actions updates together",
+      "matchManagers": ["github-actions"],
+      "groupName": "github actions",
+      "groupSlug": "github-actions"
+    },
+    {
+      "description": "Update shared bjw-s app-template chart together",
+      "matchDatasources": ["helm"],
+      "matchPackageNames": ["app-template"],
+      "groupName": "bjw-s app-template",
+      "groupSlug": "bjw-s-app-template"
+    },
+    {
+      "description": "Update status page images together",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": [
+        "ghcr.io/twin/gatus",
+        "ghcr.io/kashalls/kromgo"
+      ],
+      "groupName": "status page images",
+      "groupSlug": "status-page-images"
+    }
+  ]
+}

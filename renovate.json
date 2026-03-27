@@ -1,6 +1,48 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
-  ]
+    "config:recommended",
+    "docker:enableMajor",
+    "helpers:pinGitHubActionDigests",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":timezone(Europe/Amsterdam)",
+    "local>NoBadDays/erasmus.works//.renovate/autoMerge.json",
+    "local>NoBadDays/erasmus.works//.renovate/groups.json",
+    "local>NoBadDays/erasmus.works//.renovate/customManagers.json",
+    "local>NoBadDays/erasmus.works//.renovate/overrides.json"
+  ],
+  "dependencyDashboardTitle": "Renovate Dashboard",
+  "suppressNotifications": [
+    "prEditedNotification",
+    "prIgnoreNotification"
+  ],
+  "rangeStrategy": "pin",
+  "enabledManagers": [
+    "argocd",
+    "custom.regex",
+    "github-actions",
+    "helm-values",
+    "kubernetes"
+  ],
+  "argocd": {
+    "managerFilePatterns": [
+      "/(^|/)kubernetes/.+/application\\.ya?ml$/"
+    ]
+  },
+  "github-actions": {
+    "managerFilePatterns": [
+      "/(^|/)\\.github/workflows/.+\\.ya?ml$/"
+    ]
+  },
+  "helm-values": {
+    "managerFilePatterns": [
+      "/(^|/)kubernetes/.+/values\\.ya?ml$/"
+    ]
+  },
+  "kubernetes": {
+    "managerFilePatterns": [
+      "/(^|/)kubernetes/.+\\.ya?ml$/"
+    ]
+  }
 }
