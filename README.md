@@ -136,8 +136,7 @@ This setup is mostly self-hosted, but it still depends on a few cloud services.
 
 ## Documentation
 
-- Renovate manages dependency update PRs for this repository.
-- [Renovate Config](renovate.json)
+- [Renovate Config](renovate.json) (manages dependency update PRs for this repository)
 - [Talos Bootstrap Runbook](docs/bootstrap/talos.md)
 - [Argo CD Bootstrap Runbook](docs/bootstrap/argocd.md)
 - [Bitwarden External Secrets Bootstrap](docs/bootstrap/bitwarden-external-secrets.md)
