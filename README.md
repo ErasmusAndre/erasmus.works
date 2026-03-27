@@ -34,26 +34,20 @@
 
 ---
 
-## 🧭 Overview
+## Overview
 
-This repository is the source of truth for my personal homelab Kubernetes cluster.
-The setup is intentionally small, plain, and low-maintenance: a single-node Talos
-cluster managed through GitOps with Argo CD.
-
-The goal is not to build a production platform at home. The goal is to keep a
-reliable, understandable cluster for the services I actually run, while making
-changes in a reproducible way through this repository.
+This repository is the source of truth for my personal homelab Kubernetes cluster. I
+try to keep things simple and reproducible by following Infrastructure as Code
+(IaC) and GitOps practices with tools like Talos, Kubernetes, Argo CD, and
+Renovate.
 
 ---
 
-## ☸️ Kubernetes
+## Kubernetes
 
-My cluster runs on [Talos Linux](https://www.talos.dev/) with
-[Kubernetes](https://kubernetes.io/) as the runtime and
-[Argo CD](https://argo-cd.readthedocs.io/) as the GitOps controller.
-Argo CD watches the manifests in [`kubernetes/`](/home/andre/code/ew/erasmus.works/kubernetes)
-and reconciles the cluster from the root application at
-[`kubernetes/clusters/homelab/homelab-root.yaml`](/home/andre/code/ew/erasmus.works/kubernetes/clusters/homelab/homelab-root.yaml).
+My Kubernetes cluster is deployed with [Talos Linux](https://www.talos.dev/).
+It is a single-node setup built to stay simple, low-maintenance, and reliable
+for the services I actually run, and will be expanded on with more nodes soon.
 
 ### Core Components
 
@@ -72,14 +66,12 @@ and reconciles the cluster from the root application at
 
 ### GitOps
 
-This repository uses a simple Argo CD app-of-apps layout. Infrastructure lives
-under [`kubernetes/infra/`](/home/andre/code/ew/erasmus.works/kubernetes/infra),
-applications live under [`kubernetes/apps/`](/home/andre/code/ew/erasmus.works/kubernetes/apps),
-and the cluster entrypoint lives under
-[`kubernetes/clusters/homelab/`](/home/andre/code/ew/erasmus.works/kubernetes/clusters/homelab).
+Argo CD watches the manifests in my [`kubernetes`](/home/andre/code/ew/erasmus.works/kubernetes)
+folder and makes changes to my cluster based on the state of my Git repository.
 
-The workflow is straightforward: change manifests in Git, let Argo CD detect the
-change, and let the cluster reconcile back to the declared state.
+Renovate watches my repository for dependency updates, and when they are found
+a pull request is automatically created. When pull requests are merged Argo CD
+applies the changes to my cluster.
 
 ```mermaid
 flowchart LR
@@ -100,6 +92,8 @@ flowchart LR
 
 ### Directories
 
+This Git repository contains the following directories.
+
 ```text
 .
 ├── 📁 kubernetes/
@@ -114,10 +108,11 @@ flowchart LR
 
 ---
 
-## ☁️ Cloud Dependencies
+## Cloud Dependencies
 
-While most workloads are self-hosted, a few external services keep the setup
-practical and low-maintenance.
+While most of my infrastructure and workloads are self-hosted, I do rely upon
+the cloud for a few key parts of my setup. This keeps the setup simpler and
+avoids making the cluster responsible for every critical dependency.
 
 | Service | Use | Cost |
 | --- | --- | --- |
@@ -129,10 +124,10 @@ practical and low-maintenance.
 
 ---
 
-## ⚙️ Hardware
+## Hardware
 
-This cluster currently runs on a single small-form-factor node, which keeps the
-setup simple and cheap while still being enough for the workloads in this repo.
+This cluster runs on a single small-form-factor node, which keeps the setup
+simple and inexpensive while still being enough for the workloads in this repo.
 
 | Component | Details |
 | --- | --- |
@@ -146,7 +141,7 @@ setup simple and cheap while still being enough for the workloads in this repo.
 
 ---
 
-## 📚 Documentation
+## Documentation
 
 - [Talos Bootstrap Runbook](/home/andre/code/ew/erasmus.works/docs/bootstrap/talos.md)
 - [Argo CD Bootstrap Runbook](/home/andre/code/ew/erasmus.works/docs/bootstrap/argocd.md)
