@@ -32,73 +32,92 @@
 
 </div>
 
-## Core Components
+---
 
-**Platform:** [Talos Linux](https://www.talos.dev/) runs the node and
-[Kubernetes](https://kubernetes.io/) provides the cluster runtime.
+## 🧭 Overview
 
-**GitOps:** [Argo CD](https://argo-cd.readthedocs.io/) manages the repo with an
-app-of-apps layout rooted at `kubernetes/clusters/homelab`.
+This repository is the source of truth for my personal homelab Kubernetes cluster.
+The setup is intentionally small, plain, and low-maintenance: a single-node Talos
+cluster managed through GitOps with Argo CD.
 
-**Networking:** [MetalLB](https://metallb.io/) provides `LoadBalancer` IPs,
-[Envoy Gateway](https://gateway.envoyproxy.io/) handles in-cluster ingress, and
-[ExternalDNS](https://kubernetes-sigs.github.io/external-dns/latest/) syncs DNS
-records to Cloudflare.
+The goal is not to build a production platform at home. The goal is to keep a
+reliable, understandable cluster for the services I actually run, while making
+changes in a reproducible way through this repository.
 
-**Edge Access:** [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
-publishes selected services externally.
+---
 
-**Secrets:** [External Secrets Operator](https://external-secrets.io/) reads
-from Bitwarden Secrets Manager and creates in-cluster Kubernetes secrets.
+## ☸️ Kubernetes
 
-**Data Services:** [Longhorn](https://longhorn.io/) provides persistent storage,
-[Garage](https://garagehq.deuxfleurs.fr/) provides S3-compatible object
-storage for backup workflows, [VolSync](https://volsync.readthedocs.io/) handles
-scheduled PVC backups, and [CloudNativePG](https://cloudnative-pg.io/) manages
-PostgreSQL workloads.
+My cluster runs on [Talos Linux](https://www.talos.dev/) with
+[Kubernetes](https://kubernetes.io/) as the runtime and
+[Argo CD](https://argo-cd.readthedocs.io/) as the GitOps controller.
+Argo CD watches the manifests in [`kubernetes/`](/home/andre/code/ew/erasmus.works/kubernetes)
+and reconciles the cluster from the root application at
+[`kubernetes/clusters/homelab/homelab-root.yaml`](/home/andre/code/ew/erasmus.works/kubernetes/clusters/homelab/homelab-root.yaml).
 
-**Observability:** [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
-provides Prometheus, Grafana, and Alertmanager. [VictoriaLogs](https://docs.victoriametrics.com/victorialogs/)
-stores in-cluster logs, and [Fluent Bit](https://fluentbit.io/) collects and
-forwards them for search through Grafana.
+### Core Components
 
+- [MetalLB](https://metallb.io/): Provides `LoadBalancer` IPs on the local network.
+- [Envoy Gateway](https://gateway.envoyproxy.io/): Handles in-cluster ingress and HTTP routing.
+- [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/): Publishes selected services externally without opening inbound ports.
+- [ExternalDNS](https://kubernetes-sigs.github.io/external-dns/latest/): Syncs DNS records to Cloudflare.
+- [External Secrets Operator](https://external-secrets.io/): Syncs Kubernetes secrets from Bitwarden Secrets Manager.
+- [Longhorn](https://longhorn.io/): Provides persistent volumes for stateful workloads.
+- [CloudNativePG](https://cloudnative-pg.io/): Runs PostgreSQL workloads in-cluster.
+- [VolSync](https://volsync.readthedocs.io/): Handles scheduled PVC backups.
+- [Garage](https://garagehq.deuxfleurs.fr/): Provides S3-compatible object storage for backup workflows.
+- [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack): Provides Prometheus, Grafana, and Alertmanager.
+- [VictoriaLogs](https://docs.victoriametrics.com/victorialogs/): Stores cluster logs.
+- [Fluent Bit](https://fluentbit.io/): Collects and forwards logs into VictoriaLogs.
 
-## Overview
+### GitOps
 
-This repository manages my single-node homelab Kubernetes cluster with a small
-GitOps setup built around Talos Linux, Kubernetes, and Argo CD.
+This repository uses a simple Argo CD app-of-apps layout. Infrastructure lives
+under [`kubernetes/infra/`](/home/andre/code/ew/erasmus.works/kubernetes/infra),
+applications live under [`kubernetes/apps/`](/home/andre/code/ew/erasmus.works/kubernetes/apps),
+and the cluster entrypoint lives under
+[`kubernetes/clusters/homelab/`](/home/andre/code/ew/erasmus.works/kubernetes/clusters/homelab).
 
-| Area | Choice |
-| --- | --- |
-| OS | Talos Linux |
-| Orchestration | Kubernetes |
-| GitOps | Argo CD |
-| Load balancing | MetalLB |
-| In-cluster ingress | Envoy Gateway |
-| DNS automation | ExternalDNS |
-| Public access | Cloudflare Tunnel |
-| Storage | Longhorn |
-| Object Storage | Garage |
-| Backup | VolSync |
-| Volume snapshots | CSI external snapshotter |
-| Database operator | CloudNativePG |
-| Secret sync | External Secrets Operator + Bitwarden Secrets Manager |
-| Metrics | kube-prometheus-stack |
-| Logs | VictoriaLogs + Fluent Bit |
+The workflow is straightforward: change manifests in Git, let Argo CD detect the
+change, and let the cluster reconcile back to the declared state.
 
-## Storage
+```mermaid
+flowchart LR
+    github["🐙 GitHub Repo"] --> argo["🚀 Argo CD"]
+    internet["🌍 Internet"] --> cf["☁️ Cloudflare Tunnel"]
 
-Longhorn is installed for persistent storage. This is currently a single-node
-setup, so the default replica count is `1` by design. Longhorn data currently
-lives at `/var/lib/longhorn` on the node SSD. VolSync is installed for
-scheduled filesystem backups of app PVCs. CSI volume snapshot support is
-installed for snapshot-capable workloads. CloudNativePG is installed as the
-PostgreSQL operator for in-cluster database workloads. Garage runs in-cluster
-and stores its backup objects on a dedicated TrueNAS NFS export.
+    subgraph cluster["🧱 Talos Kubernetes Cluster"]
+        argo
+        apps["📦 Apps"]
+        infra["🧩 Infrastructure"]
+    end
 
-## Cloud Dependencies
+    argo --> infra
+    argo --> apps
+    cf --> infra
+    infra --> apps
+```
 
-This setup is mostly self-hosted, but it still depends on a few cloud services.
+### Directories
+
+```text
+.
+├── 📁 kubernetes/
+│   ├── 📁 bootstrap/argocd/   # Argo CD bootstrap
+│   ├── 📁 clusters/homelab/   # Root app and child applications
+│   ├── 📁 infra/              # Cluster infrastructure
+│   └── 📁 apps/               # Workload applications
+├── 📁 talos/                  # Talos machine config and patches
+├── 📁 docs/                   # Practical runbooks and notes
+└── 📁 linux/                  # Local workstation/helper files
+```
+
+---
+
+## ☁️ Cloud Dependencies
+
+While most workloads are self-hosted, a few external services keep the setup
+practical and low-maintenance.
 
 | Service | Use | Cost |
 | --- | --- | --- |
@@ -108,21 +127,12 @@ This setup is mostly self-hosted, but it still depends on a few cloud services.
 | [GitHub](https://github.com/) | Git hosting and Argo CD source of truth | Free |
 |  |  | Total: ~€3.35/mo |
 
-## Repository Structure
+---
 
-```text
-.
-├── 📁 kubernetes/
-│   ├── 📁 bootstrap/argocd/   # Argo CD bootstrap
-│   ├── 📁 clusters/homelab/   # Cluster entrypoint and child apps
-│   ├── 📁 infra/              # Infra manifests and infra-level Argo apps
-│   └── 📁 apps/               # App manifests
-├── 📁 talos/                  # Talos configs
-├── 📁 linux/                  # Local workstation helpers
-└── 📁 docs/                   # Runbooks and notes
-```
+## ⚙️ Hardware
 
-## Hardware
+This cluster currently runs on a single small-form-factor node, which keeps the
+setup simple and cheap while still being enough for the workloads in this repo.
 
 | Component | Details |
 | --- | --- |
@@ -134,13 +144,15 @@ This setup is mostly self-hosted, but it still depends on a few cloud services.
 | Router | UniFi Express 7 (UX7) |
 | Switch | 2.5 Gbps switch |
 
-## Documentation
+---
 
-- [Renovate Config](renovate.json) (manages dependency update PRs for this repository)
-- [Talos Bootstrap Runbook](docs/bootstrap/talos.md)
-- [Argo CD Bootstrap Runbook](docs/bootstrap/argocd.md)
-- [Bitwarden External Secrets Bootstrap](docs/bootstrap/bitwarden-external-secrets.md)
-- [Longhorn Bootstrap Notes](docs/bootstrap/longhorn.md)
-- [VolSync Restic Notes](docs/volsync-restic.md)
-- [Garage Notes](docs/garage.md)
-- [Linux Init Script](linux/init.md)
+## 📚 Documentation
+
+- [Talos Bootstrap Runbook](/home/andre/code/ew/erasmus.works/docs/bootstrap/talos.md)
+- [Argo CD Bootstrap Runbook](/home/andre/code/ew/erasmus.works/docs/bootstrap/argocd.md)
+- [Bitwarden External Secrets Bootstrap](/home/andre/code/ew/erasmus.works/docs/bootstrap/bitwarden-external-secrets.md)
+- [Longhorn Bootstrap Notes](/home/andre/code/ew/erasmus.works/docs/bootstrap/longhorn.md)
+- [VolSync Restic Notes](/home/andre/code/ew/erasmus.works/docs/volsync-restic.md)
+- [Garage Notes](/home/andre/code/ew/erasmus.works/docs/garage.md)
+- [Linux Init Notes](/home/andre/code/ew/erasmus.works/linux/init.md)
+- [Renovate Config](/home/andre/code/ew/erasmus.works/renovate.json)
