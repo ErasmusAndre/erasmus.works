@@ -1,4 +1,5 @@
 defaultSettings:
+  concurrentAutomaticEngineUpgradePerNodeLimit: 1
   defaultDataPath: /var/lib/longhorn
   defaultReplicaCount: 1
   storageReservedPercentageForDefaultDisk: 30
