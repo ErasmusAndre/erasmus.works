@@ -31,6 +31,7 @@ Backup schedule:
 ```text
 03:00  docmost-postgres CNPG backup
 03:00  docmost-data VolSync
+03:15  nextcloud-postgres CNPG backup
 03:15  nextcloud-html VolSync
 ```
 

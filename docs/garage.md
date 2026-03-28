@@ -83,3 +83,10 @@ only the secret access key is stored in Bitwarden.
 
 Those values map to the `ExternalSecret` in
 `kubernetes/apps/docmost/externalsecrets.yaml`.
+
+For Nextcloud, the repo expects these Bitwarden secrets:
+
+- `nextcloud-cnpg-backup-secret-access-key`
+
+Those values map to the `ExternalSecret` in
+`kubernetes/apps/nextcloud/externalsecrets.yaml`.
