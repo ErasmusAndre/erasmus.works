@@ -1,0 +1,96 @@
+nextcloud:
+  host: nextcloud.erasmus.works
+  existingSecret:
+    enabled: true
+    secretName: nextcloud-admin
+    usernameKey: nextcloud-username
+    passwordKey: nextcloud-password
+  trustedDomains:
+    - nextcloud.erasmus.works
+    - nextcloud.homelab
+
+phpClientHttpsFix:
+  enabled: true
+  protocol: https
+
+cronjob:
+  enabled: true
+
+internalDatabase:
+  enabled: false
+
+mariadb:
+  enabled: false
+
+postgresql:
+  enabled: false
+
+externalDatabase:
+  enabled: true
+  type: postgresql
+  existingSecret:
+    enabled: true
+    secretName: nextcloud-postgres-connection
+    usernameKey: username
+    passwordKey: password
+    hostKey: host
+    databaseKey: database
+
+redis:
+  enabled: true
+  architecture: standalone
+  master:
+    persistence:
+      enabled: false
+
+persistence:
+  enabled: true
+  existingClaim: nextcloud-html
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: "2"
+    memory: 2Gi
+
+extraEnv:
+  - name: TRUSTED_PROXIES
+    value: 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
+  - name: OVERWRITEHOST
+    value: nextcloud.erasmus.works
+  - name: OVERWRITEPROTOCOL
+    value: https
+  - name: OVERWRITECLIURL
+    value: https://nextcloud.erasmus.works
+  - name: APACHE_BODY_LIMIT
+    value: "0"
+  - name: PHP_UPLOAD_LIMIT
+    value: 10G
+  - name: PHP_MEMORY_LIMIT
+    value: 1G
+
+extraInitContainers:
+  - name: wait-for-postgres
+    image: busybox:1.37
+    command:
+      - sh
+      - -c
+      - until nc -z nextcloud-postgres-rw.apps.svc.cluster.local 5432; do sleep 2; done
+
+defaultConfigs:
+  reverse-proxy.config.php: true
+  redis.config.php: true
+  autoconfig.php: true
+  smtp.config.php: false
+  s3.config.php: false
+  swift.config.php: false
+
+phpConfigs:
+  uploads.ini: |
+    post_max_size=10G
+    upload_max_filesize=10G
+    max_input_time=3600
+    max_execution_time=3600
+    output_buffering=0

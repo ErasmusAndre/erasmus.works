@@ -1,23 +1,23 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: docmost-data-restic-config
+  name: nextcloud-html-restic-config
   namespace: apps
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   refreshInterval: 24h
   secretStoreRef:
     name: bitwarden-secrets-manager
     kind: ClusterSecretStore
   target:
-    name: docmost-data-restic-config
+    name: nextcloud-html-restic-config
     creationPolicy: Owner
     deletionPolicy: Retain
     template:
       type: Opaque
       data:
-        RESTIC_REPOSITORY: /mnt/repo/docmost-data
+        RESTIC_REPOSITORY: /mnt/repo/nextcloud-html
         RESTIC_PASSWORD: "{{ .restic_password }}"
   data:
     - secretKey: restic_password
@@ -30,18 +30,16 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: docmost-data
+  name: nextcloud-html
   namespace: apps
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "4"
 spec:
-  sourcePVC: docmost-data
+  sourcePVC: nextcloud-html
   trigger:
-    schedule: "0 3 * * *" # Every day at 3:00 AM
+    schedule: "15 3 * * *" # Every day at 3:15 AM
   restic:
-    # Reuse the same policy for other app PVCs and only change the PVC name
-    # and RESTIC_REPOSITORY path in the companion ExternalSecret above.
-    repository: docmost-data-restic-config
+    repository: nextcloud-html-restic-config
     copyMethod: Direct
     pruneIntervalDays: 7
     cacheCapacity: 2Gi

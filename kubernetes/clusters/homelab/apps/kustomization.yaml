@@ -4,3 +4,4 @@ resources:
   - docmost.yaml
   - homelab-infra.yaml
   - homepage.yaml
+  - nextcloud.yaml

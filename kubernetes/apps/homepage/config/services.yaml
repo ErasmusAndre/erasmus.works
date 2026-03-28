@@ -1,7 +1,7 @@
 - Cloud:
     - Nextcloud:
         icon: nextcloud.png
-        href: https://nextcloud.erasmuscloud.com
+        href: https://nextcloud.erasmus.works
         description: File sync and collaboration
     - Immich:
         icon: immich.png

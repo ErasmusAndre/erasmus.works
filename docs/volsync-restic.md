@@ -29,10 +29,13 @@ volsync-repository
 Backup schedule:
 
 ```text
-0 3 * * *
+03:00  docmost-postgres CNPG backup
+03:00  docmost-data VolSync
+03:15  nextcloud-html VolSync
 ```
 
-That means one backup run per day at `03:00`.
+The backups are grouped by app where needed, while still staggering apps to
+reduce I/O contention on the single-node Longhorn and SSD setup.
 
 Restic retention:
 
@@ -68,7 +71,9 @@ Future app backups should reuse the same pattern:
 - one shared Bitwarden secret: `volsync-restic-password`
 - one app-specific `ExternalSecret`
 - one `ReplicationSource`
-- same backup schedule and retention unless there is a reason to differ
+- the same retention unless there is a reason to differ
+- keep a given app's related backup window together when needed
+- stagger different apps instead of piling every workload onto `03:00`
 - a different PVC name and repository path
 
 ## Notes

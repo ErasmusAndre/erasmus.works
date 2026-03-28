@@ -8,6 +8,7 @@ metadata:
 spec:
   sourceRepos:
     - https://github.com/NoBadDays/erasmus.works.git
+    - https://nextcloud.github.io/helm/
   destinations:
     - namespace: apps
       server: https://kubernetes.default.svc

@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nextcloud
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: apps
+  sources:
+    - repoURL: https://nextcloud.github.io/helm/
+      chart: nextcloud
+      targetRevision: 9.0.3
+      helm:
+        releaseName: nextcloud
+        valueFiles:
+          - $values/kubernetes/apps/nextcloud/values.yaml
+    - repoURL: https://github.com/NoBadDays/erasmus.works.git
+      targetRevision: main
+      ref: values
+    - repoURL: https://github.com/NoBadDays/erasmus.works.git
+      targetRevision: main
+      path: kubernetes/apps/nextcloud
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: apps
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

@@ -1,0 +1,20 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: nextcloud-postgres
+  namespace: apps
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  instances: 1
+  monitoring:
+    enablePodMonitor: true
+  storage:
+    size: 5Gi
+    storageClass: longhorn
+  bootstrap:
+    initdb:
+      database: nextcloud
+      owner: nextcloud
+      secret:
+        name: nextcloud-postgres-auth
