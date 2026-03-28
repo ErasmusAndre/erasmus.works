@@ -42,7 +42,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
 spec:
-  schedule: "0 15 3 * * *"
+  schedule: "0 15 3 * * *" # every day at 3:15am
   immediate: true
   backupOwnerReference: cluster
   cluster:
