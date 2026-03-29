@@ -39,6 +39,9 @@ externalDatabase:
 redis:
   enabled: true
   architecture: standalone
+  auth:
+    existingSecret: nextcloud-redis-auth
+    existingSecretPasswordKey: redis-password
   master:
     persistence:
       enabled: false
@@ -57,7 +60,7 @@ resources:
 
 extraEnv:
   - name: TRUSTED_PROXIES
-    value: 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
+    value: 10.244.0.0/16
   - name: OVERWRITEHOST
     value: nextcloud.erasmus.works
   - name: OVERWRITEPROTOCOL
