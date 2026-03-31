@@ -58,9 +58,6 @@ resources:
     cpu: "2"
     memory: 2Gi
 
-securityContext:
-  allowPrivilegeEscalation: false
-
 extraEnv:
   - name: TRUSTED_PROXIES
     value: 10.244.0.0/16
