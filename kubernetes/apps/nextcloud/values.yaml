@@ -97,3 +97,17 @@ phpConfigs:
     max_input_time=3600
     max_execution_time=3600
     output_buffering=0
+
+configs:
+  proxy.config.php: |-
+    <?php
+    $CONFIG = array (
+      'trusted_proxies' =>
+      array (
+        0 => '10.244.0.0/16',
+      ),
+      'forwarded_for_headers' =>
+      array (
+        0 => 'HTTP_X_FORWARDED_FOR',
+      ),
+    );
