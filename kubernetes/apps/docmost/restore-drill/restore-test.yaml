@@ -95,7 +95,7 @@ spec:
             - until nc -z docmost-redis.apps.svc.cluster.local 6379; do sleep 2; done
       containers:
         - name: docmost
-          image: docmost/docmost:0.70.3
+          image: docmost/docmost:0.71.0
           env:
             - name: APP_URL
               value: http://restore-test.homelab
