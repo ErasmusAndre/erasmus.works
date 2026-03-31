@@ -13,8 +13,6 @@ nextcloud:
       value: 10.244.0.0/16
     - name: OVERWRITEHOST
       value: nextcloud.erasmus.works
-    - name: OVERWRITEPROTOCOL
-      value: https
     - name: OVERWRITECLIURL
       value: https://nextcloud.erasmus.works
     - name: APACHE_BODY_LIMIT
