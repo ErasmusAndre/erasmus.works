@@ -8,6 +8,7 @@ metadata:
 spec:
   sourceRepos:
     - https://github.com/NoBadDays/erasmus.works.git
+    - https://charts.goauthentik.io
     - ghcr.io/immich-app/immich-charts
     - https://nextcloud.github.io/helm/
   destinations:

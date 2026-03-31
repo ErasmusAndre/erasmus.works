@@ -1,0 +1,49 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: authentik-postgres
+  namespace: apps
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  instances: 1
+  monitoring:
+    enablePodMonitor: true
+  storage:
+    size: 10Gi
+    storageClass: longhorn
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://cnpg-authentik
+      endpointURL: http://garage.garage.svc.cluster.local:3900
+      serverName: authentik-postgres
+      s3Credentials:
+        accessKeyId:
+          name: authentik-postgres-backup-s3
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: authentik-postgres-backup-s3
+          key: ACCESS_SECRET_KEY
+      wal:
+        compression: gzip
+    retentionPolicy: "30d"
+  bootstrap:
+    initdb:
+      database: authentik
+      owner: authentik
+      secret:
+        name: authentik-postgres-auth
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: authentik-postgres-backup
+  namespace: apps
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  schedule: "0 0 3 * * *" # every day at 3:00am
+  immediate: true
+  backupOwnerReference: cluster
+  cluster:
+    name: authentik-postgres

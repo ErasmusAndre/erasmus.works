@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: authentik
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: apps
+  sources:
+    - repoURL: https://charts.goauthentik.io
+      chart: authentik
+      targetRevision: 2026.2.1
+      helm:
+        releaseName: authentik
+        valueFiles:
+          - $values/kubernetes/apps/authentik/values.yaml
+    - repoURL: https://github.com/NoBadDays/erasmus.works.git
+      targetRevision: main
+      ref: values
+    - repoURL: https://github.com/NoBadDays/erasmus.works.git
+      targetRevision: main
+      path: kubernetes/apps/authentik
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: apps
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

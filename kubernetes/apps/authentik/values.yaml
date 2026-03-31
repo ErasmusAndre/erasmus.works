@@ -1,0 +1,49 @@
+authentik:
+  existingSecret:
+    secretName: authentik-env
+
+postgresql:
+  enabled: false
+
+serviceAccount:
+  create: false
+
+server:
+  initContainers:
+    - name: wait-for-postgres
+      image: busybox:1.37
+      command:
+        - sh
+        - -c
+        - until nc -z authentik-postgres-rw.apps.svc.cluster.local 5432; do sleep 2; done
+  volumes:
+    - name: media
+      persistentVolumeClaim:
+        claimName: authentik-media
+  volumeMounts:
+    - name: media
+      mountPath: /data
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+worker:
+  initContainers:
+    - name: wait-for-postgres
+      image: busybox:1.37
+      command:
+        - sh
+        - -c
+        - until nc -z authentik-postgres-rw.apps.svc.cluster.local 5432; do sleep 2; done
+  volumes:
+    - name: media
+      persistentVolumeClaim:
+        claimName: authentik-media
+  volumeMounts:
+    - name: media
+      mountPath: /data
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
