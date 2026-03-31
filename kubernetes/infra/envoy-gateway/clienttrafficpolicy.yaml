@@ -1,0 +1,14 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: homelab
+  namespace: envoy-gateway-system
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: homelab
+  clientIPDetection:
+    xForwardedFor:
+      # Cloudflared is the single trusted hop directly in front of Envoy.
+      numTrustedHops: 1
