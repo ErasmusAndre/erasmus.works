@@ -9,6 +9,6 @@ spec:
       kind: Gateway
       name: homelab
   clientIPDetection:
-    xForwardedFor:
-      # Cloudflared is the single trusted hop directly in front of Envoy.
-      numTrustedHops: 1
+    customHeader:
+      # Cloudflare forwards the real client IP in CF-Connecting-IP for HTTP traffic.
+      name: CF-Connecting-IP
