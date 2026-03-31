@@ -17,13 +17,6 @@ server:
             IMMICH_TRUSTED_PROXIES: 10.244.0.0/16
           envFrom:
             - secret: immich-app-secrets
-          resources:
-            requests:
-              cpu: 250m
-              memory: 1Gi
-            limits:
-              cpu: "2"
-              memory: 4Gi
 
 machine-learning:
   persistence:
@@ -43,7 +36,7 @@ machine-learning:
               cpu: 500m
               memory: 2Gi
             limits:
-              cpu: "4"
+              cpu: "6"
               memory: 6Gi
 
 valkey:
@@ -58,11 +51,4 @@ valkey:
   controllers:
     main:
       containers:
-        main:
-          resources:
-            requests:
-              cpu: 25m
-              memory: 64Mi
-            limits:
-              cpu: 250m
-              memory: 256Mi
+        main: {}
