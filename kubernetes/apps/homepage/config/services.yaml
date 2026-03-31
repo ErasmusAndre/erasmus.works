@@ -37,6 +37,10 @@
         icon: argo-cd.png
         href: https://argocd.erasmus.works
         description: GitOps dashboard
+    - Authentik:
+        icon: https://goauthentik.io/img/icon.png
+        href: https://authentik.erasmus.works
+        description: Identity provider and SSO
     - Garage:
         icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/minio.png
         href: https://garage.erasmus.works
