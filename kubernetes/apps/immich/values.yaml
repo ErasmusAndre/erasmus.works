@@ -1,0 +1,68 @@
+immich:
+  metrics:
+    enabled: true
+  persistence:
+    library:
+      existingClaim: immich-media
+
+server:
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            tag: v2.6.3
+          env:
+            TZ: Europe/Amsterdam
+            IMMICH_TRUSTED_PROXIES: 10.244.0.0/16
+          envFrom:
+            - secret: immich-app-secrets
+          resources:
+            requests:
+              cpu: 250m
+              memory: 1Gi
+            limits:
+              cpu: "2"
+              memory: 4Gi
+
+machine-learning:
+  persistence:
+    cache:
+      enabled: true
+      existingClaim: immich-ml-cache
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            tag: v2.6.3
+          env:
+            TZ: Europe/Amsterdam
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: "4"
+              memory: 6Gi
+
+valkey:
+  enabled: true
+  persistence:
+    data:
+      enabled: true
+      type: persistentVolumeClaim
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      storageClass: longhorn
+  controllers:
+    main:
+      containers:
+        main:
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi

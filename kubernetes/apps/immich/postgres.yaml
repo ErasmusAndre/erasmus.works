@@ -1,0 +1,56 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: immich-postgres
+  namespace: apps
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:14.22-1.1.1
+  instances: 1
+  monitoring:
+    enablePodMonitor: true
+  postgresql:
+    shared_preload_libraries:
+      - vchord.so
+  storage:
+    size: 20Gi
+    storageClass: longhorn
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://cnpg-backups/immich
+      endpointURL: http://garage.garage.svc.cluster.local:3900
+      serverName: immich-postgres
+      s3Credentials:
+        accessKeyId:
+          name: immich-postgres-backup-s3
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: immich-postgres-backup-s3
+          key: ACCESS_SECRET_KEY
+      wal:
+        compression: gzip
+    retentionPolicy: "30d"
+  bootstrap:
+    initdb:
+      database: immich
+      owner: immich
+      secret:
+        name: immich-postgres-auth
+      postInitApplicationSQL:
+        - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
+        - CREATE EXTENSION IF NOT EXISTS earthdistance CASCADE;
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: immich-postgres-backup
+  namespace: apps
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  schedule: "0 30 3 * * *" # every day at 3:30am
+  immediate: true
+  backupOwnerReference: cluster
+  cluster:
+    name: immich-postgres

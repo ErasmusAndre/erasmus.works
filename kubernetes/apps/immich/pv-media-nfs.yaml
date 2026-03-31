@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: immich-media-nfs
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  # TODO: Replace this bookkeeping value with a justified size if you want it to
+  # reflect the actual dataset. For NFS it does not enforce a quota by itself.
+  capacity:
+    storage: 5Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  mountOptions:
+    - nfsvers=4.1
+    - hard
+    - noatime
+  nfs:
+    server: 192.168.20.40
+    path: /mnt/tank/immich-lxc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-media
+  namespace: apps
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  accessModes:
+    - ReadWriteMany
+  # TODO: Keep this aligned with the PV bookkeeping value above if you change it.
+  resources:
+    requests:
+      storage: 5Ti
+  storageClassName: ""
+  volumeName: immich-media-nfs
