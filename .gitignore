@@ -11,6 +11,7 @@ talos/node-*/secrets.yaml
 
 # IDE / editor
 .idea/
+.codex
 *.swp
 *.swo
 *~
