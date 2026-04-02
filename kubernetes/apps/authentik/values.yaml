@@ -40,6 +40,9 @@ worker:
     - name: media
       persistentVolumeClaim:
         claimName: authentik-media
+    - name: blueprint-argocd
+      configMap:
+        name: authentik-blueprint-argocd
     - name: blueprint-immich
       configMap:
         name: authentik-blueprint-immich
@@ -49,6 +52,9 @@ worker:
   volumeMounts:
     - name: media
       mountPath: /data
+    - name: blueprint-argocd
+      mountPath: /blueprints/argocd.yaml
+      subPath: argocd.yaml
     - name: blueprint-immich
       mountPath: /blueprints/immich.yaml
       subPath: immich.yaml

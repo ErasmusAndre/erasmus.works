@@ -63,6 +63,7 @@ When making changes:
 - Prefer simple manifests and Kustomize where possible
 - When a separate YAML file can be used instead of inline manifest content in a ConfigMap, prefer the separate file and Kustomize `configMapGenerator`
 - When creating or editing a `kustomization.yaml`, first check `docs/kustomization-grouping.md` and follow that convention
+- When adding a new app to Authentik, first check `docs/authentik-new-app.md` and follow that pattern
 - Helm is already used through Argo CD Applications where explicitly added
 - Prefer using upstream Helm charts for supported infra components over maintaining equivalent custom manifests when that keeps the setup simpler
 - For Helm-based Argo CD Applications, prefer a separate `values.yaml` file over large inline `helm.values` blocks when custom values are needed
@@ -73,6 +74,7 @@ When making changes:
 
 - Root `README.md` should stay short and act as a project overview
 - Command-heavy instructions belong in docs, not in the root README
+- Keep documents succinct and practical
 - Add short practical notes rather than large architecture essays
 - Avoid creating new docs unless there is a real need
 
