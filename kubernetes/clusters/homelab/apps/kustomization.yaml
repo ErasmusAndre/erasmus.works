@@ -1,9 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - authentik.yaml
-  - docmost.yaml
   - homelab-infra.yaml
+  - authentik.yaml
   - homepage.yaml
+  - docmost.yaml
   - immich.yaml
   - nextcloud.yaml

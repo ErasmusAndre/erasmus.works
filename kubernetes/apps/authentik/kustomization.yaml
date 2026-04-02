@@ -5,15 +5,24 @@ generatorOptions:
     argocd.argoproj.io/sync-wave: "-1"
   disableNameSuffixHash: true
 configMapGenerator:
+  - name: authentik-blueprint-argocd
+    namespace: apps
+    files:
+      - blueprints/argocd.yaml
   - name: authentik-blueprint-nextcloud
     namespace: apps
     files:
       - blueprints/nextcloud.yaml
 resources:
-  - backendtrafficpolicy.yaml
-  - blueprint-immich-configmap.yaml
+  # Core
   - externalsecrets.yaml
-  - networkpolicy.yaml
-  - pvc-media.yaml
   - postgres.yaml
+  - blueprint-immich-configmap.yaml
+
+  # Storage
+  - pvc-media.yaml
+
+  # Networking
+  - networkpolicy.yaml
+  - backendtrafficpolicy.yaml
   - httproute.yaml

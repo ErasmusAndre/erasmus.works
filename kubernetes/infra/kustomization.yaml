@@ -4,8 +4,8 @@ resources:
   - namespace-apps.yaml
   - metallb
   - envoy-gateway
-  - external-secrets
   - external-dns
+  - external-secrets
   - cloudnative-pg
   - garage
   - garage-ui
@@ -13,8 +13,8 @@ resources:
   - volume-snapshots
   - volsync
   - kube-prometheus-stack
-  - status
   - victorialogs
   - fluent-bit
   - cloudflared
   - argocd
+  - status

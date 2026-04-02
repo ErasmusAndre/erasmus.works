@@ -10,7 +10,10 @@ generatorOptions:
     argocd.argoproj.io/sync-wave: "1"
   disableNameSuffixHash: true
 resources:
+  # Core
   - namespace.yaml
   - externalsecret.yaml
-  - metrics-servicemonitor.yaml
   - application.yaml
+
+  # Metrics
+  - metrics-servicemonitor.yaml

@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  url: https://argocd.erasmus.works
+  dex.config: |
+    connectors:
+      - config:
+          issuer: https://authentik.erasmus.works/application/o/argocd/
+          clientID: argocd-erasmus-works
+          clientSecret: $dex.authentik.clientSecret
+          insecureEnableGroups: true
+          scopes:
+            - openid
+            - profile
+            - email
+            - groups
+        id: authentik
+        name: authentik
+        type: oidc

@@ -61,6 +61,8 @@ When making changes:
 - Infra components should live under `kubernetes/infra/`
 - Keep manifests plain and readable
 - Prefer simple manifests and Kustomize where possible
+- When a separate YAML file can be used instead of inline manifest content in a ConfigMap, prefer the separate file and Kustomize `configMapGenerator`
+- When creating or editing a `kustomization.yaml`, first check `docs/kustomization-grouping.md` and follow that convention
 - Helm is already used through Argo CD Applications where explicitly added
 - Prefer using upstream Helm charts for supported infra components over maintaining equivalent custom manifests when that keeps the setup simpler
 - For Helm-based Argo CD Applications, prefer a separate `values.yaml` file over large inline `helm.values` blocks when custom values are needed

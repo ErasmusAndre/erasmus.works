@@ -1,9 +1,19 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  # Core
   - project-infra.yaml
   - project-apps.yaml
   - server-cmd-params.yaml
   - github-webhook-secret.yaml
+
+  # Networking
   - httproute.yaml
+
+  # Metrics
   - metrics-servicemonitor.yaml
+
+  # SSO
+  - argocd-cm.yaml
+  - argocd-rbac-cm.yaml
+  - authentik-secret.yaml

@@ -1,0 +1,51 @@
+version: 1
+metadata:
+  name: Argo CD OAuth application
+  labels:
+    blueprints.goauthentik.io/instantiate: "true"
+    blueprints.goauthentik.io/description: "GitOps-managed Argo CD OAuth application, provider, and access groups."
+entries:
+  - model: authentik_core.group
+    id: argocd-admins-group
+    identifiers:
+      name: ArgoCD Admins
+    attrs:
+      name: ArgoCD Admins
+  - model: authentik_core.group
+    id: argocd-viewers-group
+    identifiers:
+      name: ArgoCD Viewers
+    attrs:
+      name: ArgoCD Viewers
+  - model: authentik_providers_oauth2.oauth2provider
+    id: argocd-provider
+    identifiers:
+      name: Argo CD OAuth
+    attrs:
+      name: Argo CD OAuth
+      authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
+      invalidation_flow: !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+      client_type: confidential
+      client_id: argocd-erasmus-works
+      client_secret: !Env ARGOCD_OAUTH2_CLIENT_SECRET
+      redirect_uris:
+        - matching_mode: strict
+          url: https://argocd.erasmus.works/api/dex/callback
+        - matching_mode: strict
+          url: https://argocd.homelab/api/dex/callback
+        - matching_mode: strict
+          url: https://localhost:8085/auth/callback
+      property_mappings:
+        - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-openid]]
+        - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-email]]
+        - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-profile]]
+        - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-groups]]
+      signing_key: !Find [authentik_crypto.certificatekeypair, [name, authentik Self-signed Certificate]]
+  - model: authentik_core.application
+    identifiers:
+      slug: argocd
+    attrs:
+      name: Argo CD
+      slug: argocd
+      launch_url: https://argocd.erasmus.works
+      provider: !KeyOf argocd-provider

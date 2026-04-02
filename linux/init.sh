@@ -36,6 +36,10 @@ step "Configuring talos1 alias"
 sed -i "/^alias talos1/d" "$HOME/.bashrc"
 echo "alias talos1='talosctl dashboard -n 192.168.20.33 -e 192.168.20.33 --talosconfig ${REPO_ROOT}/talos/node-01/talosconfig'" >> "$HOME/.bashrc"
 
+step "Configuring gensecret alias"
+sed -i "/^alias gensecret=/d" "$HOME/.bashrc"
+echo "alias gensec='openssl rand -hex 32'" >> "$HOME/.bashrc"
+
 step "Configuring default KUBECONFIG"
 sed -i "/^export KUBECONFIG=/d; \$a export KUBECONFIG=${REPO_ROOT}/talos/kubeconfig" "$HOME/.bashrc"
 
