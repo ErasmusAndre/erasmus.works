@@ -19,7 +19,6 @@ data:
             - openid
             - profile
             - email
-            - groups
         id: authentik
         name: authentik
         type: oidc
