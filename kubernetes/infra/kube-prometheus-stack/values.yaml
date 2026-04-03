@@ -57,6 +57,9 @@ grafana:
     passwordKey: admin-password
   envFromSecret: grafana-oauth-credentials
   grafana.ini:
+    server:
+      domain: grafana.erasmus.works
+      root_url: https://grafana.erasmus.works
     auth.generic_oauth:
       enabled: true
       name: Authentik
