@@ -1,0 +1,19 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: oidc-authentik
+  namespace: longhorn-system
+spec:
+  targetSelectors:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      matchLabels:
+        security.erasmus.works/oidc: authentik-edge
+  oidc:
+    provider:
+      issuer: https://authentik.erasmus.works/application/o/homelab-edge/
+    clientID: envoy-gateway-erasmus-works
+    clientSecret:
+      name: authentik-edge-oidc
+    redirectURL: https://longhorn.erasmus.works/oauth2/callback
+    logoutPath: /oauth2/logout

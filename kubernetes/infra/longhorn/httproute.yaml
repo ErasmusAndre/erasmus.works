@@ -5,6 +5,8 @@ metadata:
   namespace: longhorn-system
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+  labels:
+    security.erasmus.works/oidc: authentik-edge
 spec:
   parentRefs:
     - name: homelab

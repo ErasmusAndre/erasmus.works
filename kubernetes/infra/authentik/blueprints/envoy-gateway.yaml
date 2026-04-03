@@ -1,0 +1,43 @@
+version: 1
+metadata:
+  name: Envoy Gateway edge OAuth application
+  labels:
+    blueprints.goauthentik.io/instantiate: "true"
+    blueprints.goauthentik.io/description: "GitOps-managed OAuth application for Envoy Gateway OIDC-protected UIs."
+entries:
+  - model: authentik_providers_oauth2.oauth2provider
+    id: envoy-gateway-provider
+    identifiers:
+      name: Envoy Gateway Edge OAuth
+    attrs:
+      name: Envoy Gateway Edge OAuth
+      authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
+      invalidation_flow: !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+      client_type: confidential
+      client_id: envoy-gateway-erasmus-works
+      client_secret: !Env ENVOY_GATEWAY_OAUTH2_CLIENT_SECRET
+      redirect_uris:
+        - matching_mode: strict
+          url: https://longhorn.erasmus.works/oauth2/callback
+        - matching_mode: strict
+          url: https://garage.erasmus.works/oauth2/callback
+        - matching_mode: strict
+          url: https://prometheus.erasmus.works/oauth2/callback
+        - matching_mode: strict
+          url: https://alertmanager.erasmus.works/oauth2/callback
+        - matching_mode: strict
+          url: https://status.erasmus.works/oauth2/callback
+        - matching_mode: strict
+          url: https://kromgo.erasmus.works/oauth2/callback
+      property_mappings:
+        - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-openid]]
+        - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-email]]
+        - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-profile]]
+      signing_key: !Find [authentik_crypto.certificatekeypair, [name, authentik Self-signed Certificate]]
+  - model: authentik_core.application
+    identifiers:
+      slug: homelab-edge
+    attrs:
+      name: Homelab Edge Access
+      slug: homelab-edge
+      provider: !KeyOf envoy-gateway-provider

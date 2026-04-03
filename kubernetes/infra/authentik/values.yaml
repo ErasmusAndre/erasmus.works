@@ -49,6 +49,11 @@ worker:
                 - key: argocd.yaml
                   path: argocd.yaml
           - configMap:
+              name: authentik-blueprint-envoy-gateway
+              items:
+                - key: envoy-gateway.yaml
+                  path: envoy-gateway.yaml
+          - configMap:
               name: authentik-blueprint-grafana
               items:
                 - key: grafana.yaml

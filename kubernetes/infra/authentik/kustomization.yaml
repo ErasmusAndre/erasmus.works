@@ -9,6 +9,10 @@ configMapGenerator:
     namespace: apps
     files:
       - blueprints/argocd.yaml
+  - name: authentik-blueprint-envoy-gateway
+    namespace: apps
+    files:
+      - blueprints/envoy-gateway.yaml
   - name: authentik-blueprint-grafana
     namespace: apps
     files:

@@ -10,3 +10,7 @@ resources:
 
   # Metrics
   - metrics-servicemonitor.yaml
+
+  # SSO
+  - externalsecret.yaml
+  - securitypolicy.yaml
