@@ -149,5 +149,6 @@ simple and inexpensive while still being enough for the workloads in this repo.
 - [Kubernetes Layout Notes](/home/andre/code/ew/erasmus.works/docs/kubernetes-layout.md)
 - [VolSync Restic Notes](/home/andre/code/ew/erasmus.works/docs/volsync-restic.md)
 - [Garage Notes](/home/andre/code/ew/erasmus.works/docs/garage.md)
+- [OpenTofu Notes](/home/andre/code/ew/erasmus.works/opentofu/init.md)
 - [Linux Init Notes](/home/andre/code/ew/erasmus.works/linux/init.md)
 - [Renovate Config](/home/andre/code/ew/erasmus.works/renovate.json)
