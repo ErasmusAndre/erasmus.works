@@ -23,7 +23,7 @@ Short reference for what is deployed in this repo.
 | `external-secrets` | Helm based |  |  |  |
 | `fluent-bit` | Helm based | Yes |  |  |
 | `garage` | Helm based | Yes |  |  |
-| `garage-ui` | Helm based |  |  |  |
+| `garage-ui` | Helm based |  | Yes | Envoy Gateway OIDC |
 | `kube-prometheus-stack` | Helm based | Yes | Yes |  |
 | `longhorn` | Helm based | Yes | Yes | Envoy Gateway OIDC |
 | `victorialogs` | Helm based |  |  |  |

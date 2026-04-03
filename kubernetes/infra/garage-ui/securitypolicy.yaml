@@ -1,0 +1,21 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: oidc-authentik
+  namespace: garage-ui
+  annotations:
+    security.erasmus.works/issuer: homelab-edge
+spec:
+  targetSelectors:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      matchLabels:
+        security.erasmus.works/oidc: authentik-edge
+  oidc:
+    provider:
+      issuer: https://authentik.erasmus.works/application/o/homelab-edge/
+    clientID: envoy-gateway-erasmus-works
+    clientSecret:
+      name: authentik-edge-oidc
+    redirectURL: https://garage.erasmus.works/oauth2/callback
+    logoutPath: /oauth2/logout
