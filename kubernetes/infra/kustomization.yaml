@@ -16,4 +16,5 @@ resources:
   - victorialogs
   - fluent-bit
   - cloudflared
+  - argocd-recovery
   - status

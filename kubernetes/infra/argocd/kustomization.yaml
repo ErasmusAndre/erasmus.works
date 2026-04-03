@@ -5,7 +5,6 @@ resources:
   - project-infra.yaml
   - project-apps.yaml
   - github-webhook-secret.yaml
-  - service-selectors.yaml
 
   # Networking
   - httproute.yaml
