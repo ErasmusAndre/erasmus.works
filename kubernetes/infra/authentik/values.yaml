@@ -43,6 +43,9 @@ worker:
     - name: blueprint-argocd
       configMap:
         name: authentik-blueprint-argocd
+    - name: blueprint-grafana
+      configMap:
+        name: authentik-blueprint-grafana
     - name: blueprint-immich
       configMap:
         name: authentik-blueprint-immich
@@ -55,6 +58,9 @@ worker:
     - name: blueprint-argocd
       mountPath: /blueprints/argocd.yaml
       subPath: argocd.yaml
+    - name: blueprint-grafana
+      mountPath: /blueprints/grafana.yaml
+      subPath: grafana.yaml
     - name: blueprint-immich
       mountPath: /blueprints/immich.yaml
       subPath: immich.yaml

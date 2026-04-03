@@ -55,6 +55,18 @@ grafana:
     existingSecret: kube-prometheus-stack-grafana
     userKey: admin-user
     passwordKey: admin-password
+  envFromSecret: grafana-oauth-credentials
+  grafana.ini:
+    auth.generic_oauth:
+      enabled: true
+      name: Authentik
+      allow_sign_up: true
+      client_id: grafana-erasmus-works
+      scopes: openid profile email
+      auth_url: https://authentik.erasmus.works/application/o/authorize/
+      token_url: https://authentik.erasmus.works/application/o/token/
+      api_url: https://authentik.erasmus.works/application/o/userinfo/
+      role_attribute_path: "'Viewer'"
   plugins:
     - victoriametrics-logs-datasource@0.26.3
   persistence:

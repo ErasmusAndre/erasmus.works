@@ -24,7 +24,7 @@ Short reference for what is deployed in this repo.
 | `fluent-bit` | Helm based | Yes |  |  |
 | `garage` | Helm based | Yes |  |  |
 | `garage-ui` | Helm based |  |  |  |
-| `kube-prometheus-stack` | Helm based | Yes |  |  |
+| `kube-prometheus-stack` | Helm based | Yes | Yes |  |
 | `longhorn` | Helm based | Yes |  |  |
 | `victorialogs` | Helm based |  |  |  |
 | `volsync` | Helm based | Yes |  |  |

@@ -1,0 +1,36 @@
+version: 1
+metadata:
+  name: Grafana OAuth application
+  labels:
+    blueprints.goauthentik.io/instantiate: "true"
+    blueprints.goauthentik.io/description: "GitOps-managed Grafana OIDC application and provider."
+entries:
+  - model: authentik_providers_oauth2.oauth2provider
+    id: grafana-provider
+    identifiers:
+      name: Grafana OAuth
+    attrs:
+      name: Grafana OAuth
+      authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
+      invalidation_flow: !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+      client_type: confidential
+      client_id: grafana-erasmus-works
+      client_secret: !Env GRAFANA_OAUTH2_CLIENT_SECRET
+      redirect_uris:
+        - matching_mode: strict
+          url: https://grafana.erasmus.works/login/generic_oauth
+        - matching_mode: strict
+          url: https://grafana.homelab/login/generic_oauth
+      property_mappings:
+        - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-openid]]
+        - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-email]]
+        - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-profile]]
+      signing_key: !Find [authentik_crypto.certificatekeypair, [name, authentik Self-signed Certificate]]
+  - model: authentik_core.application
+    identifiers:
+      slug: grafana
+    attrs:
+      name: Grafana
+      slug: grafana
+      launch_url: https://grafana.erasmus.works
+      provider: !KeyOf grafana-provider

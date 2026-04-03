@@ -9,6 +9,10 @@ configMapGenerator:
     namespace: apps
     files:
       - blueprints/argocd.yaml
+  - name: authentik-blueprint-grafana
+    namespace: apps
+    files:
+      - blueprints/grafana.yaml
   - name: authentik-blueprint-nextcloud
     namespace: apps
     files:

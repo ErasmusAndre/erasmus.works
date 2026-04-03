@@ -39,6 +39,7 @@ Current examples:
 Example Bitwarden secret names:
 
 - `argocd-oauth2-client-secret`
+- `grafana-oauth2-client-secret`
 - `immich-oauth2-client-secret`
 - `nextcloud-oauth2-client-secret`
 
