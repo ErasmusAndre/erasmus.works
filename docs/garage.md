@@ -44,7 +44,7 @@ Check the current node status and copy the node ID:
 kubectl --kubeconfig talos/kubeconfig -n garage exec deploy/garage -c app -- /garage status
 ```
 
-Assign the single node a role and capacity:
+Assign the initial Garage node a role and capacity:
 
 ```bash
 kubectl --kubeconfig talos/kubeconfig -n garage exec deploy/garage -c app -- \

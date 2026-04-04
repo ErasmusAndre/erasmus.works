@@ -36,7 +36,7 @@ Backup schedule:
 ```
 
 The backups are grouped by app where needed, while still staggering apps to
-reduce I/O contention on the single-node Longhorn and SSD setup.
+reduce I/O contention on the current 2-node Longhorn and SSD setup.
 
 Restic retention:
 

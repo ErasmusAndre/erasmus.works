@@ -46,8 +46,9 @@ Renovate.
 ## Kubernetes
 
 My Kubernetes cluster is deployed with [Talos Linux](https://www.talos.dev/).
-It is a single-node setup built to stay simple, low-maintenance, and reliable
-for the services I actually run, and will be expanded on with more nodes soon.
+It is a small Talos cluster built to stay simple, low-maintenance, and reliable
+for the services I actually run. It currently has two nodes with a single
+control-plane node.
 
 ### Core Components
 
