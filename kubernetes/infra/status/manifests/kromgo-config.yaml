@@ -12,10 +12,10 @@ metrics:
     query: "kubernetes_build_info{service=\"kubernetes\"}"
     label: git_version
     title: Kubernetes
-  - name: argocd_health
+  - name: argocd_version
     hidden: false
-    query: "count by (health_status) (argocd_app_info{name=\"argocd\"})"
-    label: health_status
+    query: "count by (image) (kube_pod_container_info{namespace=\"argocd\",container=\"argocd-server\"})"
+    label: image
     title: Argo CD
   - name: cluster_node_count
     hidden: false
