@@ -130,19 +130,12 @@ avoids making the cluster responsible for every critical dependency.
 
 This cluster currently runs on two small-form-factor nodes.
 
-| Component | Details |
-| --- | --- |
-| Kubernetes node 1 | MINIS FORUM UN1245 Mini-PC |
-| Node 1 CPU | Intel Core i5-12450H |
-| Node 1 iGPU | Intel UHD Graphics |
-| Node 1 Memory | 16 GB RAM |
-| Node 1 Storage | 512 GB SSD |
-| Kubernetes node 2 | Blackview MP-80 |
-| Node 2 CPU | Intel Processor N97 |
-| Node 2 Memory | 16 GB LPDDR5 RAM |
-| Node 2 Storage | 512 GB M.2 SSD |
-| Router | UniFi Express 7 (UX7) |
-| Switch | 2.5 Gbps switch |
+| Hardware | Model | CPU | GPU | Memory | Storage |
+| --- | --- | --- | --- | --- | --- |
+| K8s Node 1 | MINIS FORUM UN1245 Mini-PC | Intel Core i5-12450H | Intel UHD Graphics | 16 GB DDR4 RAM | 512 GB SSD |
+| K8s Node 2 | Blackview MP-80 | Intel Processor N97 | Intel UHD Graphics | 16 GB DDR5 RAM | 512 GB M.2 SSD |
+| Router | UniFi Express 7 (UX7) | - | - | - | - |
+| Switch | 2.5 Gbps switch | - | - | - | - |
 
 ---
 
