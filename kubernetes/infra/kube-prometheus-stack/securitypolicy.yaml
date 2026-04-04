@@ -1,0 +1,43 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: oidc-authentik-prometheus
+  namespace: monitoring
+  annotations:
+    security.erasmus.works/issuer: homelab-edge
+spec:
+  targetSelectors:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      matchLabels:
+        security.erasmus.works/oidc: authentik-edge-prometheus
+  oidc:
+    provider:
+      issuer: https://authentik.erasmus.works/application/o/homelab-edge/
+    clientID: envoy-gateway-erasmus-works
+    clientSecret:
+      name: authentik-edge-oidc
+    redirectURL: https://prometheus.erasmus.works/oauth2/callback
+    logoutPath: /oauth2/logout
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: oidc-authentik-alertmanager
+  namespace: monitoring
+  annotations:
+    security.erasmus.works/issuer: homelab-edge
+spec:
+  targetSelectors:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      matchLabels:
+        security.erasmus.works/oidc: authentik-edge-alertmanager
+  oidc:
+    provider:
+      issuer: https://authentik.erasmus.works/application/o/homelab-edge/
+    clientID: envoy-gateway-erasmus-works
+    clientSecret:
+      name: authentik-edge-oidc
+    redirectURL: https://alertmanager.erasmus.works/oauth2/callback
+    logoutPath: /oauth2/logout

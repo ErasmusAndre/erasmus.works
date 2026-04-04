@@ -4,30 +4,30 @@ Short reference for what is deployed in this repo.
 
 ## Apps
 
-| App | Type | Database | Volume Backup | Database Backup | Metrics | SSO | Notes |
+| App | Type | Database | Volume Backup | Database Backup | Prometheus | SSO | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `docmost` | Plain manifests | CNPG | VolSync | CNPG |  |  |  |
-| `homepage` | Plain manifests | N/A | N/A | N/A |  |  |  |
+| `docmost` | Plain manifests | CNPG | VolSync | CNPG | Yes | No | CNPG PodMonitor |
+| `homepage` | Plain manifests | N/A | N/A | N/A | N/A | N/A |  |
 | `immich` | Helm based | CNPG | None | CNPG | Yes | Yes | Media stored on NAS |
-| `nextcloud` | Helm based | CNPG | VolSync | CNPG |  | Yes |  |
+| `nextcloud` | Helm based | CNPG | VolSync | CNPG | Yes | Yes | CNPG PodMonitor |
 
 ## Infra
 
-| Component | Type | Metrics | SSO | Notes |
+| Component | Type | Prometheus | SSO | Notes |
 | --- | --- | --- | --- | --- |
 | `argocd` | Helm based | Yes | Yes |  |
-| `authentik` | Helm based | Yes |  | Database Backups (CNPG) |
-| `cloudnative-pg` | Helm based | Yes |  |  |
-| `envoy-gateway` | Helm based | Yes |  |  |
-| `external-dns` | Helm based |  |  |  |
-| `external-secrets` | Helm based |  |  |  |
-| `fluent-bit` | Helm based | Yes |  |  |
-| `garage` | Helm based | Yes |  |  |
-| `garage-ui` | Helm based |  | Yes | Envoy Gateway OIDC |
+| `authentik` | Helm based | Yes | N/A | SSO provider; Database Backups (CNPG) |
+| `cloudnative-pg` | Helm based | Yes | N/A |  |
+| `envoy-gateway` | Helm based | Yes | N/A |  |
+| `external-dns` | Helm based | No | N/A |  |
+| `external-secrets` | Helm based | No | N/A |  |
+| `fluent-bit` | Helm based | Yes | N/A |  |
+| `garage` | Helm based | Yes | N/A |  |
+| `garage-ui` | Helm based | N/A | Yes |  |
 | `kube-prometheus-stack` | Helm based | Yes | Yes |  |
-| `longhorn` | Helm based | Yes | Yes | Envoy Gateway OIDC |
-| `victorialogs` | Helm based |  |  |  |
-| `volsync` | Helm based | Yes |  |  |
-| `volume-snapshots` | Helm based |  |  |  |
-| `metallb` | Plain manifests |  |  |  |
-| `status` | Plain manifests | Yes |  |  |
+| `longhorn` | Helm based | Yes | Yes |  |
+| `victorialogs` | Helm based | N/A | N/A |  |
+| `volsync` | Helm based | Yes | N/A |  |
+| `volume-snapshots` | Helm based | N/A | N/A |  |
+| `metallb` | Plain manifests | No | N/A |  |
+| `status` | Plain manifests | N/A | No | Intentionally not behind SSO |

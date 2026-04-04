@@ -5,6 +5,8 @@ metadata:
   namespace: monitoring
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+  labels:
+    security.erasmus.works/oidc: authentik-edge
 spec:
   parentRefs:
     - name: homelab
@@ -33,6 +35,8 @@ metadata:
   namespace: monitoring
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+  labels:
+    security.erasmus.works/oidc: authentik-edge-prometheus
 spec:
   parentRefs:
     - name: homelab
@@ -61,6 +65,8 @@ metadata:
   namespace: monitoring
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+  labels:
+    security.erasmus.works/oidc: authentik-edge-alertmanager
 spec:
   parentRefs:
     - name: homelab
