@@ -64,9 +64,12 @@ for the services I actually run, and will be expanded on with more nodes soon.
 - [VictoriaLogs](https://docs.victoriametrics.com/victorialogs/): Stores cluster logs.
 - [Fluent Bit](https://fluentbit.io/): Collects and forwards logs into VictoriaLogs.
 
+For a compact overview of what is currently deployed, see the
+[Kubernetes Inventory](docs/kubernetes-inventory.md).
+
 ### GitOps
 
-Argo CD watches the manifests in my [`kubernetes`](/home/andre/code/ew/erasmus.works/kubernetes)
+Argo CD watches the manifests in my [`kubernetes`](kubernetes/)
 folder and makes changes to my cluster based on the state of my Git repository.
 
 Renovate watches my repository for dependency updates, and when they are found
@@ -142,12 +145,12 @@ simple and inexpensive while still being enough for the workloads in this repo.
 
 ## Documentation
 
-- [Talos Bootstrap Runbook](/home/andre/code/ew/erasmus.works/docs/bootstrap/talos.md)
-- [Bitwarden External Secrets Bootstrap](/home/andre/code/ew/erasmus.works/docs/bootstrap/bitwarden-external-secrets.md)
-- [Longhorn Bootstrap Notes](/home/andre/code/ew/erasmus.works/docs/bootstrap/longhorn.md)
-- [Kubernetes Inventory](/home/andre/code/ew/erasmus.works/docs/kubernetes-inventory.md)
-- [Kubernetes Layout Notes](/home/andre/code/ew/erasmus.works/docs/kubernetes-layout.md)
-- [VolSync Restic Notes](/home/andre/code/ew/erasmus.works/docs/volsync-restic.md)
-- [Garage Notes](/home/andre/code/ew/erasmus.works/docs/garage.md)
-- [Linux Init Notes](/home/andre/code/ew/erasmus.works/linux/init.md)
-- [Renovate Config](/home/andre/code/ew/erasmus.works/renovate.json)
+- [Talos Bootstrap Runbook](docs/bootstrap/talos.md)
+- [Bitwarden External Secrets Bootstrap](docs/bootstrap/bitwarden-external-secrets.md)
+- [Longhorn Bootstrap Notes](docs/bootstrap/longhorn.md)
+- [Kubernetes Inventory](docs/kubernetes-inventory.md)
+- [Kubernetes Layout Notes](docs/kubernetes-layout.md)
+- [VolSync Restic Notes](docs/volsync-restic.md)
+- [Garage Notes](docs/garage.md)
+- [Linux Init Notes](linux/init.md)
+- [Renovate Config](renovate.json)
