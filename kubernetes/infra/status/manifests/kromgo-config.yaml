@@ -14,8 +14,8 @@ metrics:
     title: Kubernetes
   - name: argocd_version
     hidden: false
-    query: "count by (image) (kube_pod_container_info{namespace=\"argocd\",container=\"argocd-server\"})"
-    label: image
+    query: "label_replace(count by (image_spec) (kube_pod_container_info{namespace=\"argocd\",container=\"server\",pod=~\"argocd-server-.*\"}), \"version\", \"$1\", \"image_spec\", \".*:(v.*)\")"
+    label: version
     title: Argo CD
   - name: cluster_node_count
     hidden: false
