@@ -75,5 +75,4 @@ talosctl health \
 - New nodes must reuse `talos/node-01/secrets.yaml`.
 - Do not run `talosctl gen secrets` for an existing cluster.
 - Generated per-node directories such as `talos/node-02/` are operational artifacts, not the source of truth.
-- Lower-capacity worker taints are managed in Kubernetes with `kubectl taint`, not in Talos machine config.
 - For Longhorn-specific Talos changes, use `docs/bootstrap/longhorn.md`.

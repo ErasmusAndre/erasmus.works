@@ -1,5 +1,15 @@
 defaultPodOptions:
   automountServiceAccountToken: false
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                  - talos-siw-gdf
 
 immich:
   metrics:

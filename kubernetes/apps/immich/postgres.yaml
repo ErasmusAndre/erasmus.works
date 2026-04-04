@@ -8,6 +8,16 @@ metadata:
 spec:
   imageName: ghcr.io/tensorchord/cloudnative-vectorchord:14.22-1.1.1
   instances: 1
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                  - talos-siw-gdf
   monitoring:
     enablePodMonitor: true
   postgresql:
