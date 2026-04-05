@@ -340,9 +340,10 @@
       "title": "Top CPU Usage / Request",
       "transformations": [
         {
-          "id": "seriesToColumns",
+          "id": "joinByField",
           "options": {
-            "byField": "workload"
+            "byField": "workload",
+            "mode": "outer"
           }
         },
         {
@@ -351,6 +352,8 @@
             "excludeByName": {
               "Time": true,
               "Time 1": true,
+              "namespace 1": true,
+              "pod 1": true,
               "__name__": true,
               "workload": true
             },
@@ -476,9 +479,10 @@
       "title": "Top Memory Usage / Request",
       "transformations": [
         {
-          "id": "seriesToColumns",
+          "id": "joinByField",
           "options": {
-            "byField": "workload"
+            "byField": "workload",
+            "mode": "outer"
           }
         },
         {
@@ -487,6 +491,8 @@
             "excludeByName": {
               "Time": true,
               "Time 1": true,
+              "namespace 1": true,
+              "pod 1": true,
               "__name__": true,
               "workload": true
             },
