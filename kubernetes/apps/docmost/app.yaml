@@ -19,6 +19,7 @@ metadata:
   name: docmost
   namespace: apps
   annotations:
+    argocd.argoproj.io/sync-options: Replace=true
     argocd.argoproj.io/sync-wave: "2"
 spec:
   strategy:
