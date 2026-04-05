@@ -26,7 +26,7 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "Per-pod CPU usage over time against the configured CPU request.",
+      "description": "Per-pod CPU usage divided by the configured CPU request over time. Values above 1 mean the pod is using more CPU than it requested.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -73,7 +73,7 @@
               }
             ]
           },
-          "unit": "cores"
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -108,24 +108,13 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"}[5m]))",
-          "legendFormat": "usage {{namespace}}/{{pod}}",
+          "expr": "(sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"}[5m]))) / clamp_min(sum by (namespace, pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", pod=~\"$pod\", resource=\"cpu\", unit=\"core\"}), 0.001)",
+          "legendFormat": "{{namespace}}/{{pod}}",
           "range": true,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum by (namespace, pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", pod=~\"$pod\", resource=\"cpu\", unit=\"core\"})",
-          "legendFormat": "request {{namespace}}/{{pod}}",
-          "range": true,
-          "refId": "B"
         }
       ],
-      "title": "CPU Usage vs Request",
+      "title": "CPU Usage / Request",
       "type": "timeseries"
     },
     {
@@ -133,7 +122,7 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "Per-pod memory working set over time against the configured memory request.",
+      "description": "Per-pod memory working set divided by the configured memory request over time. Values above 1 mean the pod is using more memory than it requested.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -180,7 +169,7 @@
               }
             ]
           },
-          "unit": "bytes"
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -215,24 +204,13 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (namespace, pod) (container_memory_working_set_bytes{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"})",
-          "legendFormat": "usage {{namespace}}/{{pod}}",
+          "expr": "(sum by (namespace, pod) (container_memory_working_set_bytes{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"})) / clamp_min(sum by (namespace, pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", pod=~\"$pod\", resource=\"memory\", unit=\"byte\"}), 1)",
+          "legendFormat": "{{namespace}}/{{pod}}",
           "range": true,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum by (namespace, pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", pod=~\"$pod\", resource=\"memory\", unit=\"byte\"})",
-          "legendFormat": "request {{namespace}}/{{pod}}",
-          "range": true,
-          "refId": "B"
         }
       ],
-      "title": "Memory Usage vs Request",
+      "title": "Memory Usage / Request",
       "type": "timeseries"
     },
     {
