@@ -265,33 +265,9 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "percentunit"
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Current / Request"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percentunit"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Current Usage"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "cores"
-              }
-            ]
-          },
           {
             "matcher": {
               "id": "byName",
@@ -307,12 +283,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Request"
+              "options": "Avg 24h / Request"
             },
             "properties": [
               {
                 "id": "unit",
-                "value": "cores"
+                "value": "percentunit"
               }
             ]
           }
@@ -340,7 +316,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Current / Request"
+            "displayName": "Value"
           }
         ]
       },
@@ -365,7 +341,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "label_join(sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"}[5m])), \"workload\", \"/\", \"namespace\", \"pod\")",
+          "expr": "label_join(avg_over_time(sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"}[5m]))[24h:5m]), \"workload\", \"/\", \"namespace\", \"pod\")",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -378,25 +354,12 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "label_join(sum by (namespace, pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", pod=~\"$pod\", resource=\"cpu\", unit=\"core\"}), \"workload\", \"/\", \"namespace\", \"pod\")",
+          "expr": "label_join(avg_over_time(sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"}[5m]))[24h:5m]) / clamp_min(sum by (namespace, pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", pod=~\"$pod\", resource=\"cpu\", unit=\"core\"}), 0.001), \"workload\", \"/\", \"namespace\", \"pod\")",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
           "refId": "C"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "label_join(avg_over_time(sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"}[5m]))[24h:5m]), \"workload\", \"/\", \"namespace\", \"pod\")",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "D"
         }
       ],
       "title": "Top CPU Usage / Request",
@@ -414,25 +377,22 @@
               "Time": true,
               "Time 1": true,
               "Time 2": true,
-              "Time 3": true,
               "__name__": true,
               "workload": true
             },
             "indexByName": {
               "namespace": 0,
               "pod": 1,
-              "Value #C": 2,
-              "Value #D": 3,
-              "Value #B": 4,
-              "Value #A": 5
+              "Value #B": 2,
+              "Value #C": 3,
+              "Value #A": 4
             },
             "renameByName": {
-              "Value #A": "Current / Request",
-              "Value #B": "Current Usage",
-              "Value #C": "Request",
-              "Value #D": "Avg 24h Usage",
               "namespace": "Namespace",
-              "pod": "Pod"
+              "pod": "Pod",
+              "Value #A": "Current / Request",
+              "Value #B": "Avg 24h Usage",
+              "Value #C": "Avg 24h / Request"
             }
           }
         }
@@ -469,33 +429,9 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "percentunit"
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Current / Request"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percentunit"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Current Usage"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "bytes"
-              }
-            ]
-          },
           {
             "matcher": {
               "id": "byName",
@@ -511,12 +447,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Request"
+              "options": "Avg 24h / Request"
             },
             "properties": [
               {
                 "id": "unit",
-                "value": "bytes"
+                "value": "percentunit"
               }
             ]
           }
@@ -544,7 +480,7 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Current / Request"
+            "displayName": "Value"
           }
         ]
       },
@@ -569,7 +505,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "label_join(sum by (namespace, pod) (container_memory_working_set_bytes{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"}), \"workload\", \"/\", \"namespace\", \"pod\")",
+          "expr": "label_join(avg_over_time(sum by (namespace, pod) (container_memory_working_set_bytes{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"})[24h:5m]), \"workload\", \"/\", \"namespace\", \"pod\")",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -582,25 +518,12 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "label_join(sum by (namespace, pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", pod=~\"$pod\", resource=\"memory\", unit=\"byte\"}), \"workload\", \"/\", \"namespace\", \"pod\")",
+          "expr": "label_join(avg_over_time(sum by (namespace, pod) (container_memory_working_set_bytes{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"})[24h:5m]) / clamp_min(sum by (namespace, pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", pod=~\"$pod\", resource=\"memory\", unit=\"byte\"}), 1), \"workload\", \"/\", \"namespace\", \"pod\")",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
           "refId": "C"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "label_join(avg_over_time(sum by (namespace, pod) (container_memory_working_set_bytes{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"})[24h:5m]), \"workload\", \"/\", \"namespace\", \"pod\")",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "D"
         }
       ],
       "title": "Top Memory Usage / Request",
@@ -618,25 +541,22 @@
               "Time": true,
               "Time 1": true,
               "Time 2": true,
-              "Time 3": true,
               "__name__": true,
               "workload": true
             },
             "indexByName": {
               "namespace": 0,
               "pod": 1,
-              "Value #C": 2,
-              "Value #D": 3,
-              "Value #B": 4,
-              "Value #A": 5
+              "Value #B": 2,
+              "Value #C": 3,
+              "Value #A": 4
             },
             "renameByName": {
-              "Value #A": "Current / Request",
-              "Value #B": "Current Usage",
-              "Value #C": "Request",
-              "Value #D": "Avg 24h Usage",
               "namespace": "Namespace",
-              "pod": "Pod"
+              "pod": "Pod",
+              "Value #A": "Current / Request",
+              "Value #B": "Avg 24h Usage",
+              "Value #C": "Avg 24h / Request"
             }
           }
         }
