@@ -267,32 +267,7 @@
           },
           "unit": "percentunit"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Avg 24h Usage"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "cores"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Avg 24h / Request"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percentunit"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 28,
@@ -328,75 +303,15 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "label_join((sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"}[5m]))) / clamp_min(sum by (namespace, pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", pod=~\"$pod\", resource=\"cpu\", unit=\"core\"}), 0.001), \"workload\", \"/\", \"namespace\", \"pod\")",
+          "expr": "(sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"}[5m]))) / clamp_min(sum by (namespace, pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", pod=~\"$pod\", resource=\"cpu\", unit=\"core\"}), 0.001)",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "label_join(avg_over_time(sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"}[5m]))[24h:5m]), \"workload\", \"/\", \"namespace\", \"pod\")",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "label_join(avg_over_time(sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"}[5m]))[24h:5m]) / clamp_min(sum by (namespace, pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", pod=~\"$pod\", resource=\"cpu\", unit=\"core\"}), 0.001), \"workload\", \"/\", \"namespace\", \"pod\")",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "C"
         }
       ],
       "title": "Top CPU Usage / Request",
-      "transformations": [
-        {
-          "id": "seriesToColumns",
-          "options": {
-            "byField": "workload"
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "Time 1": true,
-              "Time 2": true,
-              "__name__": true,
-              "workload": true
-            },
-            "indexByName": {
-              "namespace": 0,
-              "pod": 1,
-              "Value #B": 2,
-              "Value #C": 3,
-              "Value #A": 4
-            },
-            "renameByName": {
-              "namespace": "Namespace",
-              "pod": "Pod",
-              "Value #A": "Current / Request",
-              "Value #B": "Avg 24h Usage",
-              "Value #C": "Avg 24h / Request"
-            }
-          }
-        }
-      ],
       "type": "table"
     },
     {
@@ -431,32 +346,7 @@
           },
           "unit": "percentunit"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Avg 24h Usage"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "bytes"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Avg 24h / Request"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percentunit"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 28,
@@ -492,75 +382,15 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "label_join((sum by (namespace, pod) (container_memory_working_set_bytes{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"})) / clamp_min(sum by (namespace, pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", pod=~\"$pod\", resource=\"memory\", unit=\"byte\"}), 1), \"workload\", \"/\", \"namespace\", \"pod\")",
+          "expr": "(sum by (namespace, pod) (container_memory_working_set_bytes{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"})) / clamp_min(sum by (namespace, pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", pod=~\"$pod\", resource=\"memory\", unit=\"byte\"}), 1)",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "label_join(avg_over_time(sum by (namespace, pod) (container_memory_working_set_bytes{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"})[24h:5m]), \"workload\", \"/\", \"namespace\", \"pod\")",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "label_join(avg_over_time(sum by (namespace, pod) (container_memory_working_set_bytes{namespace=~\"$namespace\", pod=~\"$pod\", container!=\"\", container!=\"POD\"})[24h:5m]) / clamp_min(sum by (namespace, pod) (kube_pod_container_resource_requests{namespace=~\"$namespace\", pod=~\"$pod\", resource=\"memory\", unit=\"byte\"}), 1), \"workload\", \"/\", \"namespace\", \"pod\")",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "C"
         }
       ],
       "title": "Top Memory Usage / Request",
-      "transformations": [
-        {
-          "id": "seriesToColumns",
-          "options": {
-            "byField": "workload"
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "Time 1": true,
-              "Time 2": true,
-              "__name__": true,
-              "workload": true
-            },
-            "indexByName": {
-              "namespace": 0,
-              "pod": 1,
-              "Value #B": 2,
-              "Value #C": 3,
-              "Value #A": 4
-            },
-            "renameByName": {
-              "namespace": "Namespace",
-              "pod": "Pod",
-              "Value #A": "Current / Request",
-              "Value #B": "Avg 24h Usage",
-              "Value #C": "Avg 24h / Request"
-            }
-          }
-        }
-      ],
       "type": "table"
     }
   ],
