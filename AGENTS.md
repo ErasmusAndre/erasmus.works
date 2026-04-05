@@ -70,6 +70,7 @@ When making changes:
 - For Helm-based Argo CD Applications, prefer a separate `values.yaml` file over large inline `helm.values` blocks when custom values are needed
 - Argo CD `Application` manifests should include the `resources-finalizer.argocd.argoproj.io` finalizer so app removal prunes managed resources cleanly
 - For CNPG backup S3 secrets, follow the existing app pattern used by `nextcloud` and `docmost`: keep the non-secret `ACCESS_KEY_ID` in Git and store only `ACCESS_SECRET_KEY` in Bitwarden/External Secrets unless explicitly asked to do otherwise
+- For single-replica Deployments that mount a `ReadWriteOnce` PVC, prefer `Recreate` over `RollingUpdate` to avoid multi-attach failures during rollouts
 
 ## Documentation rules
 
