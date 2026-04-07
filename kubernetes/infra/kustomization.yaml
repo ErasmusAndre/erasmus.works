@@ -7,7 +7,6 @@ resources:
   - external-dns
   - external-secrets
   - cloudnative-pg
-  - metrics-server
   - authentik
   - garage
   - garage-ui
