@@ -63,7 +63,7 @@ spec:
           command:
             - sh
             - -c
-            - mkdir -p /app/config/logs && ln -sf /config-src/kubernetes.yaml /app/config/kubernetes.yaml && ln -sf /config-src/settings.yaml /app/config/settings.yaml && ln -sf /config-src/services.yaml /app/config/services.yaml && ln -sf /config-src/widgets.yaml /app/config/widgets.yaml
+            - mkdir -p /app/config/logs && ln -sf /config-src/custom.css /app/config/custom.css && ln -sf /config-src/kubernetes.yaml /app/config/kubernetes.yaml && ln -sf /config-src/settings.yaml /app/config/settings.yaml && ln -sf /config-src/services.yaml /app/config/services.yaml && ln -sf /config-src/widgets.yaml /app/config/widgets.yaml
           volumeMounts:
             - name: config
               mountPath: /app/config

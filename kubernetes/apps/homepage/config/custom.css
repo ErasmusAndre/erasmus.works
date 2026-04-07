@@ -1,0 +1,36 @@
+.information-widget-kubernetes .flex-none > div {
+  display: grid;
+  grid-template-columns: max-content minmax(85px, 1fr);
+  grid-template-areas:
+    "cpu cpu-bar"
+    "mem mem-bar"
+    "label label";
+  column-gap: 0.5rem;
+  row-gap: 0.125rem;
+  min-width: 10rem;
+}
+
+.information-widget-kubernetes .flex-none > div > :nth-child(1) {
+  grid-area: cpu;
+}
+
+.information-widget-kubernetes .flex-none > div > :nth-child(2) {
+  grid-area: cpu-bar;
+  margin-top: 0;
+  align-self: center;
+}
+
+.information-widget-kubernetes .flex-none > div > :nth-child(3) {
+  grid-area: mem;
+}
+
+.information-widget-kubernetes .flex-none > div > :nth-child(4) {
+  grid-area: mem-bar;
+  margin-top: 0;
+  align-self: center;
+}
+
+.information-widget-kubernetes .flex-none > div > :nth-child(5) {
+  grid-area: label;
+  padding-top: 0.25rem;
+}
