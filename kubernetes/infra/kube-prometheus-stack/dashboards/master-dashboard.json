@@ -15,316 +15,19 @@
       }
     ]
   },
-  "description": "Single-pane-of-glass cluster overview: alerts, infrastructure health, backup status, storage, GitOps sync, and resource pressure.",
+  "description": "First-stop homelab overview with active alerts, cluster health, resource pressure, and recent operational issues.",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "links": [
-    {
-      "asDropdown": false,
-      "icon": "cloud",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [
-        "backup"
-      ],
-      "targetBlank": false,
-      "title": "Backup Health",
-      "type": "dashboards",
-      "url": ""
-    },
-    {
-      "asDropdown": false,
-      "icon": "database",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [
-        "database"
-      ],
-      "targetBlank": false,
-      "title": "CNPG Database",
-      "type": "dashboards",
-      "url": ""
-    },
-    {
-      "asDropdown": false,
-      "icon": "bolt",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [
-        "gitops"
-      ],
-      "targetBlank": false,
-      "title": "Argo CD",
-      "type": "dashboards",
-      "url": ""
-    },
-    {
-      "asDropdown": false,
-      "icon": "save",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [
-        "storage"
-      ],
-      "targetBlank": false,
-      "title": "Longhorn",
-      "type": "dashboards",
-      "url": ""
-    }
-  ],
+  "links": [],
   "panels": [
     {
-      "collapsed": false,
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 100,
-      "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "refId": "A"
-        }
-      ],
-      "title": "Health Summary",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "VolSync sources that missed their scheduled backup window.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "orange",
-                "value": 1
-              },
-              {
-                "color": "red",
-                "value": 3
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 0,
-        "y": 1
-      },
-      "id": 200,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "count(volsync_missed_intervals_total{role=\"source\"} != 0) or on() vector(0)",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "VolSync Missed",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "VolSync sources never successfully backed up.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 3,
-        "y": 1
-      },
-      "id": 201,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "count(volsync_source_synced{last_synced_at=\"0\"}) or on() vector(0)",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "VolSync Never",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "Oldest base backup age for any CNPG cluster.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "max": 259200,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "orange",
-                "value": 86400
-              },
-              {
-                "color": "red",
-                "value": 172800
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 6,
-        "y": 1
-      },
-      "id": 202,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "max(time() - max by (cluster) (pg_basebackup_last_successful_time)) or on() vector(0)",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "CNPG Backup Age",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "CNPG instances not in healthy state.",
+      "description": "Current number of firing alerts from Prometheus/Alertmanager.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -354,11 +57,11 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 3,
-        "x": 9,
-        "y": 1
+        "w": 4,
+        "x": 0,
+        "y": 12
       },
-      "id": 203,
+      "id": 1,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -373,7 +76,7 @@
         },
         "textMode": "value"
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -381,226 +84,14 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "count(pg_up != 1) or on() vector(0)",
+          "expr": "count(ALERTS{alertstate=\"firing\"}) or on() vector(0)",
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
           "refId": "A"
         }
       ],
-      "title": "CNPG Down",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "Longhorn volumes in degraded state.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "orange",
-                "value": 1
-              },
-              {
-                "color": "red",
-                "value": 2
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 12,
-        "y": 1
-      },
-      "id": 204,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(longhorn_volume_state{state=\"degraded\"}) or on() vector(0)",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Longhorn Degraded",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "Longhorn volumes in faulty state.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 15,
-        "y": 1
-      },
-      "id": 205,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(longhorn_volume_state{state=\"faulted\"}) or on() vector(0)",
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Longhorn Faulty",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "Argo CD applications not in sync state.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "orange",
-                "value": 1
-              },
-              {
-                "color": "red",
-                "value": 3
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 18,
-        "y": 1
-      },
-      "id": 206,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(argocd_app_sync_total{sync_status!=\"Synced\"}) by (sync_status) or on() vector(0)",
-          "instant": true,
-          "legendFormat": "{{sync_status}}",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Apps Out-of-Sync",
+      "title": "Firing Alerts",
       "type": "stat"
     },
     {
@@ -639,8 +130,8 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 21,
-        "y": 1
+        "x": 4,
+        "y": 12
       },
       "id": 2,
       "options": {
@@ -707,8 +198,8 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 4,
-        "y": 6
+        "x": 8,
+        "y": 12
       },
       "id": 3,
       "options": {
@@ -779,8 +270,8 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 8,
-        "y": 6
+        "x": 12,
+        "y": 12
       },
       "id": 4,
       "options": {
@@ -851,8 +342,8 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 12,
-        "y": 6
+        "x": 16,
+        "y": 12
       },
       "id": 5,
       "options": {
@@ -915,8 +406,8 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 16,
-        "y": 6
+        "x": 20,
+        "y": 12
       },
       "id": 6,
       "options": {
@@ -1006,7 +497,7 @@
         "h": 2,
         "w": 24,
         "x": 0,
-        "y": 5
+        "y": 0
       },
       "id": 7,
       "options": {
@@ -1084,7 +575,7 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 10
+        "y": 16
       },
       "id": 8,
       "options": {
@@ -1159,7 +650,7 @@
         "h": 8,
         "w": 6,
         "x": 6,
-        "y": 10
+        "y": 16
       },
       "id": 9,
       "options": {
@@ -1234,7 +725,7 @@
         "h": 8,
         "w": 6,
         "x": 12,
-        "y": 10
+        "y": 16
       },
       "id": 10,
       "options": {
@@ -1309,7 +800,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 10
+        "y": 16
       },
       "id": 11,
       "options": {
@@ -1380,7 +871,7 @@
         "h": 14,
         "w": 8,
         "x": 0,
-        "y": 18
+        "y": 24
       },
       "id": 12,
       "options": {
@@ -1477,7 +968,7 @@
         "h": 14,
         "w": 8,
         "x": 8,
-        "y": 18
+        "y": 24
       },
       "id": 13,
       "options": {
@@ -1583,7 +1074,7 @@
         "h": 14,
         "w": 8,
         "x": 16,
-        "y": 18
+        "y": 24
       },
       "id": 14,
       "options": {
