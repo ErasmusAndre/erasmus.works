@@ -512,7 +512,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value"
+        "textMode": "name"
       },
       "pluginVersion": "10.3.3",
       "repeat": "firing_alert",
@@ -524,15 +524,15 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "max((ALERTS{alertstate=\"firing\", alertname=\"$firing_alert\", severity=~\"critical|page\"} * 2) or (ALERTS{alertstate=\"firing\", alertname=\"$firing_alert\", severity=~\"warning|warn\"} * 1) or (ALERTS{alertstate=\"firing\", alertname=\"$firing_alert\", severity!~\"critical|page|warning|warn\"} * 1.5)) or on() vector(0)",
+          "expr": "topk(1, (ALERTS{alertstate=\"firing\", alertname=\"$firing_alert\", severity=~\"critical|page\"} * 2) or (ALERTS{alertstate=\"firing\", alertname=\"$firing_alert\", severity=~\"warning|warn\"} * 1) or (ALERTS{alertstate=\"firing\", alertname=\"$firing_alert\", severity!~\"critical|page|warning|warn\"} * 1.5))",
           "format": "time_series",
           "instant": true,
-          "legendFormat": "__auto",
+          "legendFormat": "{{alertname}} {{reason}}",
           "range": false,
           "refId": "A"
         }
       ],
-      "title": "${firing_alert}",
+      "title": "",
       "type": "stat"
     },
     {
