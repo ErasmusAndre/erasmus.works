@@ -6,9 +6,7 @@ configMapGenerator:
   - name: homepage-config
     namespace: apps
     files:
-      - config/kubernetes.yaml
       - config/settings.yaml
       - config/services.yaml
-      - config/widgets.yaml
 resources:
   - resources.yaml
