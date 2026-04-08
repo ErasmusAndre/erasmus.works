@@ -51,6 +51,8 @@ kube-state-metrics:
                         - latestMoverStatus
                         - result
 grafana:
+  deploymentStrategy:
+    type: Recreate
   admin:
     existingSecret: kube-prometheus-stack-grafana
     userKey: admin-user
