@@ -4,6 +4,7 @@ resources:
   - namespace-apps.yaml
   - namespace-app-docmost.yaml
   - namespace-app-homepage.yaml
+  - namespace-app-immich.yaml
   - namespace-app-nextcloud.yaml
   - metallb
   - envoy-gateway
