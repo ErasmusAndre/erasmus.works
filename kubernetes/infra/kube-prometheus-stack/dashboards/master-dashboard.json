@@ -602,12 +602,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Hostname"
+              "options": "Linux version"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 220
+                "value": 268
               }
             ]
           },
@@ -626,24 +626,23 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "CPU Usage"
+              "options": "node"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 110
+                "value": 239
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Memory Usage"
+              "options": "Arch"
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 125
+                "id": "custom.width"
               }
             ]
           }
@@ -780,7 +779,11 @@
               "Time 3": true,
               "Time 4": true,
               "Time 5": true,
+              "Pod 1": true,
+              "Pod 2": true,
               "Value #A": true,
+              "Value #D": true,
+              "Value #E": true,
               "Value #C": true,
               "__name__": true,
               "app": true,
@@ -804,9 +807,7 @@
             },
             "indexByName": {
               "CPU": 1,
-              "CPU Usage": 3,
               "Memory (GB)": 2,
-              "Memory Usage": 4,
               "Time 1": 1,
               "Time 2": 19,
               "Time 3": 21,
@@ -845,10 +846,10 @@
               "Value #A": "",
               "Value #B": "CPU",
               "Value #C": "",
-              "Value #D": "CPU Usage",
-              "Value #E": "Memory Usage",
               "instance": "",
+              "machine": "Arch",
               "nodename": "Hostname",
+              "release": "Linux version",
               "version": ""
             }
           }
