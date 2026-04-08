@@ -33,7 +33,7 @@ spec:
     barmanObjectStore:
       destinationPath: s3://cnpg-immich
       endpointURL: http://garage.garage.svc.cluster.local:3900
-      serverName: immich-postgres
+      serverName: app-immich-postgres
       s3Credentials:
         accessKeyId:
           name: immich-postgres-backup-s3
