@@ -2,7 +2,6 @@ apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: nextcloud-html-restic-config
-  namespace: apps
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -31,7 +30,6 @@ apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
   name: nextcloud-html
-  namespace: apps
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:

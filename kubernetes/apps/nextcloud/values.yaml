@@ -27,7 +27,7 @@ nextcloud:
       command:
         - sh
         - -c
-        - until nc -z nextcloud-postgres-rw.apps.svc.cluster.local 5432; do sleep 2; done
+        - until nc -z nextcloud-postgres-rw.app-nextcloud.svc.cluster.local 5432; do sleep 2; done
   defaultConfigs:
     reverse-proxy.config.php: true
     redis.config.php: true

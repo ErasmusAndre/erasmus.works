@@ -13,13 +13,13 @@ spec:
     - group: ""
       kind: PersistentVolumeClaim
       name: nextcloud-html
-      namespace: apps
+      namespace: app-nextcloud
       jsonPointers:
         - /spec/volumeName
     - group: postgresql.cnpg.io
       kind: Cluster
       name: nextcloud-postgres
-      namespace: apps
+      namespace: app-nextcloud
       jsonPointers:
         - /spec/bootstrap
   sources:
@@ -38,7 +38,7 @@ spec:
       path: kubernetes/apps/nextcloud
   destination:
     server: https://kubernetes.default.svc
-    namespace: apps
+    namespace: app-nextcloud
   syncPolicy:
     automated:
       prune: true
