@@ -25,7 +25,7 @@ spec:
       path: kubernetes/apps/immich
   destination:
     server: https://kubernetes.default.svc
-    namespace: apps
+    namespace: app-immich
   syncPolicy:
     automated:
       prune: true
