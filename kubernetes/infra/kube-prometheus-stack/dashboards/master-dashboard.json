@@ -646,54 +646,6 @@
                 "value": 125
               }
             ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "CPU Usage"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percent"
-              },
-              {
-                "id": "decimals",
-                "value": 1
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "applyToRow": false,
-                  "mode": "gradient",
-                  "type": "color-background"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Memory Usage"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percent"
-              },
-              {
-                "id": "decimals",
-                "value": 1
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "applyToRow": false,
-                  "mode": "gradient",
-                  "type": "color-background"
-                }
-              }
-            ]
           }
         ]
       },
@@ -828,11 +780,6 @@
               "Time 3": true,
               "Time 4": true,
               "Time 5": true,
-              "Pod 1": true,
-              "Pod 2": true,
-              "pod": true,
-              "pod 1": true,
-              "pod 2": true,
               "Value #A": true,
               "Value #C": true,
               "__name__": true,
@@ -854,13 +801,6 @@
               "service": true,
               "sysname": true,
               "version": true
-            },
-            "includeByName": {
-              "CPU": true,
-              "CPU Usage": true,
-              "Hostname": true,
-              "Memory (GB)": true,
-              "Memory Usage": true
             },
             "indexByName": {
               "CPU": 1,
