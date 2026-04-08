@@ -9,6 +9,19 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: apps
+  ignoreDifferences:
+    - group: ""
+      kind: PersistentVolumeClaim
+      name: nextcloud-html
+      namespace: apps
+      jsonPointers:
+        - /spec/volumeName
+    - group: postgresql.cnpg.io
+      kind: Cluster
+      name: nextcloud-postgres
+      namespace: apps
+      jsonPointers:
+        - /spec/bootstrap
   sources:
     - repoURL: https://nextcloud.github.io/helm/
       chart: nextcloud
