@@ -142,10 +142,10 @@ This cluster currently runs on two small-form-factor nodes.
 
 ## Documentation
 
+- [Kubernetes Inventory](docs/kubernetes-inventory.md)
 - [Talos Runbook](docs/bootstrap/talos.md)
 - [Bitwarden External Secrets Bootstrap](docs/bootstrap/bitwarden-external-secrets.md)
 - [Longhorn Notes](docs/bootstrap/longhorn.md)
-- [Kubernetes Inventory](docs/kubernetes-inventory.md)
 - [Kubernetes Layout Notes](docs/kubernetes-layout.md)
 - [VolSync Restic Notes](docs/volsync-restic.md)
 - [Garage Notes](docs/garage.md)
