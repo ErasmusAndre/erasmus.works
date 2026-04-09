@@ -1609,6 +1609,7 @@
             "excludeByName": {
               "Time": true,
               "Time 1": true,
+              "Time 2": false,
               "Value #A": false,
               "Value #B": false,
               "__name__": true,
@@ -1617,10 +1618,13 @@
             },
             "includeByName": {},
             "indexByName": {
+              "Time 1": 3,
+              "Time 2": 5,
               "Value #A": 2,
-              "Value #B": 3,
-              "namespace": 0,
-              "pod": 1
+              "Value #B": 1,
+              "namespace 1": 4,
+              "namespace 2": 6,
+              "pod": 0
             },
             "renameByName": {
               "Time 1": "",
@@ -2428,6 +2432,6 @@
   "timezone": "browser",
   "title": "Master Dashboard",
   "uid": "master-dashboard",
-  "version": 20,
+  "version": 21,
   "weekStart": ""
 }
