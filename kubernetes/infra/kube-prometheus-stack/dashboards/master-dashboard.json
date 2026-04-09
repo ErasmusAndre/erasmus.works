@@ -1511,7 +1511,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Backup Age (h)"
+              "options": "Backup Age"
             },
             "properties": [
               {
@@ -1611,8 +1611,11 @@
               "Time 1": true,
               "Value #A": false,
               "Value #B": false,
-              "__name__": true
+              "__name__": true,
+              "namespace 1": true,
+              "namespace 2": true
             },
+            "includeByName": {},
             "indexByName": {
               "Value #A": 2,
               "Value #B": 3,
@@ -1620,10 +1623,11 @@
               "pod": 1
             },
             "renameByName": {
+              "Time 1": "",
               "Value #A": "Last Backup",
               "Value #B": "Backup Age (h)",
               "namespace": "Namespace",
-              "pod": "Cluster"
+              "pod": "Pod"
             }
           }
         }
@@ -2424,6 +2428,6 @@
   "timezone": "browser",
   "title": "Master Dashboard",
   "uid": "master-dashboard",
-  "version": 18,
+  "version": 20,
   "weekStart": ""
 }
