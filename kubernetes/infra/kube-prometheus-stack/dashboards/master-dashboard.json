@@ -1378,13 +1378,29 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "VolSync backup health in a compact bar view. Full bars are healthy sources; empty bars need attention.",
+      "description": "VolSync backup status in a compact bar view. Fresh vs stale is shown from the current health metrics VolSync exposes.",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "Stale"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "Fresh"
+                }
+              },
+              "type": "value"
+            }
+          ],
           "max": 1,
           "min": 0,
           "thresholds": {
@@ -1404,7 +1420,7 @@
               }
             ]
           },
-          "unit": "percentunit"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -1445,7 +1461,7 @@
           "refId": "A"
         }
       ],
-      "title": "VolSync Backup Freshness",
+      "title": "VolSync Backup Status",
       "type": "bargauge"
     },
     {
@@ -1453,33 +1469,30 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "CloudNativePG base-backup freshness. Fresh backups stay full and green; bars drain toward red as they approach 24 hours old.",
+      "description": "CloudNativePG base-backup age in hours. Anything under 24 hours stays green; 24 hours or more turns red.",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
+          "decimals": 1,
           "mappings": [],
-          "max": 1,
+          "max": 24,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "green",
                 "value": null
               },
               {
-                "color": "orange",
-                "value": 0.5
-              },
-              {
-                "color": "green",
-                "value": 0.99
+                "color": "red",
+                "value": 24
               }
             ]
           },
-          "unit": "percentunit"
+          "unit": "h"
         },
         "overrides": []
       },
@@ -1512,7 +1525,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "clamp_min(1 - ((time() - max by (namespace, pod) (cnpg_collector_last_available_backup_timestamp)) / 86400), 0)",
+          "expr": "(time() - max by (namespace, pod) (cnpg_collector_last_available_backup_timestamp)) / 3600",
           "format": "time_series",
           "instant": true,
           "legendFormat": "{{namespace}} / {{pod}}",
@@ -1520,7 +1533,7 @@
           "refId": "A"
         }
       ],
-      "title": "CNPG Backup Freshness",
+      "title": "CNPG Backup Age",
       "type": "bargauge"
     },
     {
