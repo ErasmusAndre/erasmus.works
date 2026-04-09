@@ -1378,33 +1378,33 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "Latest VolSync replication status across namespaces.",
+      "description": "VolSync backup health in a compact bar view. Full bars are healthy sources; empty bars need attention.",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
           "mappings": [],
+          "max": 1,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.5
+              },
+              {
+                "color": "green",
+                "value": 0.99
               }
             ]
           },
-          "unit": "none"
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -1416,15 +1416,18 @@
       },
       "id": 24,
       "options": {
-        "cellHeight": "sm",
-        "enablePagination": false,
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "Namespace"
-          }
-        ]
+        "displayMode": "basic",
+        "namePlacement": "left",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
       },
       "pluginVersion": "12.4.2",
       "targets": [
@@ -1434,97 +1437,49 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "volsync_replicationsource_info{obj_namespace!=\"\",latest_result!=\"\"}",
-          "format": "table",
+          "expr": "clamp_min(max by (obj_namespace, obj_name) (volsync_replicationsource_info{obj_namespace!=\"\",last_sync_time!=\"\",latest_result=\"Successful\"}) - max by (obj_namespace, obj_name) (volsync_volume_out_of_sync{role=\"source\"}), 0)",
+          "format": "time_series",
           "instant": true,
-          "legendFormat": "__auto",
+          "legendFormat": "{{obj_namespace}} / {{obj_name}}",
           "range": false,
           "refId": "A"
         }
       ],
-      "title": "VolSync Backup Status",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "Value": true,
-              "__name__": true,
-              "container": true,
-              "customresource_group": true,
-              "customresource_kind": true,
-              "customresource_version": true,
-              "endpoint": true,
-              "instance": true,
-              "job": true,
-              "namespace": true,
-              "pod": true,
-              "service": true
-            },
-            "indexByName": {
-              "obj_namespace": 0,
-              "obj_name": 1,
-              "source_pvc": 2,
-              "latest_result": 3,
-              "last_sync_time": 4,
-              "next_sync_time": 5,
-              "last_sync_duration": 6
-            },
-            "renameByName": {
-              "last_sync_duration": "Last Duration",
-              "last_sync_time": "Last Backup",
-              "latest_result": "Latest Result",
-              "obj_name": "ReplicationSource",
-              "obj_namespace": "Namespace",
-              "next_sync_time": "Next Backup",
-              "source_pvc": "PVC"
-            }
-          }
-        }
-      ],
-      "type": "table"
+      "title": "VolSync Backup Freshness",
+      "type": "bargauge"
     },
     {
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "Age of the last available CloudNativePG base backup for each cluster.",
+      "description": "CloudNativePG base-backup freshness. Fresh backups stay full and green; bars drain toward red as they approach 24 hours old.",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
           "mappings": [],
+          "max": 1,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
                 "color": "orange",
-                "value": 129600
+                "value": 0.5
               },
               {
-                "color": "red",
-                "value": 216000
+                "color": "green",
+                "value": 0.99
               }
             ]
           },
-          "unit": "s"
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -1536,15 +1491,18 @@
       },
       "id": 25,
       "options": {
-        "cellHeight": "sm",
-        "enablePagination": false,
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Last Backup Age"
-          }
-        ]
+        "displayMode": "basic",
+        "namePlacement": "left",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
       },
       "pluginVersion": "12.4.2",
       "targets": [
@@ -1554,37 +1512,16 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "time() - max by (namespace, pod) (cnpg_collector_last_available_backup_timestamp)",
-          "format": "table",
+          "expr": "clamp_min(1 - ((time() - max by (namespace, pod) (cnpg_collector_last_available_backup_timestamp)) / 86400), 0)",
+          "format": "time_series",
           "instant": true,
-          "legendFormat": "__auto",
+          "legendFormat": "{{namespace}} / {{pod}}",
           "range": false,
           "refId": "A"
         }
       ],
-      "title": "CNPG Backup Status",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true
-            },
-            "indexByName": {
-              "namespace": 0,
-              "pod": 1,
-              "Value": 2
-            },
-            "renameByName": {
-              "Value": "Last Backup Age",
-              "namespace": "Namespace",
-              "pod": "Cluster"
-            }
-          }
-        }
-      ],
-      "type": "table"
+      "title": "CNPG Backup Freshness",
+      "type": "bargauge"
     },
     {
       "datasource": {
