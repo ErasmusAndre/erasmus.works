@@ -52,7 +52,7 @@ spec:
       barmanObjectStore:
         destinationPath: s3://cnpg-docmost
         endpointURL: http://garage.garage.svc.cluster.local:3900
-        serverName: docmost-postgres-v2
+        serverName: docmost-postgres
         s3Credentials:
           accessKeyId:
             name: docmost-postgres-backup-s3
