@@ -32,11 +32,27 @@ spec:
         compression: gzip
     retentionPolicy: "30d"
   bootstrap:
-    initdb:
+    recovery:
+      source: authentik-postgres
       database: authentik
       owner: authentik
       secret:
         name: authentik-postgres-auth
+  externalClusters:
+    - name: authentik-postgres
+      barmanObjectStore:
+        destinationPath: s3://cnpg-authentik
+        endpointURL: http://garage.garage.svc.cluster.local:3900
+        serverName: authentik-postgres
+        s3Credentials:
+          accessKeyId:
+            name: authentik-postgres-backup-s3
+            key: ACCESS_KEY_ID
+          secretAccessKey:
+            name: authentik-postgres-backup-s3
+            key: ACCESS_SECRET_KEY
+        wal:
+          compression: gzip
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup

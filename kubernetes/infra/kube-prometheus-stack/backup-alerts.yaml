@@ -87,7 +87,7 @@ spec:
             description: The VolSync backup repository PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} is above 85% used. This only covers the PVC-backed VolSync repository, not object storage capacity.
             runbook_url: https://todo.local/runbooks/backup-alerts
         - alert: CNPGBaseBackupTooOld
-          expr: time() - max by (namespace, cluster) (cnpg_collector_last_available_backup_timestamp) > 36 * 60 * 60
+          expr: time() - max by (namespace) (cnpg_collector_last_available_backup_timestamp > 0) > 36 * 60 * 60
           for: 30m
           labels:
             severity: warning
@@ -95,10 +95,10 @@ spec:
             component: cnpg
           annotations:
             summary: CloudNativePG base backup is older than expected
-            description: CloudNativePG cluster {{ $labels.namespace }}/{{ $labels.cluster }} has no base backup newer than 36 hours, which is beyond the expected window for a daily 03:00 backup.
+            description: CloudNativePG in namespace {{ $labels.namespace }} has no successful base backup newer than 36 hours, which is beyond the expected window for a daily 03:00 backup.
             runbook_url: https://todo.local/runbooks/backup-alerts
         - alert: CNPGBaseBackupTooOldCritical
-          expr: time() - max by (namespace, cluster) (cnpg_collector_last_available_backup_timestamp) > 60 * 60 * 60
+          expr: time() - max by (namespace) (cnpg_collector_last_available_backup_timestamp > 0) > 60 * 60 * 60
           for: 30m
           labels:
             severity: critical
@@ -106,10 +106,32 @@ spec:
             component: cnpg
           annotations:
             summary: CloudNativePG base backup is critically old
-            description: CloudNativePG cluster {{ $labels.namespace }}/{{ $labels.cluster }} has no base backup newer than 60 hours.
+            description: CloudNativePG in namespace {{ $labels.namespace }} has no successful base backup newer than 60 hours.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: CNPGWalArchivingFailingBeforeFirstBackup
+          expr: (max by (namespace) (cnpg_pg_stat_archiver_archived_count) == 0) and on (namespace) (sum by (namespace) (increase(cnpg_pg_stat_archiver_failed_count[30m])) > 0)
+          for: 15m
+          labels:
+            severity: warning
+            category: backup
+            component: cnpg
+          annotations:
+            summary: CloudNativePG WAL archiving is failing before the first backup
+            description: CloudNativePG in namespace {{ $labels.namespace }} has not archived any WAL yet and is still recording WAL archive failures. Base backups will not succeed until WAL archiving works.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: CNPGWalArchivingFailingBeforeFirstBackupCritical
+          expr: (max by (namespace) (cnpg_pg_stat_archiver_archived_count) == 0) and on (namespace) (sum by (namespace) (increase(cnpg_pg_stat_archiver_failed_count[2h])) > 0)
+          for: 30m
+          labels:
+            severity: critical
+            category: backup
+            component: cnpg
+          annotations:
+            summary: CloudNativePG still cannot archive its first WAL
+            description: CloudNativePG in namespace {{ $labels.namespace }} has gone at least 2 hours without a first archived WAL while WAL archive failures continue.
             runbook_url: https://todo.local/runbooks/backup-alerts
         - alert: CNPGWalArchiveStale
-          expr: max by (namespace, cluster) ((1 - cnpg_pg_replication_in_recovery) * (time() - timestamp(cnpg_pg_stat_archiver_seconds_since_last_archival) + cnpg_pg_stat_archiver_seconds_since_last_archival)) > 24 * 60 * 60
+          expr: max by (namespace) ((1 - cnpg_pg_replication_in_recovery) * (time() - timestamp(cnpg_pg_stat_archiver_seconds_since_last_archival) + cnpg_pg_stat_archiver_seconds_since_last_archival)) > 24 * 60 * 60
           for: 1h
           labels:
             severity: warning
@@ -117,10 +139,10 @@ spec:
             component: cnpg
           annotations:
             summary: CloudNativePG WAL archiving looks stale
-            description: CloudNativePG cluster {{ $labels.namespace }}/{{ $labels.cluster }} has not archived WAL for more than 24 hours on the primary. This assumes the workload normally generates WAL and may need tuning for very idle databases.
+            description: CloudNativePG in namespace {{ $labels.namespace }} has not archived WAL for more than 24 hours on the primary. This assumes the workload normally generates WAL and may need tuning for very idle databases.
             runbook_url: https://todo.local/runbooks/backup-alerts
         - alert: CNPGWalArchiveStaleCritical
-          expr: max by (namespace, cluster) ((1 - cnpg_pg_replication_in_recovery) * (time() - timestamp(cnpg_pg_stat_archiver_seconds_since_last_archival) + cnpg_pg_stat_archiver_seconds_since_last_archival)) > 48 * 60 * 60
+          expr: max by (namespace) ((1 - cnpg_pg_replication_in_recovery) * (time() - timestamp(cnpg_pg_stat_archiver_seconds_since_last_archival) + cnpg_pg_stat_archiver_seconds_since_last_archival)) > 48 * 60 * 60
           for: 1h
           labels:
             severity: critical
@@ -128,7 +150,7 @@ spec:
             component: cnpg
           annotations:
             summary: CloudNativePG WAL archiving is critically stale
-            description: CloudNativePG cluster {{ $labels.namespace }}/{{ $labels.cluster }} has not archived WAL for more than 48 hours on the primary. This assumes the workload normally generates WAL and may need tuning for very idle databases.
+            description: CloudNativePG in namespace {{ $labels.namespace }} has not archived WAL for more than 48 hours on the primary. This assumes the workload normally generates WAL and may need tuning for very idle databases.
             runbook_url: https://todo.local/runbooks/backup-alerts
         - alert: CNPGBackupReconcileErrors
           expr: sum by (namespace, controller) (increase(controller_runtime_reconcile_total{namespace="cnpg-system", result="error", controller="backup"}[30m])) > 0

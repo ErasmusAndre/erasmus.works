@@ -31,11 +31,27 @@ spec:
         compression: gzip
     retentionPolicy: "30d"
   bootstrap:
-    initdb:
+    recovery:
+      source: docmost-postgres
       database: docmost
       owner: docmost
       secret:
         name: docmost-postgres-auth
+  externalClusters:
+    - name: docmost-postgres
+      barmanObjectStore:
+        destinationPath: s3://cnpg-docmost
+        endpointURL: http://garage.garage.svc.cluster.local:3900
+        serverName: docmost-postgres
+        s3Credentials:
+          accessKeyId:
+            name: docmost-postgres-backup-s3
+            key: ACCESS_KEY_ID
+          secretAccessKey:
+            name: docmost-postgres-backup-s3
+            key: ACCESS_SECRET_KEY
+        wal:
+          compression: gzip
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
