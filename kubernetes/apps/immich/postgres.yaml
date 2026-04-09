@@ -45,17 +45,27 @@ spec:
         compression: gzip
     retentionPolicy: "30d"
   bootstrap:
-    initdb:
+    recovery:
+      source: immich-postgres
       database: immich
       owner: immich
       secret:
         name: immich-postgres-auth
-      postInitApplicationSQL:
-        - ALTER ROLE immich WITH SUPERUSER;
-        - ALTER SCHEMA public OWNER TO immich;
-        - GRANT ALL ON SCHEMA public TO immich;
-        - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
-        - CREATE EXTENSION IF NOT EXISTS earthdistance CASCADE;
+  externalClusters:
+    - name: immich-postgres
+      barmanObjectStore:
+        destinationPath: s3://cnpg-immich
+        endpointURL: http://garage.garage.svc.cluster.local:3900
+        serverName: app-immich-postgres
+        s3Credentials:
+          accessKeyId:
+            name: immich-postgres-backup-s3
+            key: ACCESS_KEY_ID
+          secretAccessKey:
+            name: immich-postgres-backup-s3
+            key: ACCESS_SECRET_KEY
+        wal:
+          compression: gzip
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
