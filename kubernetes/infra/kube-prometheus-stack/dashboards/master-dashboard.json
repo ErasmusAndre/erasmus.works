@@ -929,6 +929,7 @@
           "color": {
             "mode": "continuous-YlRd"
           },
+          "decimals": 3,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -973,7 +974,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sort_desc(sum by (namespace) (rate(container_cpu_usage_seconds_total{container!=\"\", container!=\"POD\"}[5m])))",
+          "expr": "sort_desc(ceil(sum by (namespace) (rate(container_cpu_usage_seconds_total{container!=\"\", container!=\"POD\"}[5m])) * 1000) / 1000)",
           "format": "time_series",
           "instant": true,
           "legendFormat": "{{ namespace }}",
