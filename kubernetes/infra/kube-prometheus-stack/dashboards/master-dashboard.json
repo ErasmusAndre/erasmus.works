@@ -1629,7 +1629,7 @@
             "renameByName": {
               "Time 1": "",
               "Value #A": "Last Backup",
-              "Value #B": "Backup Age (h)",
+              "Value #B": "Backup Age",
               "namespace": "Namespace",
               "pod": "Pod"
             }
