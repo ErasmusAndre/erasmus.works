@@ -2308,7 +2308,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg_over_time((((sum by (namespace, pod_short) (label_replace(rate(container_cpu_usage_seconds_total{namespace!=\"kube-system\", container!=\"\", container!=\"POD\"}[5m]), \"pod_short\", \"$1\", \"pod\", \"^(.*?)(?:-[a-f0-9]{8,}-[a-z0-9]{5}|-[0-9]+)?$\"))) / clamp_min(sum by (namespace, pod_short) (label_replace(kube_pod_container_resource_requests{namespace!=\"kube-system\", resource=\"cpu\", unit=\"core\"}, \"pod_short\", \"$1\", \"pod\", \"^(.*?)(?:-[a-f0-9]{8,}-[a-z0-9]{5}|-[0-9]+)?$\")), 0.001))[15m:])",
+          "expr": "avg_over_time(((sum by (namespace, pod_short) (label_replace(rate(container_cpu_usage_seconds_total{namespace!=\"kube-system\", container!=\"\", container!=\"POD\"}[5m]), \"pod_short\", \"$1\", \"pod\", \"^(.*?)(?:-[a-f0-9]{8,}-[a-z0-9]{5}|-[0-9]+)?$\"))) / clamp_min(sum by (namespace, pod_short) (label_replace(kube_pod_container_resource_requests{namespace!=\"kube-system\", resource=\"cpu\", unit=\"core\"}, \"pod_short\", \"$1\", \"pod\", \"^(.*?)(?:-[a-f0-9]{8,}-[a-z0-9]{5}|-[0-9]+)?$\")), 0.001))[15m:])",
           "legendFormat": "{{namespace}}/{{pod_short}}",
           "range": true,
           "refId": "A"
@@ -2403,7 +2403,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg_over_time((((sum by (namespace, pod_short) (label_replace(container_memory_working_set_bytes{namespace!=\"kube-system\", container!=\"\", container!=\"POD\"}, \"pod_short\", \"$1\", \"pod\", \"^(.*?)(?:-[a-f0-9]{8,}-[a-z0-9]{5}|-[0-9]+)?$\"))) / clamp_min(sum by (namespace, pod_short) (label_replace(kube_pod_container_resource_requests{namespace!=\"kube-system\", resource=\"memory\", unit=\"byte\"}, \"pod_short\", \"$1\", \"pod\", \"^(.*?)(?:-[a-f0-9]{8,}-[a-z0-9]{5}|-[0-9]+)?$\")), 1))[15m:])",
+          "expr": "avg_over_time(((sum by (namespace, pod_short) (label_replace(container_memory_working_set_bytes{namespace!=\"kube-system\", container!=\"\", container!=\"POD\"}, \"pod_short\", \"$1\", \"pod\", \"^(.*?)(?:-[a-f0-9]{8,}-[a-z0-9]{5}|-[0-9]+)?$\"))) / clamp_min(sum by (namespace, pod_short) (label_replace(kube_pod_container_resource_requests{namespace!=\"kube-system\", resource=\"memory\", unit=\"byte\"}, \"pod_short\", \"$1\", \"pod\", \"^(.*?)(?:-[a-f0-9]{8,}-[a-z0-9]{5}|-[0-9]+)?$\")), 1))[15m:])",
           "legendFormat": "{{namespace}}/{{pod_short}}",
           "range": true,
           "refId": "A"
