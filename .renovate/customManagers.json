@@ -12,6 +12,28 @@
         "image:\\s+(?<depName>factory\\.talos\\.dev\\/installer\\/[^:]+):(?<currentValue>[^\\s#]+)"
       ],
       "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "Track Helm chart versions for split chart apps under argocd-apps",
+      "managerFilePatterns": [
+        "/(^|/)kubernetes/clusters/homelab/argocd-apps/.+/chart/application\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "repoURL:\\s+(?<registryUrl>https:\\/\\/[^\\s]+)\\s+chart:\\s+(?<depName>[^\\s]+)\\s+targetRevision:\\s+(?<currentValue>[^\\s]+)"
+      ],
+      "datasourceTemplate": "helm"
+    },
+    {
+      "customType": "regex",
+      "description": "Track app image repository and tag pairs in app Helm values",
+      "managerFilePatterns": [
+        "/(^|/)kubernetes/apps/.+/values\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "image:\\s+repository:\\s+(?<depName>[^\\s#]+)\\s+tag:\\s+(?<currentValue>[^\\s#]+)"
+      ],
+      "datasourceTemplate": "docker"
     }
   ]
 }
