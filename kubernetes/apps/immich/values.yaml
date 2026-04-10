@@ -25,6 +25,7 @@ server:
       containers:
         main:
           image:
+            repository: ghcr.io/immich-app/immich-server
             tag: v2.6.3
           env:
             TZ: Europe/Amsterdam
@@ -48,6 +49,7 @@ machine-learning:
       containers:
         main:
           image:
+            repository: ghcr.io/immich-app/immich-machine-learning
             tag: v2.6.3
           env:
             TZ: Europe/Amsterdam
