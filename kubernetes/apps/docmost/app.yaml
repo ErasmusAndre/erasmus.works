@@ -46,7 +46,7 @@ spec:
             - until nc -z docmost-redis.app-docmost.svc.cluster.local 6379; do sleep 2; done
       containers:
         - name: docmost
-          image: docmost/docmost:0.71.0
+          image: docmost/docmost:0.71.1
           env:
             - name: APP_URL
               value: https://docmost.erasmus.works
