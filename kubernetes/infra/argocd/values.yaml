@@ -1,6 +1,6 @@
 global:
   image:
-    repository: argoproj/argocd
+    repository: quay.io/argoproj/argocd
     tag: v3.3.2
 
 configs:

@@ -10,6 +10,7 @@ spec:
     - https://github.com/ErasmusAndre/erasmus.works.git
     - https://charts.goauthentik.io
     - ghcr.io/immich-app/immich-charts
+    - https://immich-app.github.io/immich-charts
     - https://nextcloud.github.io/helm/
   destinations:
     - namespace: app-docmost
