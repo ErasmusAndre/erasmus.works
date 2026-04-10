@@ -1,5 +1,6 @@
 global:
   image:
+    repository: argoproj/argocd
     tag: v3.3.2
 
 configs:
