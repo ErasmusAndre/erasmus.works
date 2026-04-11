@@ -9,7 +9,7 @@ spec:
   instances: 1
   resources:
     requests:
-      cpu: 1000m
+      cpu: "1"
       memory: 512Mi
   affinity:
     nodeAffinity:

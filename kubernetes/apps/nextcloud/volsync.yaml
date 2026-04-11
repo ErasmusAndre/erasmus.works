@@ -14,6 +14,8 @@ spec:
     creationPolicy: Owner
     deletionPolicy: Retain
     template:
+      engineVersion: v2
+      mergePolicy: Replace
       type: Opaque
       data:
         RESTIC_REPOSITORY: /mnt/repo/nextcloud-html
@@ -25,6 +27,7 @@ spec:
         decodingStrategy: None
         key: volsync-restic-password
         metadataPolicy: None
+        nullBytePolicy: Ignore
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
