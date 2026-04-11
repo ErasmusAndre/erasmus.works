@@ -1,28 +1,31 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nextcloud
+  name: argocd
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: "-1"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: apps
+  project: default
   sources:
-    - repoURL: https://nextcloud.github.io/helm/
-      chart: nextcloud
-      targetRevision: 9.0.5
+    - repoURL: https://argoproj.github.io/argo-helm
+      chart: argo-cd
+      targetRevision: 9.5.0
       helm:
-        releaseName: nextcloud
+        releaseName: argocd
         valueFiles:
-          - $values/kubernetes/apps/nextcloud/values.yaml
+          - $values/kubernetes/infra/argocd/values.yaml
+    - repoURL: https://github.com/ErasmusAndre/erasmus.works.git
+      targetRevision: main
+      path: kubernetes/infra/argocd
     - repoURL: https://github.com/ErasmusAndre/erasmus.works.git
       targetRevision: main
       ref: values
   destination:
     server: https://kubernetes.default.svc
-    namespace: app-nextcloud
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true

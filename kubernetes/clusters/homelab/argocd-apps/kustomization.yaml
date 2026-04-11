@@ -1,12 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - argocd/chart/application.yaml
-  - argocd/config/application.yaml
+  - argocd/application.yaml
   - infra/application.yaml
   - homepage/application.yaml
   - docmost/application.yaml
-  - immich/chart/application.yaml
-  - immich/config/application.yaml
-  - nextcloud/chart/application.yaml
-  - nextcloud/config/application.yaml
+  - immich/application.yaml
+  - nextcloud/application.yaml

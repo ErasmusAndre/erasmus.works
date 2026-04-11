@@ -9,6 +9,13 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: apps
+  ignoreDifferences:
+    - group: postgresql.cnpg.io
+      kind: Cluster
+      name: immich-postgres
+      namespace: app-immich
+      jsonPointers:
+        - /spec/bootstrap
   sources:
     - repoURL: https://immich-app.github.io/immich-charts
       chart: immich
@@ -17,6 +24,9 @@ spec:
         releaseName: immich
         valueFiles:
           - $values/kubernetes/apps/immich/values.yaml
+    - repoURL: https://github.com/ErasmusAndre/erasmus.works.git
+      targetRevision: main
+      path: kubernetes/apps/immich
     - repoURL: https://github.com/ErasmusAndre/erasmus.works.git
       targetRevision: main
       ref: values
@@ -29,4 +39,5 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - RespectIgnoreDifferences=true
       - ServerSideApply=true
