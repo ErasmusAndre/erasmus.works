@@ -9,6 +9,13 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: apps
+  ignoreDifferences:
+    - group: postgresql.cnpg.io
+      kind: Cluster
+      name: immich-postgres
+      namespace: app-immich
+      jsonPointers:
+        - /spec/bootstrap
   source:
     repoURL: https://github.com/ErasmusAndre/erasmus.works.git
     targetRevision: main
@@ -22,4 +29,5 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - RespectIgnoreDifferences=true
       - ServerSideApply=true
