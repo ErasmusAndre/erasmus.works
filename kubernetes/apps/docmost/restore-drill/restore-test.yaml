@@ -17,6 +17,8 @@ spec:
     creationPolicy: Owner
     deletionPolicy: Retain
     template:
+      engineVersion: v2
+      mergePolicy: Replace
       type: Opaque
       data:
         database-url: postgresql://docmost:{{ .password }}@docmost-postgres-restore-rw.app-docmost.svc.cluster.local:5432/docmost?schema=public
@@ -27,6 +29,7 @@ spec:
         decodingStrategy: None
         key: docmost-postgres-password
         metadataPolicy: None
+        nullBytePolicy: Ignore
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
