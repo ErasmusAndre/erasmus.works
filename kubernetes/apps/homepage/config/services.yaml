@@ -59,7 +59,7 @@
     - TrueNAS:
         icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/truenas-scale.png
         href: http://truenas.homelab
-        siteMonitor: http://truenas.homelab
+        siteMonitor: http://192.168.20.40
         description: NAS management
     - Cloudflare Dashboard:
         icon: cloudflare.png
