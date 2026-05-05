@@ -2,75 +2,93 @@
     - Nextcloud:
         icon: nextcloud.png
         href: https://nextcloud.erasmus.works
+        ping: https://nextcloud.erasmus.works
         description: File sync and collaboration
     - Immich:
         icon: immich.png
         href: https://immich.erasmus.works
+        ping: https://immich.erasmus.works
         description: Photo and video library
     - Docmost:
         icon: https://docmost.com/favicon.ico
         href: https://docmost.erasmus.works
+        ping: https://docmost.erasmus.works
         description: Collaborative wiki and docs
     - Home Assistant:
         icon: home-assistant.png
         href: https://ha.erasmus.works
+        ping: https://ha.erasmus.works
         description: Home automation
 - Web:
     - Bitwarden Vault:
         icon: bitwarden.png
         href: https://vault.bitwarden.eu
+        ping: https://vault.bitwarden.eu
         description: Password manager vault
     - Tuta:
         icon: tuta.png
         href: https://app.tuta.com/mail
+        ping: https://app.tuta.com/mail
         description: Secure email
     - PieFed:
         icon: https://piefed.social/static/media/logo_zI2kw_152.png
         href: https://piefed.social
+        ping: https://piefed.social
         description: Federated community platform
 - Projects:
     - erasmus.works:
         icon: https://raw.githubusercontent.com/ErasmusAndre/erasmus.works/main/Erasmus-Works-Logo.png
         href: https://github.com/ErasmusAndre/erasmus.works
+        ping: https://github.com/ErasmusAndre/erasmus.works
         description: Erasmus Works GitHub repository
     - Argo CD:
         icon: argo-cd.png
         href: https://argocd.erasmus.works
+        ping: https://argocd.erasmus.works
         description: GitOps dashboard
     - Authentik:
         icon: https://goauthentik.io/img/icon.png
         href: https://authentik.erasmus.works
+        ping: https://authentik.erasmus.works
         description: Identity provider and SSO
     - Garage:
         icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/minio.png
         href: https://garage.erasmus.works
+        ping: https://garage.erasmus.works
         description: S3 object storage admin UI
     - TrueNAS:
         icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/truenas-scale.png
         href: http://truenas.homelab
+        ping: http://truenas.homelab
         description: NAS management
     - Cloudflare Dashboard:
         icon: cloudflare.png
         href: https://dash.cloudflare.com
+        ping: https://dash.cloudflare.com
         description: DNS and tunnel management
     - UniFi:
         icon: unifi.png
         href: https://unifi.ui.com
+        ping: https://unifi.ui.com
         description: UniFi network management
 - Monitoring:
     - Grafana:
         icon: grafana.png
         href: https://grafana.erasmus.works/d/master-dashboard/master-dashboard
+        ping: https://grafana.erasmus.works/d/master-dashboard/master-dashboard
         description: Metrics dashboards
     - Prometheus:
         icon: prometheus.png
         href: https://prometheus.erasmus.works
+        ping: https://prometheus.erasmus.works
         description: Metrics and monitoring
     - Alertmanager:
         icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
         href: https://alertmanager.erasmus.works
+        ping: https://alertmanager.erasmus.works
         description: Alert routing
     - Longhorn:
         icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/longhorn.png
         href: https://longhorn.erasmus.works
+        ping: https://longhorn.erasmus.works
         description: Kubernetes storage dashboard
