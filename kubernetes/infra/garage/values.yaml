@@ -4,7 +4,7 @@ controllers:
       init-storage:
         image:
           repository: busybox
-          tag: 1.37
+          tag: 1.38
         command:
           - sh
           - -c

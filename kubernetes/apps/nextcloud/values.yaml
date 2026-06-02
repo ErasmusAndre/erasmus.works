@@ -23,7 +23,7 @@ nextcloud:
       value: 1G
   extraInitContainers:
     - name: wait-for-postgres
-      image: busybox:1.37
+      image: busybox:1.38
       command:
         - sh
         - -c

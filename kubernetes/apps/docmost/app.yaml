@@ -33,13 +33,13 @@ spec:
     spec:
       initContainers:
         - name: wait-for-postgres
-          image: busybox:1.37
+          image: busybox:1.38
           command:
             - sh
             - -c
             - until nc -z docmost-postgres-rw.app-docmost.svc.cluster.local 5432; do sleep 2; done
         - name: wait-for-redis
-          image: busybox:1.37
+          image: busybox:1.38
           command:
             - sh
             - -c
