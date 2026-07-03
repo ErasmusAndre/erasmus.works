@@ -2,6 +2,17 @@ prometheus:
   prometheusSpec:
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
+    retention: 15d
+    retentionSize: 18GB
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 20Gi
 kubeControllerManager:
   enabled: false
 kubeScheduler:
@@ -50,6 +61,15 @@ kube-state-metrics:
                         - status
                         - latestMoverStatus
                         - result
+              - name: replicationsource_last_sync_timestamp
+                help: VolSync ReplicationSource last successful sync time as epoch seconds
+                each:
+                  type: Gauge
+                  gauge:
+                    path:
+                      - status
+                    valueFrom:
+                      - lastSyncTime
 grafana:
   deploymentStrategy:
     type: RollingUpdate

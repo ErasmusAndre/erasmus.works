@@ -75,6 +75,28 @@ spec:
             summary: VolSync source still has no completed backup
             description: VolSync source {{ $labels.obj_namespace }}/{{ $labels.obj_name }} still has no recorded successful sync after 60 hours. This uses the kube-state-metrics ReplicationSource status because lastSyncTime is exposed as a label, not a numeric timestamp.
             runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: VolSyncBackupTooOld
+          expr: time() - max by (obj_namespace, obj_name) (volsync_replicationsource_last_sync_timestamp > 0) > 30 * 60 * 60
+          for: 30m
+          labels:
+            severity: warning
+            category: backup
+            component: volsync
+          annotations:
+            summary: VolSync backup is older than expected
+            description: VolSync source {{ $labels.obj_namespace }}/{{ $labels.obj_name }} has no successful sync newer than 30 hours, which is beyond the expected window for a daily schedule. This catches stalls the out-of-sync metrics miss, such as a leftover manual trigger pausing the schedule.
+            runbook_url: https://todo.local/runbooks/backup-alerts
+        - alert: VolSyncBackupTooOldCritical
+          expr: time() - max by (obj_namespace, obj_name) (volsync_replicationsource_last_sync_timestamp > 0) > 54 * 60 * 60
+          for: 30m
+          labels:
+            severity: critical
+            category: backup
+            component: volsync
+          annotations:
+            summary: VolSync backup is critically old
+            description: VolSync source {{ $labels.obj_namespace }}/{{ $labels.obj_name }} has no successful sync newer than 54 hours.
+            runbook_url: https://todo.local/runbooks/backup-alerts
         - alert: VolSyncBackupRepositoryAlmostFull
           expr: max by (namespace, persistentvolumeclaim) (1 - kubelet_volume_stats_available_bytes{namespace=~"app-docmost|app-nextcloud", persistentvolumeclaim="volsync-repository"} / kubelet_volume_stats_capacity_bytes{namespace=~"app-docmost|app-nextcloud", persistentvolumeclaim="volsync-repository"}) > 0.85
           for: 2h
