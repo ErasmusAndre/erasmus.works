@@ -19,22 +19,32 @@
         href: https://ha.erasmus.works
         siteMonitor: https://ha.erasmus.works
         description: Home automation
-- Web:
-    - Bitwarden Vault:
-        icon: bitwarden.png
-        href: https://vault.bitwarden.eu
-        siteMonitor: https://vault.bitwarden.eu
-        description: Password manager vault
-    - Tuta:
-        icon: tuta.png
-        href: https://app.tuta.com/mail
-        siteMonitor: https://app.tuta.com/mail
-        description: Secure email
-    - PieFed:
-        icon: https://piefed.social/static/media/logo_zI2kw_152.png
-        href: https://piefed.social
-        siteMonitor: https://piefed.social
-        description: Federated community platform
+- Media:
+    - Jellyfin:
+        icon: jellyfin.png
+        href: http://jellyfin.homelab
+        siteMonitor: http://jellyfin.homelab
+        description: Media streaming server
+    - Sonarr:
+        icon: sonarr.png
+        href: http://sonarr.homelab
+        siteMonitor: http://sonarr.homelab
+        description: TV series management
+    - Radarr:
+        icon: radarr.png
+        href: http://radarr.homelab
+        siteMonitor: http://radarr.homelab
+        description: Movie management
+    - Prowlarr:
+        icon: prowlarr.png
+        href: http://prowlarr.homelab
+        siteMonitor: http://prowlarr.homelab
+        description: Indexer manager
+    - qBittorrent:
+        icon: qbittorrent.png
+        href: http://qbittorrent.homelab
+        siteMonitor: http://qbittorrent.homelab
+        description: Torrent download client
 - Projects:
     - erasmus.works:
         icon: https://raw.githubusercontent.com/ErasmusAndre/erasmus.works/main/Erasmus-Works-Logo.png
