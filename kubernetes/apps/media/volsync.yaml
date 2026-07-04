@@ -1,0 +1,279 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: qbittorrent-config-restic-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: bitwarden-secrets-manager
+    kind: ClusterSecretStore
+  target:
+    name: qbittorrent-config-restic-config
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      engineVersion: v2
+      mergePolicy: Replace
+      type: Opaque
+      data:
+        RESTIC_REPOSITORY: /mnt/repo/qbittorrent-config
+        RESTIC_PASSWORD: "{{ .restic_password }}"
+  data:
+    - secretKey: restic_password
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        key: volsync-restic-password
+        metadataPolicy: None
+        nullBytePolicy: Ignore
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: qbittorrent-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  sourcePVC: qbittorrent-config
+  trigger:
+    schedule: "30 3 * * *" # Every day at 3:30 AM
+  restic:
+    repository: qbittorrent-config-restic-config
+    copyMethod: Direct
+    pruneIntervalDays: 7
+    cacheCapacity: 2Gi
+    retain:
+      daily: 7
+      weekly: 4
+      monthly: 3
+    moverVolumes:
+      - mountPath: repo
+        volumeSource:
+          persistentVolumeClaim:
+            claimName: volsync-repository
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: prowlarr-config-restic-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: bitwarden-secrets-manager
+    kind: ClusterSecretStore
+  target:
+    name: prowlarr-config-restic-config
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      engineVersion: v2
+      mergePolicy: Replace
+      type: Opaque
+      data:
+        RESTIC_REPOSITORY: /mnt/repo/prowlarr-config
+        RESTIC_PASSWORD: "{{ .restic_password }}"
+  data:
+    - secretKey: restic_password
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        key: volsync-restic-password
+        metadataPolicy: None
+        nullBytePolicy: Ignore
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: prowlarr-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  sourcePVC: prowlarr-config
+  trigger:
+    schedule: "35 3 * * *" # Every day at 3:35 AM
+  restic:
+    repository: prowlarr-config-restic-config
+    copyMethod: Direct
+    pruneIntervalDays: 7
+    cacheCapacity: 2Gi
+    retain:
+      daily: 7
+      weekly: 4
+      monthly: 3
+    moverVolumes:
+      - mountPath: repo
+        volumeSource:
+          persistentVolumeClaim:
+            claimName: volsync-repository
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: sonarr-config-restic-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: bitwarden-secrets-manager
+    kind: ClusterSecretStore
+  target:
+    name: sonarr-config-restic-config
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      engineVersion: v2
+      mergePolicy: Replace
+      type: Opaque
+      data:
+        RESTIC_REPOSITORY: /mnt/repo/sonarr-config
+        RESTIC_PASSWORD: "{{ .restic_password }}"
+  data:
+    - secretKey: restic_password
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        key: volsync-restic-password
+        metadataPolicy: None
+        nullBytePolicy: Ignore
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: sonarr-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  sourcePVC: sonarr-config
+  trigger:
+    schedule: "40 3 * * *" # Every day at 3:40 AM
+  restic:
+    repository: sonarr-config-restic-config
+    copyMethod: Direct
+    pruneIntervalDays: 7
+    cacheCapacity: 2Gi
+    retain:
+      daily: 7
+      weekly: 4
+      monthly: 3
+    moverVolumes:
+      - mountPath: repo
+        volumeSource:
+          persistentVolumeClaim:
+            claimName: volsync-repository
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: radarr-config-restic-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: bitwarden-secrets-manager
+    kind: ClusterSecretStore
+  target:
+    name: radarr-config-restic-config
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      engineVersion: v2
+      mergePolicy: Replace
+      type: Opaque
+      data:
+        RESTIC_REPOSITORY: /mnt/repo/radarr-config
+        RESTIC_PASSWORD: "{{ .restic_password }}"
+  data:
+    - secretKey: restic_password
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        key: volsync-restic-password
+        metadataPolicy: None
+        nullBytePolicy: Ignore
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: radarr-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  sourcePVC: radarr-config
+  trigger:
+    schedule: "45 3 * * *" # Every day at 3:45 AM
+  restic:
+    repository: radarr-config-restic-config
+    copyMethod: Direct
+    pruneIntervalDays: 7
+    cacheCapacity: 2Gi
+    retain:
+      daily: 7
+      weekly: 4
+      monthly: 3
+    moverVolumes:
+      - mountPath: repo
+        volumeSource:
+          persistentVolumeClaim:
+            claimName: volsync-repository
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: jellyfin-config-restic-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: bitwarden-secrets-manager
+    kind: ClusterSecretStore
+  target:
+    name: jellyfin-config-restic-config
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      engineVersion: v2
+      mergePolicy: Replace
+      type: Opaque
+      data:
+        RESTIC_REPOSITORY: /mnt/repo/jellyfin-config
+        RESTIC_PASSWORD: "{{ .restic_password }}"
+  data:
+    - secretKey: restic_password
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        key: volsync-restic-password
+        metadataPolicy: None
+        nullBytePolicy: Ignore
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: jellyfin-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  sourcePVC: jellyfin-config
+  trigger:
+    schedule: "50 3 * * *" # Every day at 3:50 AM
+  restic:
+    repository: jellyfin-config-restic-config
+    copyMethod: Direct
+    pruneIntervalDays: 7
+    cacheCapacity: 2Gi
+    retain:
+      daily: 7
+      weekly: 4
+      monthly: 3
+    moverVolumes:
+      - mountPath: repo
+        volumeSource:
+          persistentVolumeClaim:
+            claimName: volsync-repository

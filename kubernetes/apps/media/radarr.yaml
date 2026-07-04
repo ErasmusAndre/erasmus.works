@@ -1,0 +1,126 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radarr-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  strategy:
+    type: Recreate
+    rollingUpdate: null
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+        - name: radarr
+          image: ghcr.io/home-operations/radarr:6.2.1.10461
+          env:
+            - name: TZ
+              value: Europe/Amsterdam
+          ports:
+            - name: http
+              containerPort: 7878
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 50m
+              memory: 512Mi
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /data
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: radarr-config
+        - name: media
+          persistentVolumeClaim:
+            claimName: media
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: radarr
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  selector:
+    app: radarr
+  ports:
+    - name: http
+      port: 7878
+      targetPort: http
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: radarr
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  parentRefs:
+    - name: homelab
+      namespace: envoy-gateway-system
+      group: gateway.networking.k8s.io
+      kind: Gateway
+  hostnames:
+    - radarr.homelab
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: radarr
+          group: ""
+          kind: Service
+          port: 7878
+          weight: 1

@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: media
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: apps
+  source:
+    repoURL: https://github.com/ErasmusAndre/erasmus.works.git
+    targetRevision: main
+    path: kubernetes/apps/media
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: app-media
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

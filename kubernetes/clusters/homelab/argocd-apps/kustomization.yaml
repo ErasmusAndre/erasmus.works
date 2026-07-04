@@ -6,4 +6,5 @@ resources:
   - homepage/application.yaml
   - docmost/application.yaml
   - immich/application.yaml
+  - media/application.yaml
   - nextcloud/application.yaml

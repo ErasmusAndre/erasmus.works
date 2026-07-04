@@ -23,6 +23,7 @@ Current backup PVCs:
 
 ```text
 app-docmost/volsync-repository
+app-media/volsync-repository
 app-nextcloud/volsync-repository
 500Gi each
 ```
@@ -34,6 +35,11 @@ Backup schedule:
 03:00  docmost-data VolSync
 03:15  nextcloud-postgres CNPG backup
 03:15  nextcloud-html VolSync
+03:30  qbittorrent-config VolSync
+03:35  prowlarr-config VolSync
+03:40  sonarr-config VolSync
+03:45  radarr-config VolSync
+03:50  jellyfin-config VolSync
 ```
 
 The backups are grouped by app where needed, while still staggering apps to

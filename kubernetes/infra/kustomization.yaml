@@ -4,6 +4,7 @@ resources:
   - namespace-app-docmost.yaml
   - namespace-app-homepage.yaml
   - namespace-app-immich.yaml
+  - namespace-app-media.yaml
   - namespace-app-nextcloud.yaml
   - namespace-authentik.yaml
   - coredns-configmap.yaml

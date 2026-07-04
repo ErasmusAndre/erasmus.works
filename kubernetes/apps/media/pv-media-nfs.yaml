@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-nfs
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  # Bookkeeping value only. For NFS it does not enforce a quota by itself.
+  capacity:
+    storage: 10Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  mountOptions:
+    - nfsvers=4.1
+    - hard
+    - noatime
+  nfs:
+    server: 192.168.20.40
+    path: /mnt/tank/media
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  accessModes:
+    - ReadWriteMany
+  # Keep this aligned with the PV bookkeeping value above if you change it.
+  resources:
+    requests:
+      storage: 10Ti
+  storageClassName: ""
+  volumeName: media-nfs
