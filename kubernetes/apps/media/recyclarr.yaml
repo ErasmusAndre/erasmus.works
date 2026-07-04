@@ -5,6 +5,15 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 data:
+  # The config-templates v8 branch was gutted upstream (recyclarr/config-templates#181),
+  # breaking `include:` on Recyclarr 8.x. Pin to master; drop this once fixed or on v9.
+  settings.yml: |
+    resource_providers:
+      - name: official
+        type: config-templates
+        replace_default: true
+        clone_url: https://github.com/recyclarr/config-templates.git
+        reference: master
   recyclarr.yml: |
     # yaml-language-server: $schema=https://raw.githubusercontent.com/recyclarr/recyclarr/master/schemas/config-schema.json
     sonarr:
@@ -111,6 +120,9 @@ spec:
                 - name: config-file
                   mountPath: /config/recyclarr.yml
                   subPath: recyclarr.yml
+                - name: config-file
+                  mountPath: /config/settings.yml
+                  subPath: settings.yml
                 - name: tmp
                   mountPath: /tmp
           volumes:
