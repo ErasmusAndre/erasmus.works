@@ -1,0 +1,123 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: recyclarr-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+data:
+  recyclarr.yml: |
+    # yaml-language-server: $schema=https://raw.githubusercontent.com/recyclarr/recyclarr/master/schemas/config-schema.json
+    sonarr:
+      sonarr:
+        base_url: http://sonarr:8989
+        api_key: !env_var SONARR_API_KEY
+        delete_old_custom_formats: true
+        include:
+          - template: sonarr-quality-definition-series
+          - template: sonarr-v4-quality-profile-web-1080p
+          - template: sonarr-v4-custom-formats-web-1080p
+    radarr:
+      radarr:
+        base_url: http://radarr:7878
+        api_key: !env_var RADARR_API_KEY
+        delete_old_custom_formats: true
+        include:
+          - template: radarr-quality-definition-movie
+          - template: radarr-quality-profile-hd-bluray-web
+          - template: radarr-custom-formats-hd-bluray-web
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: recyclarr-secret
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: bitwarden-secrets-manager
+    kind: ClusterSecretStore
+  target:
+    name: recyclarr-secret
+    creationPolicy: Owner
+    deletionPolicy: Retain
+  data:
+    - secretKey: SONARR_API_KEY
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        key: sonarr-api-key
+        metadataPolicy: None
+        nullBytePolicy: Ignore
+    - secretKey: RADARR_API_KEY
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        key: radarr-api-key
+        metadataPolicy: None
+        nullBytePolicy: Ignore
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: recyclarr
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  schedule: "0 5 * * *" # Every day at 5:00 AM, after the VolSync backup window
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      ttlSecondsAfterFinished: 86400
+      template:
+        metadata:
+          labels:
+            app: recyclarr
+        spec:
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+          containers:
+            - name: recyclarr
+              image: ghcr.io/recyclarr/recyclarr:8.6.0
+              args:
+                - sync
+              env:
+                - name: TZ
+                  value: Europe/Amsterdam
+              envFrom:
+                - secretRef:
+                    name: recyclarr-secret
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop:
+                    - ALL
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 128Mi
+              volumeMounts:
+                - name: config
+                  mountPath: /config
+                - name: config-file
+                  mountPath: /config/recyclarr.yml
+                  subPath: recyclarr.yml
+                - name: tmp
+                  mountPath: /tmp
+          volumes:
+            - name: config
+              emptyDir: {}
+            - name: config-file
+              configMap:
+                name: recyclarr-config
+            - name: tmp
+              emptyDir: {}

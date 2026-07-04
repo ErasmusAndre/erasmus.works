@@ -43,6 +43,13 @@ spec:
           env:
             - name: TZ
               value: Europe/Amsterdam
+            - name: PROWLARR__AUTH__METHOD
+              value: External
+            - name: PROWLARR__AUTH__REQUIRED
+              value: DisabledForLocalAddresses
+          envFrom:
+            - secretRef:
+                name: prowlarr-secret
           ports:
             - name: http
               containerPort: 9696

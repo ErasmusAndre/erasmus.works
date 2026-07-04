@@ -43,6 +43,13 @@ spec:
           env:
             - name: TZ
               value: Europe/Amsterdam
+            - name: RADARR__AUTH__METHOD
+              value: External
+            - name: RADARR__AUTH__REQUIRED
+              value: DisabledForLocalAddresses
+          envFrom:
+            - secretRef:
+                name: radarr-secret
           ports:
             - name: http
               containerPort: 7878
