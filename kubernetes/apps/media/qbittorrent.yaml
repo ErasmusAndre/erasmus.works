@@ -39,7 +39,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
       containers:
         - name: qbittorrent
-          image: ghcr.io/home-operations/qbittorrent:5.2.2
+          image: ghcr.io/home-operations/qbittorrent:5.2.3
           env:
             - name: TZ
               value: Europe/Amsterdam
