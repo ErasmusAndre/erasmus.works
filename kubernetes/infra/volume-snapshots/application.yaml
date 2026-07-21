@@ -12,7 +12,7 @@ spec:
   sources:
     - repoURL: https://piraeus.io/helm-charts/
       chart: snapshot-controller
-      targetRevision: 5.1.1
+      targetRevision: 5.2.0
       helm:
         releaseName: snapshot-controller
         valueFiles:
