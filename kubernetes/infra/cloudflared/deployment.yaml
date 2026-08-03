@@ -19,7 +19,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: cloudflared
-          image: cloudflare/cloudflared:2026.6.1
+          image: cloudflare/cloudflared:2026.7.3
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
