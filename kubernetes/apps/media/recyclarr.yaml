@@ -95,7 +95,7 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
           containers:
             - name: recyclarr
-              image: ghcr.io/recyclarr/recyclarr:8.6.0
+              image: ghcr.io/recyclarr/recyclarr:8.7.0
               args:
                 - sync
               env:
