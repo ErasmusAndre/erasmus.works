@@ -39,7 +39,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
       containers:
         - name: radarr
-          image: ghcr.io/home-operations/radarr:6.4.0.10540
+          image: ghcr.io/home-operations/radarr:6.4.1.10545
           env:
             - name: TZ
               value: Europe/Amsterdam
