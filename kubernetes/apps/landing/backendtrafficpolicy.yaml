@@ -1,0 +1,22 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: landing
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: landing
+  rateLimit:
+    type: Local
+    local:
+      rules:
+        # Per-client bucket: the Gateway's ClientTrafficPolicy recovers the real
+        # client IP from CF-Connecting-IP, so one abusive caller cannot 429 everyone.
+        - clientSelectors:
+            - sourceCIDR:
+                value: 0.0.0.0/0
+                type: Distinct
+          limit:
+            requests: 60
+            unit: Minute
