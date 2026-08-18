@@ -17,6 +17,7 @@ spec:
             - sourceCIDR:
                 value: 0.0.0.0/0
                 type: Distinct
+                invert: false
           limit:
             requests: 60
             unit: Minute
