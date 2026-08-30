@@ -18,6 +18,14 @@ spec:
         - path:
             type: PathPrefix
             value: /
+      filters:
+        # Without this nginx sends no Cache-Control, so Cloudflare falls back to
+        # its own four-hour browser TTL and serves stale CSS against fresh HTML.
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            set:
+              - name: Cache-Control
+                value: "public, max-age=60, must-revalidate"
       backendRefs:
         - name: landing
           group: ""
