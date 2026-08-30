@@ -5,15 +5,10 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 data:
-  # The config-templates v8 branch was gutted upstream (recyclarr/config-templates#181),
-  # breaking `include:` on Recyclarr 8.x. Pin to master; drop this once fixed or on v9.
-  settings.yml: |
-    resource_providers:
-      - name: official
-        type: config-templates
-        replace_default: true
-        clone_url: https://github.com/recyclarr/config-templates.git
-        reference: master
+  # Upstream removed includes.json from config-templates (deleted in 9faf65f), so
+  # `include:` finds nothing and every sync fails. The templates are now meant to be
+  # copied locally and customised, so the settings below are inlined from
+  # radarr/templates/hd-bluray-web.yml and sonarr/templates/web-1080p.yml.
   recyclarr.yml: |
     # yaml-language-server: $schema=https://raw.githubusercontent.com/recyclarr/recyclarr/master/schemas/config-schema.json
     sonarr:
@@ -21,19 +16,33 @@ data:
         base_url: http://sonarr:8989
         api_key: !env_var SONARR_API_KEY
         delete_old_custom_formats: true
-        include:
-          - template: sonarr-quality-definition-series
-          - template: sonarr-v4-quality-profile-web-1080p
-          - template: sonarr-v4-custom-formats-web-1080p
+        quality_definition:
+          type: series
+        quality_profiles:
+          - trash_id: 72dae194fc92bf828f32cde7744e51a1 # WEB-1080p
+            reset_unmatched_scores:
+              enabled: true
+        custom_format_groups:
+          add:
+            - trash_id: 158188097a58d7687dee647e04af0da3 # [Optional] Golden Rule HD
+            - trash_id: 74aff4168620ed49dcc67e92b2c2a5b4 # [Optional] Language Profiles
+            - trash_id: 85fae4a2294965b75710ef2989c850eb # [Streaming Services] HD/UHD boost
+            - trash_id: 59c3af66780d08332fdc64e68297098f # [Unwanted] Unwanted Formats
     radarr:
       radarr:
         base_url: http://radarr:7878
         api_key: !env_var RADARR_API_KEY
         delete_old_custom_formats: true
-        include:
-          - template: radarr-quality-definition-movie
-          - template: radarr-quality-profile-hd-bluray-web
-          - template: radarr-custom-formats-hd-bluray-web
+        quality_definition:
+          type: movie
+        quality_profiles:
+          - trash_id: d1d67249d3890e49bc12e275d989a7e9 # HD Bluray + WEB
+            reset_unmatched_scores:
+              enabled: true
+        custom_format_groups:
+          add:
+            - trash_id: f8bf8eab4617f12dfdbd16303d8da245 # [Optional] Golden Rule HD
+            - trash_id: a3ac6af01d78e4f21fcb75f601ac96df # [Unwanted] Unwanted Formats
 ---
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
@@ -120,9 +129,6 @@ spec:
                 - name: config-file
                   mountPath: /config/recyclarr.yml
                   subPath: recyclarr.yml
-                - name: config-file
-                  mountPath: /config/settings.yml
-                  subPath: settings.yml
                 - name: tmp
                   mountPath: /tmp
           volumes:

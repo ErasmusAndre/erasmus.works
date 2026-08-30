@@ -1,38 +1,246 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Erasmus Works</title>
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <style>
-      :root {
-        color-scheme: light dark;
-        --bg: #ffffff;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #0b1220;
-        }
-      }
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-      }
-      body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--bg);
-      }
-      img {
-        width: min(80vw, 640px);
-        height: auto;
-      }
-    </style>
-  </head>
-  <body>
-    <img src="/logo.png" alt="Erasmus Works" />
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A two-node Talos Kubernetes cluster in a self-built 10-inch rack, declared end to end in Git. The homelab of Andre Erasmus, Amsterdam.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<title>Erasmus.works</title>
+<link rel="preload" href="/JetBrainsMono-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/IBMPlexSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="#top">Erasmus<span>.works</span></a>
+    <nav class="navlinks">
+      <a href="#software">Software</a>
+      <a href="#hardware">Hardware</a>
+      <a href="https://github.com/ErasmusAndre">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow rise" style="--tick: var(--sky)">Amsterdam · homelab</p>
+        <h1 class="rise">Building over buying.</h1>
+        <p class="lede rise">A two-node Talos Kubernetes cluster in a 10-inch rack I cut myself &mdash; and every
+          service on it, declared in one Git repository. Both the software and the aluminium are open source.</p>
+        <div class="cta rise">
+          <a class="btn btn-primary" href="https://github.com/ErasmusAndre/erasmus.works">The cluster repo</a>
+          <a class="btn btn-ghost" href="https://github.com/ErasmusAndre/mini-rack">The rack build</a>
+        </div>
+      </div>
+      <img class="logo" src="/logo.png" alt="Erasmus Works" width="634" height="415">
+    </div>
+
+  </section>
+
+  <section class="sec wrap" id="software">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow" style="--tick: var(--blue)">Software</p>
+        <h2>Every cluster change is a pull request.</h2>
+      </div>
+      <p class="lede">Argo CD is the only thing that touches the cluster. Renovate opens the dependency PRs,
+        merging one is the deploy, and a rebuild from bare metal is a <code>talosctl apply-config</code> away.
+        No <code>kubectl apply</code> from a laptop, no state that exists only in someone's shell history.</p>
+    </div>
+
+    <dl class="stats">
+      <div class="stat">
+        <dt>Nodes</dt>
+        <dd>2<small>Talos Linux, one control plane</small></dd>
+      </div>
+      <div class="stat">
+        <dt>Cloud spend</dt>
+        <dd>&euro;3.35<small>Per month, all in</small></dd>
+      </div>
+      <div class="stat">
+        <dt>Frame cost</dt>
+        <dd>&euro;75<small>10U of 2020 extrusion</small></dd>
+      </div>
+      <div class="stat">
+        <dt>Declared in Git</dt>
+        <dd>100%<small>Apps, infra and machine config</small></dd>
+      </div>
+    </dl>
+
+    <div class="pipeline">
+      <span class="node">GitHub <em>repo</em></span>
+      <span class="arrow"><svg viewBox="0 0 22 10" aria-hidden="true" focusable="false"><path d="M0 5h20M16 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg></span>
+      <span class="node">Argo CD</span>
+      <span class="arrow"><svg viewBox="0 0 22 10" aria-hidden="true" focusable="false"><path d="M0 5h20M16 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg></span>
+      <span class="node">Infrastructure</span>
+      <span class="arrow"><svg viewBox="0 0 22 10" aria-hidden="true" focusable="false"><path d="M0 5h20M16 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg></span>
+      <span class="node">Apps</span>
+      <span class="arrow back"><svg viewBox="0 0 22 10" aria-hidden="true" focusable="false"><path d="M0 5h20M16 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg></span>
+      <span class="node">Cloudflare <em>tunnel</em></span>
+    </div>
+
+    <div class="stack">
+      <div class="group" style="--tick: var(--sky)">
+        <h3>Networking</h3>
+        <ul>
+          <li><b>MetalLB</b> &mdash; LoadBalancer IPs</li>
+          <li><b>Envoy Gateway</b> &mdash; ingress and routing</li>
+          <li><b>Cloudflare Tunnel</b> &mdash; no open ports</li>
+          <li><b>ExternalDNS</b> &mdash; records follow manifests</li>
+        </ul>
+      </div>
+      <div class="group" style="--tick: var(--green)">
+        <h3>Storage &amp; data</h3>
+        <ul>
+          <li><b>Longhorn</b> &mdash; persistent volumes</li>
+          <li><b>CloudNativePG</b> &mdash; in-cluster Postgres</li>
+          <li><b>VolSync</b> &mdash; scheduled PVC backups</li>
+          <li><b>Garage</b> &mdash; S3 for backup targets</li>
+        </ul>
+      </div>
+      <div class="group" style="--tick: var(--violet)">
+        <h3>Observability</h3>
+        <ul>
+          <li><b>Prometheus</b> &mdash; metrics and alerts</li>
+          <li><b>Grafana</b> &mdash; dashboards</li>
+          <li><b>VictoriaLogs</b> &mdash; log storage</li>
+          <li><b>Fluent Bit</b> &mdash; log shipping</li>
+        </ul>
+      </div>
+      <div class="group" style="--tick: var(--pink)">
+        <h3>Secrets &amp; delivery</h3>
+        <ul>
+          <li><b>External Secrets</b> &mdash; from Bitwarden SM</li>
+          <li><b>Argo CD</b> &mdash; continuous reconciliation</li>
+          <li><b>Renovate</b> &mdash; automated update PRs</li>
+          <li><b>Authentik</b> &mdash; single sign-on</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="hardware">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow" style="--tick: var(--orange)">Hardware</p>
+        <h2>Ten units, cut from four metres.</h2>
+      </div>
+      <p class="lede">The rack is 2020 aluminium extrusion, slot 6 throughout: 220&nbsp;mm wide, 240&nbsp;mm deep,
+        445&nbsp;mm tall. Twelve pieces come out of four one-metre lengths with 380&nbsp;mm spare for saw kerf and
+        one mistake. Machines that were never meant to be racked get 3D-printed mounts, published as STEP and 3MF
+        under CERN-OHL-S.</p>
+    </div>
+
+    <div class="rack-grid">
+      <figure class="rack-figure">
+        <svg viewBox="0 0 300 470" role="img" aria-label="Front elevation of the 10U rack frame: 220 mm wide, 445 mm tall, 240 mm deep, divided into ten 44.5 mm rack units.">
+          <g fill="none" stroke="#83858f" stroke-width="1">
+            <!-- depth ghost -->
+            <g opacity="0.35" stroke-dasharray="3 3">
+              <rect x="96" y="26" width="170" height="344"></rect>
+              <line x1="40" y1="60" x2="96" y2="26"></line>
+              <line x1="210" y1="60" x2="266" y2="26"></line>
+              <line x1="40" y1="404" x2="96" y2="370"></line>
+              <line x1="210" y1="404" x2="266" y2="370"></line>
+            </g>
+            <!-- U divisions -->
+            <g opacity="0.5">
+              <line x1="40" y1="94.4" x2="210" y2="94.4"></line>
+              <line x1="40" y1="128.8" x2="210" y2="128.8"></line>
+              <line x1="40" y1="163.2" x2="210" y2="163.2"></line>
+              <line x1="40" y1="197.6" x2="210" y2="197.6"></line>
+              <line x1="40" y1="232" x2="210" y2="232"></line>
+              <line x1="40" y1="266.4" x2="210" y2="266.4"></line>
+              <line x1="40" y1="300.8" x2="210" y2="300.8"></line>
+              <line x1="40" y1="335.2" x2="210" y2="335.2"></line>
+              <line x1="40" y1="369.6" x2="210" y2="369.6"></line>
+            </g>
+            <!-- frame -->
+            <rect x="40" y="60" width="170" height="344" stroke="#f4f4f4" stroke-width="2"></rect>
+            <!-- uprights -->
+            <line x1="48" y1="60" x2="48" y2="404" stroke="#f4f4f4" stroke-width="2"></line>
+            <line x1="202" y1="60" x2="202" y2="404" stroke="#f4f4f4" stroke-width="2"></line>
+            <!-- dimensions -->
+            <g stroke="#4ca6ff">
+              <line x1="40" y1="430" x2="210" y2="430"></line>
+              <line x1="40" y1="424" x2="40" y2="436"></line>
+              <line x1="210" y1="424" x2="210" y2="436"></line>
+              <line x1="272" y1="60" x2="272" y2="404"></line>
+              <line x1="266" y1="60" x2="278" y2="60"></line>
+              <line x1="266" y1="404" x2="278" y2="404"></line>
+            </g>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="11" fill="#4ca6ff">
+            <text x="125" y="450" text-anchor="middle">220 mm</text>
+            <text x="272" y="232" text-anchor="middle" transform="rotate(-90 272 232)">445 mm</text>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="10" fill="#83858f">
+            <text x="30" y="81" text-anchor="end">10U</text>
+            <text x="30" y="400" text-anchor="end">1U</text>
+            <text x="181" y="20" text-anchor="middle">240 mm deep</text>
+          </g>
+        </svg>
+        <figcaption>Front elevation &middot; 1U = 44.5 mm</figcaption>
+      </figure>
+
+      <div class="tables">
+        <div class="tablewrap">
+          <table>
+            <caption>Frame parts</caption>
+            <thead>
+              <tr><th>Part</th><th class="num">Qty</th><th class="num">Price</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Profile 20&times;20 B-type, slot 6</td><td class="num">4 &times; 1 m</td><td class="num">&euro;23.00</td></tr>
+              <tr><td>Cube connector 20, 3D variant</td><td class="num">8</td><td class="num">&euro;33.00</td></tr>
+              <tr><td>Roll-in T-slot nut, M5</td><td class="num">40</td><td class="num">&euro;10.00</td></tr>
+              <tr><td>Flanged button head M5&times;8</td><td class="num">40</td><td class="num">&euro;9.00</td></tr>
+            </tbody>
+            <tfoot>
+              <tr><td>Total</td><td class="num"></td><td class="num">&euro;75.00</td></tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>What lives in it</caption>
+            <thead>
+              <tr><th>Role</th><th>Model</th><th>CPU</th><th>Memory</th><th>Storage</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>K8s node 1</td><td>MINIS FORUM UN1245</td><td>Core i5-12450H</td><td>16 GB DDR4</td><td>512 GB SSD</td></tr>
+              <tr><td>K8s node 2</td><td>Blackview MP-80</td><td>Intel N97</td><td>16 GB DDR5</td><td>512 GB SSD</td></tr>
+              <tr><td>Home Assistant</td><td>BMAX B2 Pro</td><td>Celeron N4000</td><td>8 GB DDR4</td><td>256 GB SSD</td></tr>
+              <tr><td>NAS</td><td>ODROID-H4+</td><td>Intel N97</td><td>16 GB DDR5</td><td>2 &times; 6 TB HDD</td></tr>
+              <tr><td>Router</td><td>UniFi Express 7</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
+              <tr><td>Switch</td><td>UniFi Flex 2.5G</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <div class="foot-grid">
+    <div>
+      <p class="foot-name">Erasmus<span>.works</span></p>
+      <p class="foot-bio">Open source, self-hosting, automation, 3D printing. Amsterdam.</p>
+    </div>
+    <ul class="foot-links">
+      <li><a href="https://github.com/ErasmusAndre">github.com/ErasmusAndre</a></li>
+      <li><a href="https://github.com/ErasmusAndre/erasmus.works">Erasmus.works &mdash; the software</a></li>
+      <li><a href="https://github.com/ErasmusAndre/mini-rack">mini-rack &mdash; the hardware</a></li>
+      <li><a href="https://status.erasmus.works">status.erasmus.works</a></li>
+    </ul>
+  </div>
+  <p class="colophon">Served by nginx from a ConfigMap, on the cluster it describes.</p>
+</footer>
+</body>
 </html>

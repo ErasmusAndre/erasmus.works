@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./Erasmus-Works-Logo.png" alt="erasmus.works logo" width="400">
+  <img src="./Erasmus-Works-Logo.png" alt="Erasmus.works logo" width="400">
 </p>
 
 <div align="center">
