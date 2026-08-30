@@ -9,12 +9,14 @@
 <link rel="preload" href="/JetBrainsMono-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/IBMPlexSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/logos.css">
 </head>
 <body>
 <header class="masthead">
   <div class="wrap">
     <a class="brand" href="#top">Erasmus<span>.works</span></a>
     <nav class="navlinks">
+      <a href="#services">Services</a>
       <a href="#software">Software</a>
       <a href="#hardware">Hardware</a>
       <a href="https://github.com/ErasmusAndre">GitHub</a>
@@ -26,10 +28,14 @@
   <section class="hero wrap">
     <div class="hero-grid">
       <div>
-        <p class="eyebrow rise" style="--tick: var(--sky)">Amsterdam · homelab</p>
-        <h1 class="rise">Building over buying.</h1>
-        <p class="lede rise">A two-node Talos Kubernetes cluster in a 10-inch rack I cut myself &mdash; and every
-          service on it, declared in one Git repository. Both the software and the aluminium are open source.</p>
+        <p class="eyebrow rise" style="--tick: var(--sky)">Amsterdam &middot; homelab</p>
+        <h1 class="rise">My own cloud.</h1>
+        <p class="lede rise">This is Erasmus.works &mdash; the place I host my own digital infrastructure.
+          My photos, my files, my documents and my home automation all live on a small Kubernetes cluster,
+          in a 10-inch rack I cut from aluminium extrusion and finished with mounts I designed and printed.</p>
+        <p class="lede sub rise">Nothing here is clicked into place by hand. Every service, every setting
+          and every update is written down in one public Git repository, and the cluster keeps itself in
+          step with it. Building over buying &mdash; and the whole thing, software and aluminium, is open source.</p>
         <div class="cta rise">
           <a class="btn btn-primary" href="https://github.com/ErasmusAndre/erasmus.works">The cluster repo</a>
           <a class="btn btn-ghost" href="https://github.com/ErasmusAndre/mini-rack">The rack build</a>
@@ -37,7 +43,31 @@
       </div>
       <img class="logo" src="/logo.png" alt="Erasmus Works" width="634" height="415">
     </div>
+  </section>
 
+  <section class="sec wrap" id="services">
+    <div class="showcase">
+      <div>
+        <p class="eyebrow" style="--tick: var(--green)">Services</p>
+        <h2>What is actually running.</h2>
+        <ul class="tiles tiles-compact">
+      <li class="tile"><span class="tile-mark m-nextcloud" style="--brand: #0082c9" role="img" aria-label="Nextcloud" title="Nextcloud"></span></li>
+      <li class="tile"><span class="tile-mark m-immich" style="--brand: #4250af" role="img" aria-label="Immich" title="Immich"></span></li>
+      <li class="tile"><span class="tile-mark m-docmost" style="--brand: #4a5bd4" role="img" aria-label="Docmost" title="Docmost"></span></li>
+      <li class="tile"><span class="tile-mark m-home-assistant" style="--brand: #18bcf2" role="img" aria-label="Home Assistant" title="Home Assistant"></span></li>
+      <li class="tile"><span class="tile-mark m-grafana" style="--brand: #f46800" role="img" aria-label="Grafana" title="Grafana"></span></li>
+      <li class="tile"><span class="tile-mark m-authentik" style="--brand: #fd4b2d" role="img" aria-label="Authentik" title="Authentik"></span></li>
+      <li class="tile"><span class="tile-mark m-garage" style="--brand: #00b894" role="img" aria-label="Garage" title="Garage"></span></li>
+      <li class="tile"><span class="tile-mark m-homepage" style="--brand: #0ea5e9" role="img" aria-label="Homepage" title="Homepage"></span></li>
+        </ul>
+      </div>
+      <div class="note">
+        <p>Photos go to Immich instead of Google Photos, files to Nextcloud instead of Dropbox, notes and
+          documents to Docmost. The flat itself runs on Home Assistant.</p>
+        <p>One account signs into all of them &mdash; Authentik handles that &mdash; and none of it needs an
+          open port on my router. Grafana is where I go to see whether any of it is unhappy.</p>
+      </div>
+    </div>
   </section>
 
   <section class="sec wrap" id="software">
@@ -82,44 +112,84 @@
       <span class="node">Cloudflare <em>tunnel</em></span>
     </div>
 
-    <div class="stack">
-      <div class="group" style="--tick: var(--sky)">
-        <h3>Networking</h3>
-        <ul>
-          <li><b>MetalLB</b> &mdash; LoadBalancer IPs</li>
-          <li><b>Envoy Gateway</b> &mdash; ingress and routing</li>
-          <li><b>Cloudflare Tunnel</b> &mdash; no open ports</li>
-          <li><b>ExternalDNS</b> &mdash; records follow manifests</li>
-        </ul>
-      </div>
-      <div class="group" style="--tick: var(--green)">
-        <h3>Storage &amp; data</h3>
-        <ul>
-          <li><b>Longhorn</b> &mdash; persistent volumes</li>
-          <li><b>CloudNativePG</b> &mdash; in-cluster Postgres</li>
-          <li><b>VolSync</b> &mdash; scheduled PVC backups</li>
-          <li><b>Garage</b> &mdash; S3 for backup targets</li>
-        </ul>
-      </div>
-      <div class="group" style="--tick: var(--violet)">
-        <h3>Observability</h3>
-        <ul>
-          <li><b>Prometheus</b> &mdash; metrics and alerts</li>
-          <li><b>Grafana</b> &mdash; dashboards</li>
-          <li><b>VictoriaLogs</b> &mdash; log storage</li>
-          <li><b>Fluent Bit</b> &mdash; log shipping</li>
-        </ul>
-      </div>
-      <div class="group" style="--tick: var(--pink)">
-        <h3>Secrets &amp; delivery</h3>
-        <ul>
-          <li><b>External Secrets</b> &mdash; from Bitwarden SM</li>
-          <li><b>Argo CD</b> &mdash; continuous reconciliation</li>
-          <li><b>Renovate</b> &mdash; automated update PRs</li>
-          <li><b>Authentik</b> &mdash; single sign-on</li>
-        </ul>
-      </div>
-    </div>
+    <h3 class="wall-head">What the cluster is made of.</h3>
+    <ul class="tiles tiles-wall">
+      <li class="tile">
+        <span class="tile-mark m-talos" style="--brand: #ff7300" role="img" aria-label="Talos Linux" title="Talos Linux"></span>
+        <span class="tile-name">Talos Linux</span>
+        <span class="tile-role">Immutable node OS</span>
+      </li>
+      <li class="tile">
+        <span class="tile-mark m-kubernetes" style="--brand: #326ce5" role="img" aria-label="Kubernetes" title="Kubernetes"></span>
+        <span class="tile-name">Kubernetes</span>
+        <span class="tile-role">Runs the containers</span>
+      </li>
+      <li class="tile">
+        <span class="tile-mark m-argo-cd" style="--brand: #ef7b4d" role="img" aria-label="Argo CD" title="Argo CD"></span>
+        <span class="tile-name">Argo CD</span>
+        <span class="tile-role">Applies what Git says</span>
+      </li>
+      <li class="tile">
+        <span class="tile-mark m-renovate" style="--brand: #308be3" role="img" aria-label="Renovate" title="Renovate"></span>
+        <span class="tile-name">Renovate</span>
+        <span class="tile-role">Opens update PRs</span>
+      </li>
+      <li class="tile">
+        <span class="tile-mark m-envoy-gateway" style="--brand: #ac6199" role="img" aria-label="Envoy Gateway" title="Envoy Gateway"></span>
+        <span class="tile-name">Envoy Gateway</span>
+        <span class="tile-role">Ingress and routing</span>
+      </li>
+      <li class="tile">
+        <span class="tile-mark m-metallb" style="--brand: #00b894" role="img" aria-label="MetalLB" title="MetalLB"></span>
+        <span class="tile-name">MetalLB</span>
+        <span class="tile-role">LoadBalancer IPs</span>
+      </li>
+      <li class="tile">
+        <span class="tile-mark mono" style="--brand: #326ce5" role="img" aria-label="ExternalDNS" title="ExternalDNS"><b>ED</b></span>
+        <span class="tile-name">ExternalDNS</span>
+        <span class="tile-role">DNS from manifests</span>
+      </li>
+      <li class="tile">
+        <span class="tile-mark m-cloudflare" style="--brand: #f38020" role="img" aria-label="Cloudflare" title="Cloudflare"></span>
+        <span class="tile-name">Cloudflare</span>
+        <span class="tile-role">Tunnel, no open ports</span>
+      </li>
+      <li class="tile">
+        <span class="tile-mark m-longhorn" style="--brand: #8e2c6d" role="img" aria-label="Longhorn" title="Longhorn"></span>
+        <span class="tile-name">Longhorn</span>
+        <span class="tile-role">Persistent volumes</span>
+      </li>
+      <li class="tile">
+        <span class="tile-mark m-cloud-native-pg" style="--brand: #4169e1" role="img" aria-label="CloudNativePG" title="CloudNativePG"></span>
+        <span class="tile-name">CloudNativePG</span>
+        <span class="tile-role">In-cluster Postgres</span>
+      </li>
+      <li class="tile">
+        <span class="tile-mark mono" style="--brand: #7256ff" role="img" aria-label="VolSync" title="VolSync"><b>VS</b></span>
+        <span class="tile-name">VolSync</span>
+        <span class="tile-role">Scheduled backups</span>
+      </li>
+      <li class="tile">
+        <span class="tile-mark m-external-secrets" style="--brand: #0f6fa8" role="img" aria-label="External Secrets" title="External Secrets"></span>
+        <span class="tile-name">External Secrets</span>
+        <span class="tile-role">Secrets from Bitwarden</span>
+      </li>
+      <li class="tile">
+        <span class="tile-mark m-prometheus" style="--brand: #e6522c" role="img" aria-label="Prometheus" title="Prometheus"></span>
+        <span class="tile-name">Prometheus</span>
+        <span class="tile-role">Metrics and alerts</span>
+      </li>
+      <li class="tile">
+        <span class="tile-mark m-victorialogs" style="--brand: #621773" role="img" aria-label="VictoriaLogs" title="VictoriaLogs"></span>
+        <span class="tile-name">VictoriaLogs</span>
+        <span class="tile-role">Log storage</span>
+      </li>
+      <li class="tile">
+        <span class="tile-mark m-fluent-bit" style="--brand: #0096c7" role="img" aria-label="Fluent Bit" title="Fluent Bit"></span>
+        <span class="tile-name">Fluent Bit</span>
+        <span class="tile-role">Log shipping</span>
+      </li>
+    </ul>
   </section>
 
   <section class="sec wrap" id="hardware">
@@ -240,7 +310,6 @@
       <li><a href="https://status.erasmus.works">status.erasmus.works</a></li>
     </ul>
   </div>
-  <p class="colophon">Served by nginx from a ConfigMap, on the cluster it describes.</p>
 </footer>
 </body>
 </html>

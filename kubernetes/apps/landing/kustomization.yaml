@@ -8,6 +8,7 @@ configMapGenerator:
     files:
       - index.html
       - style.css
+      - logos.css
       - logo.png
       - favicon.png
       - JetBrainsMono-Variable.woff2
