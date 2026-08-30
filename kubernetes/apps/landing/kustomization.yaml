@@ -10,6 +10,7 @@ configMapGenerator:
       - style.css
       - logos.css
       - logo.png
+      - logo-mark.png
       - favicon.png
       - JetBrainsMono-Variable.woff2
       - IBMPlexSans-Regular.woff2

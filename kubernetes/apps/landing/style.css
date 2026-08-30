@@ -45,8 +45,18 @@
 
 * { box-sizing: border-box; }
 
+html {
+  /* iOS otherwise inflates text on rotation, which reads as an unwanted zoom */
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+/* the masthead is sticky, so anchored sections need to clear it */
+[id] { scroll-margin-top: 78px; }
+
 body {
   margin: 0;
+  overflow-wrap: break-word;
   background: var(--ink);
   color: var(--paper);
   font-family: var(--sans);
@@ -81,6 +91,8 @@ h2 { font-size: clamp(1.9rem, 4.2vw, 3.1rem); }
 h3 { font-size: 1.05rem; letter-spacing: -0.02em; }
 
 p { margin: 0; }
+
+code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 
 .lede { color: var(--muted); max-width: 60ch; font-size: clamp(1rem, 1.4vw, 1.15rem); }
 
@@ -121,6 +133,9 @@ p { margin: 0; }
   height: 62px;
 }
 .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--mono);
   font-weight: 700;
   font-size: 0.95rem;
@@ -128,10 +143,16 @@ p { margin: 0; }
   color: var(--paper);
   text-decoration: none;
 }
-.brand span { color: var(--dim); }
-.navlinks { display: flex; gap: clamp(14px, 3vw, 32px); font-family: var(--mono); font-size: 0.82rem; }
-.navlinks a { color: var(--muted); text-decoration: none; }
+.brand-name span { color: var(--dim); }
+
+.navlinks { display: flex; align-items: stretch; gap: clamp(14px, 3vw, 32px); font-family: var(--mono); font-size: 0.82rem; }
+.navlinks a { display: flex; align-items: center; color: var(--muted); text-decoration: none; }
 .navlinks a:hover { color: var(--sky); }
+
+/* the mark and the menu button are mobile only - see the 880px breakpoint */
+.brand-mark { display: none; height: 40px; width: auto; }
+.navtoggle { display: none; }
+.navscrim { display: none; }
 
 /* ---------- hero ---------- */
 
@@ -260,7 +281,7 @@ p { margin: 0; }
 }
 /* height is fixed, width follows each logo's own proportions, so a lockup
    carrying a wordmark gets the room it needs instead of being letterboxed */
-.tiles-compact .tile-mark { width: auto; height: 54px; }
+.tiles-compact .tile-mark { width: auto; height: 54px; max-width: 100%; }
 
 /* labelled wall */
 .tiles-wall {
@@ -301,18 +322,13 @@ p { margin: 0; }
 
 /* ---------- rack ---------- */
 
-.rack-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
-  gap: clamp(28px, 5vw, 64px);
-  align-items: start;
-  margin-top: clamp(36px, 5vw, 56px);
-}
 .rack-figure {
   background: var(--sunk);
   border: 1px solid var(--line);
   border-radius: 4px;
   padding: 20px;
+  margin: clamp(36px, 5vw, 56px) auto 0;
+  max-width: 340px;
 }
 .rack-figure svg { width: 100%; height: auto; display: block; }
 .rack-figure figcaption {
@@ -324,43 +340,13 @@ p { margin: 0; }
   text-align: center;
 }
 
-.tables { display: grid; gap: 28px; }
-.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 4px; }
-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-caption {
-  caption-side: top;
-  text-align: left;
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--line);
-  background: var(--sunk);
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-th, td { padding: 11px 18px; text-align: left; border-bottom: 1px solid var(--line); }
-thead th {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-tbody td { color: var(--muted); }
-tbody td:first-child { color: var(--paper); font-family: var(--mono); font-size: 0.83rem; }
-.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
-tbody tr:last-child td { border-bottom: 0; }
-tfoot td { border-bottom: 0; font-family: var(--mono); font-weight: 700; color: var(--paper); background: var(--sunk); }
-
 footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px); }
 .foot-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px; }
 .foot-name span { color: var(--dim); }
 .foot-name { font-family: var(--mono); font-weight: 800; font-size: 1.15rem; letter-spacing: -0.04em; }
 .foot-bio { margin-top: 10px; color: var(--dim); max-width: 44ch; font-size: 0.92rem; }
 .foot-links { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-family: var(--mono); font-size: 0.85rem; }
-.foot-links a { text-decoration: none; }
+.foot-links a { display: inline-block; padding-block: 4px; text-decoration: none; }
 .foot-links a:hover { text-decoration: underline; }
 
 /* ---------- motion ---------- */
@@ -372,6 +358,7 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
 @keyframes rise { to { opacity: 1; transform: none; } }
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   .rise { animation: none; opacity: 1; transform: none; }
   * { transition-duration: 0.01ms !important; }
 }
@@ -379,22 +366,83 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
 /* ---------- responsive ---------- */
 
 @media (max-width: 880px) {
+  /* the hero drops the lockup and the masthead picks up the mark instead, so
+     the logo is shown once rather than twice down the top of a phone screen */
   .hero-grid { grid-template-columns: minmax(0, 1fr); }
-  .hero-grid .logo { order: -1; max-width: 240px; margin-inline: 0; }
+  .hero-grid .logo { display: none; }
+  .brand-mark { display: block; }
+
+  /* the sticky bar keeps a solid ground here: backdrop-filter would make it a
+     containing block and the fixed drawer would resolve against it, not the viewport */
+  .masthead { backdrop-filter: none; background: var(--ink); }
+
+  .navtoggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 30;
+    width: 44px;
+    height: 44px;
+    margin-right: -12px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--paper);
+    cursor: pointer;
+  }
+  .navtoggle-box, .navtoggle-box::before, .navtoggle-box::after {
+    display: block;
+    width: 20px;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 0.2s ease, background-color 0.2s ease, top 0.2s ease;
+  }
+  .navtoggle-box { position: relative; }
+  .navtoggle-box::before, .navtoggle-box::after { content: ""; position: absolute; left: 0; }
+  .navtoggle-box::before { top: -6px; }
+  .navtoggle-box::after { top: 6px; }
+  /* the button stays above the scrim and becomes the close control */
+  body.nav-open .navtoggle-box { background: transparent; }
+  body.nav-open .navtoggle-box::before { top: 0; transform: rotate(45deg); }
+  body.nav-open .navtoggle-box::after { top: 0; transform: rotate(-45deg); }
+
+  .navlinks {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    width: min(66vw, 280px);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 68px 24px 24px;
+    background: var(--panel);
+    border-left: 1px solid var(--line);
+    box-shadow: 0 6px 32px rgba(0, 0, 0, 0.55);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform 0.2s ease, visibility 0.2s ease;
+  }
+  body.nav-open .navlinks { transform: none; visibility: visible; }
+  .navlinks a { min-height: 48px; border-bottom: 1px solid var(--line); }
+  .navlinks a:last-child { border-bottom: 0; }
+
+  .navscrim { display: block; position: fixed; inset: 0; z-index: 10; background: rgba(0, 0, 0, 0.5); opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease; }
+  body.nav-open .navscrim { opacity: 1; visibility: visible; }
+  body.nav-open { overflow: hidden; }
+
   .sec-head { grid-template-columns: minmax(0, 1fr); align-items: start; }
   .showcase { grid-template-columns: minmax(0, 1fr); }
-  .rack-grid { grid-template-columns: minmax(0, 1fr); }
-  .rack-figure { max-width: 320px; }
   .stat { border-right: 0; border-bottom: 1px solid var(--line); }
 }
 
 @media (max-width: 620px) {
-  /* the nav no longer fits beside the wordmark, so it takes its own row */
-  .masthead .wrap { height: auto; flex-wrap: wrap; padding-block: 11px; gap: 6px; }
-  .navlinks { width: 100%; justify-content: space-between; gap: 10px; font-size: 0.78rem; }
-
   .hero { padding-block: 34px 44px; }
-  .hero-grid .logo { max-width: 176px; }
   .hero .lede { margin-top: 16px; }
   .lede { font-size: 1rem; }
   .cta { margin-top: 26px; }
@@ -414,30 +462,21 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
 
   /* the strip reads top to bottom instead of wrapping mid-arrow */
   .pipeline { flex-direction: column; align-items: stretch; gap: 7px; font-size: 0.78rem; }
-  .node { padding: 10px 14px; text-align: center; }
+  .node { padding: 10px 14px; text-align: center; white-space: normal; }
   .arrow { justify-content: center; }
   .arrow svg { transform: rotate(90deg); }
   .arrow.back svg { transform: rotate(90deg) scaleX(-1); }
 
-  /* five columns will not fit, so each machine becomes its own block */
-  .specs thead { display: none; }
-  .specs, .specs tbody, .specs tr, .specs td { display: block; width: 100%; }
-  .specs tr { padding: 14px 16px; border-bottom: 1px solid var(--line); }
-  .specs tr:last-child { border-bottom: 0; }
-  .specs td { padding: 0; border: 0; display: flex; justify-content: space-between; gap: 18px; }
-  .specs td.na { display: none; }
-  .specs td + td { margin-top: 7px; }
-  .specs td + td::before {
-    content: attr(data-label);
-    flex: none;
-    font-family: var(--mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--dim);
-  }
-  .specs td:first-child { font-size: 0.95rem; }
-  .specs td + td { justify-content: flex-start; gap: 10px; }
+  .rack-figure { padding: 16px; }
 
   .foot-grid { gap: 26px; }
+}
+
+/* small phones: keep everything inside the viewport without shrinking to fit */
+@media (max-width: 400px) {
+  .tiles-compact { gap: 16px 14px; }
+  .tiles-compact .tile-mark { height: 44px; }
+  .tiles-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat { padding: 16px 14px; }
+  .stat dd { font-size: 1.35rem; }
 }

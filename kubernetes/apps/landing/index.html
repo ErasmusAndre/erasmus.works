@@ -14,8 +14,15 @@
 <body>
 <header class="masthead">
   <div class="wrap">
-    <a class="brand" href="#top">Erasmus<span>.works</span></a>
-    <nav class="navlinks">
+    <a class="brand" href="#top">
+      <img class="brand-mark" src="/logo-mark.png" alt="" width="456" height="300">
+      <span class="brand-name">Erasmus<span>.works</span></span>
+    </a>
+    <button class="navtoggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">
+      <span class="navtoggle-box" aria-hidden="true"></span>
+    </button>
+    <div class="navscrim"></div>
+    <nav class="navlinks" id="navlinks">
       <a href="#services">Services</a>
       <a href="#software">Software</a>
       <a href="#hardware">Hardware</a>
@@ -48,17 +55,17 @@
         <p class="eyebrow" style="--tick: var(--green)">Services</p>
         <h2>What is actually running.</h2>
         <ul class="tiles tiles-compact">
-      <li class="tile"><span class="tile-mark m-nextcloud" role="img" aria-label="Nextcloud" title="Nextcloud"></span></li>
-      <li class="tile"><span class="tile-mark m-immich" role="img" aria-label="Immich" title="Immich"></span></li>
-      <li class="tile"><span class="tile-mark m-home-assistant" role="img" aria-label="Home Assistant" title="Home Assistant"></span></li>
-      <li class="tile"><span class="tile-mark m-truenas" role="img" aria-label="TrueNAS" title="TrueNAS"></span></li>
-      <li class="tile"><span class="tile-mark m-authentik" role="img" aria-label="Authentik" title="Authentik"></span></li>
-      <li class="tile"><span class="tile-mark m-homepage" role="img" aria-label="Homepage" title="Homepage"></span></li>
+          <li class="tile"><span class="tile-mark m-nextcloud" role="img" aria-label="Nextcloud" title="Nextcloud"></span></li>
+          <li class="tile"><span class="tile-mark m-immich" role="img" aria-label="Immich" title="Immich"></span></li>
+          <li class="tile"><span class="tile-mark m-home-assistant" role="img" aria-label="Home Assistant" title="Home Assistant"></span></li>
+          <li class="tile"><span class="tile-mark m-truenas" role="img" aria-label="TrueNAS" title="TrueNAS"></span></li>
+          <li class="tile"><span class="tile-mark m-authentik" role="img" aria-label="Authentik" title="Authentik"></span></li>
+          <li class="tile"><span class="tile-mark m-homepage" role="img" aria-label="Homepage" title="Homepage"></span></li>
         </ul>
       </div>
       <div class="note">
         <p>Photos go to Immich instead of Google Photos. Files go to Nextcloud instead of Dropbox. Notes
-          and documents go to Docmost, and the flat runs on Home Assistant.</p>
+          and documents go to Docmost, and my home runs on Home Assistant.</p>
         <p>TrueNAS holds the bulk storage behind them. Authentik gives all of them one login, and none of
           it needs an open port on the router.</p>
       </div>
@@ -214,95 +221,56 @@
         CERN-OHL-S.</p>
     </div>
 
-    <div class="rack-grid">
-      <figure class="rack-figure">
-        <svg viewBox="0 0 300 470" role="img" aria-label="Front elevation of the 10U rack frame: 220 mm wide, 445 mm tall, 240 mm deep, divided into ten 44.5 mm rack units.">
-          <g fill="none" stroke="#83858f" stroke-width="1">
-            <!-- depth ghost -->
-            <g opacity="0.35" stroke-dasharray="3 3">
-              <rect x="96" y="26" width="170" height="344"></rect>
-              <line x1="40" y1="60" x2="96" y2="26"></line>
-              <line x1="210" y1="60" x2="266" y2="26"></line>
-              <line x1="40" y1="404" x2="96" y2="370"></line>
-              <line x1="210" y1="404" x2="266" y2="370"></line>
-            </g>
-            <!-- U divisions -->
-            <g opacity="0.5">
-              <line x1="40" y1="94.4" x2="210" y2="94.4"></line>
-              <line x1="40" y1="128.8" x2="210" y2="128.8"></line>
-              <line x1="40" y1="163.2" x2="210" y2="163.2"></line>
-              <line x1="40" y1="197.6" x2="210" y2="197.6"></line>
-              <line x1="40" y1="232" x2="210" y2="232"></line>
-              <line x1="40" y1="266.4" x2="210" y2="266.4"></line>
-              <line x1="40" y1="300.8" x2="210" y2="300.8"></line>
-              <line x1="40" y1="335.2" x2="210" y2="335.2"></line>
-              <line x1="40" y1="369.6" x2="210" y2="369.6"></line>
-            </g>
-            <!-- frame -->
-            <rect x="40" y="60" width="170" height="344" stroke="#f4f4f4" stroke-width="2"></rect>
-            <!-- uprights -->
-            <line x1="48" y1="60" x2="48" y2="404" stroke="#f4f4f4" stroke-width="2"></line>
-            <line x1="202" y1="60" x2="202" y2="404" stroke="#f4f4f4" stroke-width="2"></line>
-            <!-- dimensions -->
-            <g stroke="#4ca6ff">
-              <line x1="40" y1="430" x2="210" y2="430"></line>
-              <line x1="40" y1="424" x2="40" y2="436"></line>
-              <line x1="210" y1="424" x2="210" y2="436"></line>
-              <line x1="272" y1="60" x2="272" y2="404"></line>
-              <line x1="266" y1="60" x2="278" y2="60"></line>
-              <line x1="266" y1="404" x2="278" y2="404"></line>
-            </g>
+    <figure class="rack-figure">
+      <svg viewBox="0 0 300 470" role="img" aria-label="Front elevation of the 10U rack frame: 220 mm wide, 445 mm tall, 240 mm deep, divided into ten 44.5 mm rack units.">
+        <g fill="none" stroke="#83858f" stroke-width="1">
+          <!-- depth ghost -->
+          <g opacity="0.35" stroke-dasharray="3 3">
+            <rect x="96" y="26" width="170" height="344"></rect>
+            <line x1="40" y1="60" x2="96" y2="26"></line>
+            <line x1="210" y1="60" x2="266" y2="26"></line>
+            <line x1="40" y1="404" x2="96" y2="370"></line>
+            <line x1="210" y1="404" x2="266" y2="370"></line>
           </g>
-          <g font-family="JetBrains Mono, monospace" font-size="11" fill="#4ca6ff">
-            <text x="125" y="450" text-anchor="middle">220 mm</text>
-            <text x="272" y="232" text-anchor="middle" transform="rotate(-90 272 232)">445 mm</text>
+          <!-- U divisions -->
+          <g opacity="0.5">
+            <line x1="40" y1="94.4" x2="210" y2="94.4"></line>
+            <line x1="40" y1="128.8" x2="210" y2="128.8"></line>
+            <line x1="40" y1="163.2" x2="210" y2="163.2"></line>
+            <line x1="40" y1="197.6" x2="210" y2="197.6"></line>
+            <line x1="40" y1="232" x2="210" y2="232"></line>
+            <line x1="40" y1="266.4" x2="210" y2="266.4"></line>
+            <line x1="40" y1="300.8" x2="210" y2="300.8"></line>
+            <line x1="40" y1="335.2" x2="210" y2="335.2"></line>
+            <line x1="40" y1="369.6" x2="210" y2="369.6"></line>
           </g>
-          <g font-family="JetBrains Mono, monospace" font-size="10" fill="#83858f">
-            <text x="30" y="81" text-anchor="end">10U</text>
-            <text x="30" y="400" text-anchor="end">1U</text>
-            <text x="181" y="20" text-anchor="middle">240 mm deep</text>
+          <!-- frame -->
+          <rect x="40" y="60" width="170" height="344" stroke="#f4f4f4" stroke-width="2"></rect>
+          <!-- uprights -->
+          <line x1="48" y1="60" x2="48" y2="404" stroke="#f4f4f4" stroke-width="2"></line>
+          <line x1="202" y1="60" x2="202" y2="404" stroke="#f4f4f4" stroke-width="2"></line>
+          <!-- dimensions -->
+          <g stroke="#4ca6ff">
+            <line x1="40" y1="430" x2="210" y2="430"></line>
+            <line x1="40" y1="424" x2="40" y2="436"></line>
+            <line x1="210" y1="424" x2="210" y2="436"></line>
+            <line x1="272" y1="60" x2="272" y2="404"></line>
+            <line x1="266" y1="60" x2="278" y2="60"></line>
+            <line x1="266" y1="404" x2="278" y2="404"></line>
           </g>
-        </svg>
-        <figcaption>Front elevation &middot; 1U = 44.5 mm</figcaption>
-      </figure>
-
-      <div class="tables">
-        <div class="tablewrap">
-          <table>
-            <caption>Frame parts</caption>
-            <thead>
-              <tr><th>Part</th><th class="num">Qty</th><th class="num">Price</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Profile 20&times;20 B-type, slot 6</td><td class="num">4 &times; 1 m</td><td class="num">&euro;23.00</td></tr>
-              <tr><td>Cube connector 20, 3D variant</td><td class="num">8</td><td class="num">&euro;33.00</td></tr>
-              <tr><td>Roll-in T-slot nut, M5</td><td class="num">40</td><td class="num">&euro;10.00</td></tr>
-              <tr><td>Flanged button head M5&times;8</td><td class="num">40</td><td class="num">&euro;9.00</td></tr>
-            </tbody>
-            <tfoot>
-              <tr><td>Total</td><td class="num"></td><td class="num">&euro;75.00</td></tr>
-            </tfoot>
-          </table>
-        </div>
-
-        <div class="tablewrap">
-          <table class="specs">
-            <caption>What lives in it</caption>
-            <thead>
-              <tr><th>Role</th><th>Model</th><th>CPU</th><th>Memory</th><th>Storage</th></tr>
-            </thead>
-            <tbody>
-              <tr><td data-label="Role">K8s node 1</td><td data-label="Model">MINIS FORUM UN1245</td><td data-label="CPU">Core i5-12450H</td><td data-label="Memory">16 GB DDR4</td><td data-label="Storage">512 GB SSD</td></tr>
-              <tr><td data-label="Role">K8s node 2</td><td data-label="Model">Blackview MP-80</td><td data-label="CPU">Intel N97</td><td data-label="Memory">16 GB DDR5</td><td data-label="Storage">512 GB SSD</td></tr>
-              <tr><td data-label="Role">Home Assistant</td><td data-label="Model">BMAX B2 Pro</td><td data-label="CPU">Celeron N4000</td><td data-label="Memory">8 GB DDR4</td><td data-label="Storage">256 GB SSD</td></tr>
-              <tr><td data-label="Role">NAS</td><td data-label="Model">ODROID-H4+</td><td data-label="CPU">Intel N97</td><td data-label="Memory">16 GB DDR5</td><td data-label="Storage">2 &times; 6 TB HDD</td></tr>
-              <tr><td data-label="Role">Router</td><td data-label="Model">UniFi Express 7</td><td class="na" data-label="CPU"></td><td class="na" data-label="Memory"></td><td class="na" data-label="Storage"></td></tr>
-              <tr><td data-label="Role">Switch</td><td data-label="Model">UniFi Flex 2.5G</td><td class="na" data-label="CPU"></td><td class="na" data-label="Memory"></td><td class="na" data-label="Storage"></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+        </g>
+        <g font-family="JetBrains Mono, monospace" font-size="11" fill="#4ca6ff">
+          <text x="125" y="450" text-anchor="middle">220 mm</text>
+          <text x="272" y="232" text-anchor="middle" transform="rotate(-90 272 232)">445 mm</text>
+        </g>
+        <g font-family="JetBrains Mono, monospace" font-size="10" fill="#83858f">
+          <text x="30" y="81" text-anchor="end">10U</text>
+          <text x="30" y="400" text-anchor="end">1U</text>
+          <text x="181" y="20" text-anchor="middle">240 mm deep</text>
+        </g>
+      </svg>
+      <figcaption>Front elevation &middot; 1U = 44.5 mm</figcaption>
+    </figure>
   </section>
 
 </main>
@@ -320,5 +288,32 @@
     </ul>
   </div>
 </footer>
+
+<script>
+(function () {
+  var btn = document.querySelector('.navtoggle');
+  var scrim = document.querySelector('.navscrim');
+  var nav = document.getElementById('navlinks');
+
+  function setOpen(open) {
+    document.body.classList.toggle('nav-open', open);
+    btn.setAttribute('aria-expanded', String(open));
+  }
+
+  btn.addEventListener('click', function () {
+    setOpen(btn.getAttribute('aria-expanded') !== 'true');
+  });
+  scrim.addEventListener('click', function () { setOpen(false); });
+  nav.addEventListener('click', function (e) {
+    if (e.target.closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      btn.focus();
+    }
+  });
+})();
+</script>
 </body>
 </html>
