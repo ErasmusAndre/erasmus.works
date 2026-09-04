@@ -78,6 +78,11 @@ worker:
               items:
                 - key: nextcloud.yaml
                   path: nextcloud.yaml
+          - configMap:
+              name: authentik-blueprint-session-duration
+              items:
+                - key: session-duration.yaml
+                  path: session-duration.yaml
   volumeMounts:
     - name: media
       mountPath: /data

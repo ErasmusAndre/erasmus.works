@@ -1,0 +1,12 @@
+version: 1
+metadata:
+  name: Session duration
+  labels:
+    blueprints.goauthentik.io/instantiate: "true"
+    blueprints.goauthentik.io/description: "GitOps-managed session length for the default authentication flow."
+entries:
+  - model: authentik_stages_user_login.userloginstage
+    identifiers:
+      name: default-authentication-login
+    attrs:
+      session_duration: days=90

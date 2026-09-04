@@ -21,6 +21,10 @@ configMapGenerator:
     namespace: authentik
     files:
       - blueprints/nextcloud.yaml
+  - name: authentik-blueprint-session-duration
+    namespace: authentik
+    files:
+      - blueprints/session-duration.yaml
 resources:
   # Core
   - application.yaml

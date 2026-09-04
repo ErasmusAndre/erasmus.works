@@ -56,6 +56,7 @@ html {
 
 body {
   margin: 0;
+  overflow-x: clip;
   overflow-wrap: break-word;
   background: var(--ink);
   color: var(--paper);
@@ -159,41 +160,29 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 .hero { padding-block: clamp(48px, 8vw, 96px) clamp(56px, 8vw, 104px); }
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.62fr);
-  gap: clamp(32px, 5vw, 72px);
-  align-items: center;
+  justify-items: center;
+  text-align: center;
 }
 .hero h1 { margin-top: 22px; }
 .hero .lede { margin-top: 22px; }
-.logo { width: 100%; max-width: 340px; height: auto; display: block; margin-inline: auto; }
-
-.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
-.btn {
-  font-family: var(--mono);
-  font-size: 0.86rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  padding: 13px 22px;
-  border-radius: 3px;
-  text-decoration: none;
-  border: 1px solid transparent;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+.logo {
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  display: block;
+  margin-bottom: clamp(28px, 4vw, 44px);
 }
-.btn-primary { background: var(--blue); color: #fff; }
-.btn-primary:hover { background: var(--sky); color: #0f1013; }
-.btn-ghost { border-color: var(--line); color: var(--paper); }
-.btn-ghost:hover { border-color: var(--sky); color: var(--sky); }
 
 /* ---------- sections ---------- */
 
 .sec { border-top: 1px solid var(--line); padding-block: clamp(64px, 9vw, 120px); }
 .sec-head {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-  gap: clamp(20px, 4vw, 64px);
-  align-items: end;
+  justify-items: center;
+  text-align: center;
 }
 .sec-head h2 { margin-top: 18px; }
+.sec-head .lede { margin-top: 20px; }
 
 /* ---------- stats ---------- */
 
@@ -230,6 +219,7 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   margin-top: clamp(36px, 5vw, 56px);
   font-family: var(--mono);
@@ -250,38 +240,7 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 
 /* ---------- logo tiles ---------- */
 
-.showcase {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(28px, 6vw, 88px);
-  align-items: start;
-}
-.showcase h2 { margin-top: 18px; }
-
-.note {
-  font-family: var(--mono);
-  font-size: 0.85rem;
-  line-height: 1.75;
-  color: var(--muted);
-  padding-top: clamp(8px, 2vw, 22px);
-}
-.note p { margin: 0 0 18px; max-width: 46ch; }
-.note p:last-child { margin-bottom: 0; }
-
 .tiles { list-style: none; margin: 0; padding: 0; }
-
-/* compact wall, no labels - one mark per cell */
-.tiles-compact {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 22px 16px;
-  max-width: 470px;
-  margin-top: clamp(30px, 4vw, 44px);
-}
-/* height is fixed, width follows each logo's own proportions, so a lockup
-   carrying a wordmark gets the room it needs instead of being letterboxed */
-.tiles-compact .tile-mark { width: auto; height: 54px; max-width: 100%; }
 
 /* labelled wall */
 .tiles-wall {
@@ -318,7 +277,155 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 }
 .tile-role { font-family: var(--mono); font-size: 0.72rem; line-height: 1.45; color: var(--dim); }
 
-.wall-head { margin-top: clamp(48px, 6vw, 76px); font-size: 1.3rem; }
+.wall-head { margin-top: clamp(48px, 6vw, 76px); font-size: 1.3rem; text-align: center; }
+
+/* ---------- carousel ---------- */
+
+/* Modelled on the Junie carousel: slides narrower than the track and snapped to
+   its centre, so the neighbours peek in at both edges, and the live card stands
+   a little larger than the two beside it. Touch swipe, momentum and snapping are
+   the browser's; the JS adds mouse dragging and drives the arrows. */
+
+/* the carousel breaks out of the page column and runs the full width of the
+   viewport, so the cards beside the live one bleed off both edges */
+.carousel {
+  margin-top: clamp(30px, 4vw, 48px);
+  margin-inline: calc(50% - 50vw);
+}
+
+.carousel-track {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(14px, 2vw, 32px);
+  /* the same gutter the page column uses, so the first and last card come to
+     rest in line with the heading above them */
+  padding-inline: clamp(20px, 5vw, 48px);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  cursor: grab;
+  /* the cards scale up to full size, which would otherwise clip at the edges */
+  padding-block: 26px;
+}
+.carousel-track::-webkit-scrollbar { display: none; }
+.carousel-track.is-dragging { scroll-snap-type: none; cursor: grabbing; user-select: none; }
+/* the 700ms settle is right when a card arrives, but during a drag it lags the
+   pointer, which reads as the track sticking */
+.carousel-track.is-dragging .carousel-slide { transition: none; }
+
+.carousel-slide {
+  flex: 0 0 42%;
+  min-width: 0;
+  scroll-snap-align: center;
+  transform: scale(0.87);
+  transform-origin: center;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.carousel-slide.is-current { transform: none; }
+.carousel-slide:not(.is-current) { cursor: pointer; }
+
+.carousel-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: clamp(20px, 2.6vw, 48px);
+  border-radius: clamp(24px, 3.4vw, 48px);
+  background: var(--panel);
+  text-align: center;
+}
+
+.carousel-head { display: flex; flex-direction: column; }
+.carousel-head h3 {
+  font-size: clamp(1.5rem, 2.9vw, 2.2rem);
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+.carousel-head p {
+  margin-top: 16px;
+  margin-inline: auto;
+  max-width: 44ch;
+  color: var(--muted);
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  line-height: 1.5;
+}
+.carousel-head a { color: var(--paper); text-decoration-color: rgba(244, 244, 244, 0.4); text-underline-offset: 4px; }
+.carousel-head a:hover { text-decoration-color: var(--paper); }
+
+/* one panel of the same proportion on every card, pushed to the bottom so the
+   three line up however long the description runs */
+.carousel-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  padding-top: clamp(20px, 3vw, 32px);
+}
+.carousel-media > * {
+  aspect-ratio: 508 / 330;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: clamp(12px, 1.4vw, 16px);
+  background: #1e2022;
+  overflow: hidden;
+}
+/* a single mark over its role, for a card that is about one app */
+.carousel-kind {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+/* the role sits above the name, so the panel below is free for a screenshot */
+.carousel-head .carousel-kind { margin-bottom: 12px; }
+
+/* every card wears its own mark, whether or not it has a screenshot below.
+   Height is fixed and width follows each logo's proportions, so a lockup
+   carrying a wordmark gets the room it needs instead of being letterboxed. */
+.carousel-icon {
+  align-self: center;
+  width: auto;
+  height: clamp(34px, 3.4vw, 46px);
+  max-width: 70%;
+  margin-bottom: clamp(14px, 1.6vw, 20px);
+}
+
+/* a screenshot fills the panel edge to edge */
+.carousel-shot {
+  display: block;
+  -webkit-user-drag: none;
+  user-select: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+
+.carousel-nav {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: clamp(20px, 3vw, 34px);
+}
+.carousel-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: none;
+  color: var(--accent, var(--paper));
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+.carousel-arrow svg { width: 22px; height: 22px; }
+.carousel-arrow:hover:not(:disabled) { border-color: currentColor; }
 
 /* ---------- rack ---------- */
 
@@ -341,11 +448,11 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 }
 
 footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px); }
-.foot-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px; }
+.foot-grid { display: grid; justify-items: center; text-align: center; gap: 30px; }
 .foot-name span { color: var(--dim); }
 .foot-name { font-family: var(--mono); font-weight: 800; font-size: 1.15rem; letter-spacing: -0.04em; }
 .foot-bio { margin-top: 10px; color: var(--dim); max-width: 44ch; font-size: 0.92rem; }
-.foot-links { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-family: var(--mono); font-size: 0.85rem; }
+.foot-links { list-style: none; margin: 0; padding: 0; display: grid; justify-items: center; gap: 10px; font-family: var(--mono); font-size: 0.85rem; }
 .foot-links a { display: inline-block; padding-block: 4px; text-decoration: none; }
 .foot-links a:hover { text-decoration: underline; }
 
@@ -368,7 +475,6 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
 @media (max-width: 880px) {
   /* the hero drops the lockup and the masthead picks up the mark instead, so
      the logo is shown once rather than twice down the top of a phone screen */
-  .hero-grid { grid-template-columns: minmax(0, 1fr); }
   .hero-grid .logo { display: none; }
   .brand-mark { display: block; }
 
@@ -436,8 +542,11 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
   body.nav-open .navscrim { opacity: 1; visibility: visible; }
   body.nav-open { overflow: hidden; }
 
-  .sec-head { grid-template-columns: minmax(0, 1fr); align-items: start; }
-  .showcase { grid-template-columns: minmax(0, 1fr); }
+
+  /* the card stacks and the peek narrows so the text still gets a full column */
+  /* the slide widens as the viewport narrows, so one stays readable while the
+     neighbours still show at the edges */
+  .carousel-slide { flex-basis: 62%; }
   .stat { border-right: 0; border-bottom: 1px solid var(--line); }
 }
 
@@ -445,8 +554,6 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
   .hero { padding-block: 34px 44px; }
   .hero .lede { margin-top: 16px; }
   .lede { font-size: 1rem; }
-  .cta { margin-top: 26px; }
-  .btn { flex: 1 1 auto; text-align: center; }
 
   .sec { padding-block: 54px; }
 
@@ -457,7 +564,10 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
   .stat:nth-last-child(-n + 2) { border-bottom: 0; }
   .stat dd { font-size: 1.5rem; }
 
-  .tiles-compact { max-width: none; gap: 18px; }
+  .carousel-slide { flex-basis: 84%; transform: scale(0.92); }
+  .carousel-track { padding-block: 16px; }
+  .carousel-arrow { width: 46px; height: 46px; }
+
   .tiles-wall { grid-template-columns: repeat(auto-fill, minmax(136px, 1fr)); gap: 24px 12px; }
 
   /* the strip reads top to bottom instead of wrapping mid-arrow */
@@ -474,9 +584,8 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
 
 /* small phones: keep everything inside the viewport without shrinking to fit */
 @media (max-width: 400px) {
-  .tiles-compact { gap: 16px 14px; }
-  .tiles-compact .tile-mark { height: 44px; }
   .tiles-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .carousel-slide { flex-basis: 88%; }
   .stat { padding: 16px 14px; }
   .stat dd { font-size: 1.35rem; }
 }

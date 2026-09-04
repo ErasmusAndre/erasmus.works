@@ -34,50 +34,144 @@
 <main id="top">
   <section class="hero wrap">
     <div class="hero-grid">
-      <div>
-        <p class="eyebrow rise" style="--tick: var(--sky)">Amsterdam &middot; homelab</p>
-        <h1 class="rise">My own cloud.</h1>
-        <p class="lede rise">This is Erasmus.works, where I host my own digital infrastructure. My photos,
-          files, documents and home automation run on a small Kubernetes cluster at home. It sits in a
-          10-inch rack I cut from aluminium extrusion, on mounts I designed and 3D printed myself.</p>
-        <div class="cta rise">
-          <a class="btn btn-primary" href="https://github.com/ErasmusAndre/erasmus.works">The cluster repo</a>
-          <a class="btn btn-ghost" href="https://github.com/ErasmusAndre/mini-rack">The rack build</a>
-        </div>
-      </div>
-      <img class="logo" src="/logo.png" alt="Erasmus Works" width="634" height="415">
+      <img class="logo rise" src="/logo.png" alt="Erasmus Works" width="634" height="415">
+      <p class="eyebrow rise" style="--tick: var(--sky)">Amsterdam &middot; homelab</p>
+      <h1 class="rise">My own cloud.</h1>
+      <p class="lede rise">This is Erasmus.works, where I host my own digital infrastructure. My photos,
+        files, documents and home automation run on a small Kubernetes cluster at home. It sits in a
+        10-inch rack I cut from aluminium extrusion, on mounts I designed and 3D printed myself.</p>
     </div>
   </section>
 
   <section class="sec wrap" id="services">
-    <div class="showcase">
-      <div>
-        <p class="eyebrow" style="--tick: var(--green)">Services</p>
-        <h2>What is actually running.</h2>
-        <ul class="tiles tiles-compact">
-          <li class="tile"><span class="tile-mark m-nextcloud" role="img" aria-label="Nextcloud" title="Nextcloud"></span></li>
-          <li class="tile"><span class="tile-mark m-immich" role="img" aria-label="Immich" title="Immich"></span></li>
-          <li class="tile"><span class="tile-mark m-home-assistant" role="img" aria-label="Home Assistant" title="Home Assistant"></span></li>
-          <li class="tile"><span class="tile-mark m-truenas" role="img" aria-label="TrueNAS" title="TrueNAS"></span></li>
-          <li class="tile"><span class="tile-mark m-authentik" role="img" aria-label="Authentik" title="Authentik"></span></li>
-          <li class="tile"><span class="tile-mark m-homepage" role="img" aria-label="Homepage" title="Homepage"></span></li>
-        </ul>
+    <div class="sec-head">
+      <p class="eyebrow" style="--tick: var(--green)">Services</p>
+      <h2>What is actually running.</h2>
+    </div>
+
+    <div class="carousel" style="--accent: var(--green)">
+      <div class="carousel-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Services">
+        <div class="carousel-slide" role="group" aria-roledescription="slide" style="--accent: var(--violet)">
+          <article class="carousel-card">
+            <header class="carousel-head">
+              <span class="tile-mark carousel-icon m-immich" role="img" aria-label="Immich" title="Immich"></span>
+              <p class="carousel-kind">Photos</p>
+              <h3>Immich</h3>
+              <p>Every photo and video off my phone, backed up to my own disks instead of Google Photos. Face and place search included.</p>
+            </header>
+            <div class="carousel-media">
+              <img class="carousel-shot" src="/shot-immich.webp" alt="My Immich photo library"
+                   width="1016" height="660" loading="lazy" decoding="async">
+            </div>
+          </article>
+        </div>
+
+        <div class="carousel-slide is-current" role="group" aria-roledescription="slide" style="--accent: var(--sky)">
+          <article class="carousel-card">
+            <header class="carousel-head">
+              <span class="tile-mark carousel-icon m-nextcloud" role="img" aria-label="Nextcloud" title="Nextcloud"></span>
+              <p class="carousel-kind">Files</p>
+              <h3>Nextcloud</h3>
+              <p>Files, calendars and contacts syncing across every device I own. This is the one that replaced Dropbox.</p>
+            </header>
+            <div class="carousel-media">
+              <img class="carousel-shot" src="/shot-nextcloud.webp" alt="My Nextcloud files"
+                   width="1016" height="660" loading="lazy" decoding="async">
+            </div>
+          </article>
+        </div>
+
+        <div class="carousel-slide" role="group" aria-roledescription="slide" style="--accent: var(--orange)">
+          <article class="carousel-card">
+            <header class="carousel-head">
+              <span class="tile-mark carousel-icon m-grafana" role="img" aria-label="Grafana" title="Grafana"></span>
+              <p class="carousel-kind">Monitoring</p>
+              <h3>Grafana</h3>
+              <p>Where I actually look when something feels slow: node health, disk pressure, backup runs and certificate expiry.</p>
+            </header>
+            <div class="carousel-media">
+              <img class="carousel-shot" src="/shot-grafana.webp" alt="My Grafana dashboard for the cluster"
+                   width="1016" height="660" loading="lazy" decoding="async">
+            </div>
+          </article>
+        </div>
+
+        <div class="carousel-slide" role="group" aria-roledescription="slide" style="--accent: var(--pink)">
+          <article class="carousel-card">
+            <header class="carousel-head">
+              <span class="tile-mark carousel-icon m-authentik" role="img" aria-label="Authentik" title="Authentik"></span>
+              <p class="carousel-kind">Single sign on</p>
+              <h3>Authentik</h3>
+              <p>Single sign-on for every service here, so none of them keep a password of their own and there is one place to revoke access.</p>
+            </header>
+            <div class="carousel-media">
+              <img class="carousel-shot" src="/shot-authentik.webp" alt="The Authentik application list"
+                   width="1016" height="660" loading="lazy" decoding="async">
+            </div>
+          </article>
+        </div>
+
+        <div class="carousel-slide" role="group" aria-roledescription="slide" style="--accent: var(--blue)">
+          <article class="carousel-card">
+            <header class="carousel-head">
+              <span class="tile-mark carousel-icon m-home-assistant" role="img" aria-label="Home Assistant" title="Home Assistant"></span>
+              <p class="carousel-kind">Home automation</p>
+              <h3>Home Assistant</h3>
+              <p>Lights, sensors and switches, all automated locally. Nothing in the house stops working when the internet does.</p>
+            </header>
+            <div class="carousel-media">
+              <img class="carousel-shot" src="/shot-hass.webp" alt="My Home Assistant dashboard"
+                   width="1016" height="660" loading="lazy" decoding="async">
+            </div>
+          </article>
+        </div>
+
+        <div class="carousel-slide" role="group" aria-roledescription="slide" style="--accent: var(--green)">
+          <article class="carousel-card">
+            <header class="carousel-head">
+              <span class="tile-mark carousel-icon m-truenas" role="img" aria-label="TrueNAS" title="TrueNAS"></span>
+              <p class="carousel-kind">Storage</p>
+              <h3>TrueNAS</h3>
+              <p>The bulk storage sitting behind everything else. ZFS on spinning disks, snapshotted, with the cluster mounting what it needs.</p>
+            </header>
+            <div class="carousel-media">
+              <img class="carousel-shot" src="/shot-truenas.webp" alt="My TrueNAS dashboard"
+                   width="1016" height="660" loading="lazy" decoding="async">
+            </div>
+          </article>
+        </div>
+
+        <div class="carousel-slide" role="group" aria-roledescription="slide" style="--accent: var(--yellow)">
+          <article class="carousel-card">
+            <header class="carousel-head">
+              <span class="tile-mark carousel-icon m-homepage" role="img" aria-label="Homepage" title="Homepage"></span>
+              <p class="carousel-kind">My dashboard</p>
+              <h3>Homepage</h3>
+              <p>One page linking every service above, with a live status light on each, so a glance says whether anything needs me.</p>
+            </header>
+            <div class="carousel-media">
+              <img class="carousel-shot" src="/shot-homepage.webp" alt="My Homepage dashboard"
+                   width="1016" height="660" loading="lazy" decoding="async">
+            </div>
+          </article>
+        </div>
       </div>
-      <div class="note">
-        <p>Photos go to Immich instead of Google Photos. Files go to Nextcloud instead of Dropbox. Notes
-          and documents go to Docmost, and my home runs on Home Assistant.</p>
-        <p>TrueNAS holds the bulk storage behind them. Authentik gives all of them one login, and none of
-          it needs an open port on the router.</p>
+
+      <div class="carousel-nav">
+        <button class="carousel-arrow" type="button" data-step="-1" aria-label="Previous service">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 12H5M11 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="carousel-arrow" type="button" data-step="1" aria-label="Next service">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
   </section>
 
   <section class="sec wrap" id="software">
     <div class="sec-head">
-      <div>
-        <p class="eyebrow" style="--tick: var(--blue)">Software</p>
-        <h2>Every cluster change is a pull request.</h2>
-      </div>
+      <p class="eyebrow" style="--tick: var(--blue)">Software</p>
+      <h2>Every cluster change is a pull request.</h2>
       <p class="lede">Argo CD is the only thing that touches the cluster. Renovate opens the dependency pull
         requests, and merging one is the deploy. Rebuilding a node from bare metal takes a single
         <code>talosctl apply-config</code>. Nothing is applied by hand from a laptop.</p>
@@ -211,10 +305,8 @@
 
   <section class="sec wrap" id="hardware">
     <div class="sec-head">
-      <div>
-        <p class="eyebrow" style="--tick: var(--orange)">Hardware</p>
-        <h2>Ten units, cut from four metres.</h2>
-      </div>
+      <p class="eyebrow" style="--tick: var(--orange)">Hardware</p>
+      <h2>Ten units, cut from four metres.</h2>
       <p class="lede">The rack is 2020 aluminium extrusion, slot 6 throughout: 220&nbsp;mm wide, 240&nbsp;mm deep,
         445&nbsp;mm tall. Twelve pieces come out of four one-metre lengths, with 380&nbsp;mm left over for saw kerf.
         Machines that do not fit a rack get 3D-printed mounts. The models are published as STEP and 3MF under
@@ -313,6 +405,199 @@
       btn.focus();
     }
   });
+})();
+</script>
+
+<script>
+(function () {
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+  Array.prototype.forEach.call(document.querySelectorAll('.carousel'), setup);
+
+  function setup(root) {
+    var track = root.querySelector('.carousel-track');
+    if (!track) return;
+
+    var arrows = Array.prototype.slice.call(root.querySelectorAll('.carousel-arrow'));
+    var nav = root.querySelector('.carousel-nav');
+    var originals = Array.prototype.slice.call(track.querySelectorAll('.carousel-slide'));
+    var real = originals.length;
+
+    var opening = 0;
+    originals.forEach(function (slide, n) {
+      if (slide.classList.contains('is-current')) opening = n;
+    });
+
+    /* The carousel runs forever by holding three copies of the set and living
+       in the middle one. Scroll off either side and it lands on a copy of the
+       card it would have run out at, then the scroll jumps a whole set back to
+       the middle - the content either side is identical, so it never shows. */
+    var lead = document.createDocumentFragment();
+    var trail = document.createDocumentFragment();
+    originals.forEach(function (slide) {
+      lead.appendChild(copy(slide));
+      trail.appendChild(copy(slide));
+    });
+    track.insertBefore(lead, originals[0]);
+    track.appendChild(trail);
+
+    function copy(slide) {
+      var clone = slide.cloneNode(true);
+      clone.classList.remove('is-current');
+      // a copy is scenery: no second entry in the reading order, nothing to tab to
+      clone.setAttribute('aria-hidden', 'true');
+      Array.prototype.forEach.call(clone.querySelectorAll('a'), function (link) {
+        link.tabIndex = -1;
+      });
+      return clone;
+    }
+
+    var all = Array.prototype.slice.call(track.querySelectorAll('.carousel-slide'));
+    var centres = [];
+    var span = 0;
+    var live = real + opening;
+
+    all.forEach(function (slide) { slide.classList.remove('is-current'); });
+    all[live].classList.add('is-current');
+
+    /* Geometry is read once and cached. Reading it per scroll frame instead
+       meant a layout pass for all 21 slides on every frame of a drag, which is
+       what made the track feel like it was catching on something. */
+    function measure() {
+      var box = track.getBoundingClientRect();
+      var at = track.scrollLeft;
+      centres = all.map(function (slide) {
+        var r = slide.getBoundingClientRect();
+        // a scaled-down slide keeps its centre, so this holds either way
+        return at + (r.left - box.left) + r.width / 2;
+      });
+      span = centres[real] - centres[0];
+    }
+
+    function restFor(i) { return centres[i] - track.clientWidth / 2; }
+
+    function current() {
+      var middle = track.scrollLeft + track.clientWidth / 2;
+      var best = 0;
+      var shortest = Infinity;
+      for (var n = 0; n < centres.length; n++) {
+        var away = Math.abs(centres[n] - middle);
+        if (away < shortest) { shortest = away; best = n; }
+      }
+      return best;
+    }
+
+    function mark(i) {
+      if (i === live) return;
+      all[live].classList.remove('is-current');
+      all[i].classList.add('is-current');
+      live = i;
+      // the arrows take the colour of the card they are steering
+      nav.style.setProperty('--accent', getComputedStyle(all[i]).getPropertyValue('--accent'));
+    }
+
+    // step back to the middle copy before moving, so there is always another
+    // card waiting on both sides
+    function go(i) {
+      if (i < real) { track.scrollLeft += span; i += real; }
+      else if (i >= real * 2) { track.scrollLeft -= span; i -= real; }
+      mark(i);
+      track.scrollTo({ left: restFor(i), behavior: still.matches ? 'auto' : 'smooth' });
+    }
+
+    arrows.forEach(function (arrow) {
+      arrow.addEventListener('click', function () { go(live + Number(arrow.dataset.step)); });
+    });
+
+    var pending;
+    var resting;
+    track.addEventListener('scroll', function () {
+      window.cancelAnimationFrame(pending);
+      pending = window.requestAnimationFrame(function () { mark(current()); });
+      // the jump waits for the scroll to stop, so it never fights a swipe
+      window.clearTimeout(resting);
+      resting = window.setTimeout(settle, 140);
+    }, { passive: true });
+
+    function settle() {
+      if (drag) return;
+      var i = current();
+      if (i < real) track.scrollLeft += span;
+      else if (i >= real * 2) track.scrollLeft -= span;
+    }
+
+    /* Touch already scrolls, snaps and carries momentum natively, so only the
+       mouse needs help. The move and release are watched on the window rather
+       than captured on the track: capturing retargets the click that follows to
+       the track itself, which is what stopped a click on a side card working. */
+    var drag = null;
+    var dragged = false;
+
+    track.addEventListener('pointerdown', function (e) {
+      dragged = false;
+      if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('a')) return;
+      drag = { from: e.clientX, at: track.scrollLeft, far: 0, x: e.clientX, t: e.timeStamp, vx: 0 };
+      track.classList.add('is-dragging');
+      window.addEventListener('pointermove', onMove);
+      window.addEventListener('pointerup', onUp);
+      window.addEventListener('pointercancel', onUp);
+    });
+
+    function onMove(e) {
+      if (!drag) return;
+      var by = e.clientX - drag.from;
+      drag.far = Math.max(drag.far, Math.abs(by));
+      var over = e.timeStamp - drag.t;
+      if (over > 0) drag.vx = (e.clientX - drag.x) / over;
+      drag.x = e.clientX;
+      drag.t = e.timeStamp;
+      track.scrollLeft = drag.at - by;
+    }
+
+    function onUp() {
+      if (!drag) return;
+      var flick = drag.vx;
+      dragged = drag.far > 4;
+      drag = null;
+      track.classList.remove('is-dragging');
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointercancel', onUp);
+      if (!dragged) return;
+      // let a flick carry to the next card instead of falling back to the nearest
+      var to = current();
+      if (flick < -0.35) to += 1;
+      else if (flick > 0.35) to -= 1;
+      go(to);
+    }
+
+    track.addEventListener('click', function (e) {
+      // a drag that ends on a card must not also read as a click on it
+      if (dragged) {
+        dragged = false;
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      if (e.target.closest('a')) return;
+      var slide = e.target.closest('.carousel-slide');
+      if (!slide || slide.classList.contains('is-current')) return;
+      go(all.indexOf(slide));
+    });
+
+    track.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { go(live + 1); e.preventDefault(); }
+      if (e.key === 'ArrowLeft') { go(live - 1); e.preventDefault(); }
+    });
+
+    window.addEventListener('resize', function () {
+      measure();
+      track.scrollLeft = restFor(live);
+    });
+
+    measure();
+    track.scrollLeft = restFor(live);
+    nav.style.setProperty('--accent', getComputedStyle(all[live]).getPropertyValue('--accent'));
+  }
 })();
 </script>
 </body>
