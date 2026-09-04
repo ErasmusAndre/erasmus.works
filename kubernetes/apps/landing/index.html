@@ -38,15 +38,17 @@
       <p class="eyebrow rise" style="--tick: var(--sky)">Amsterdam &middot; homelab</p>
       <h1 class="rise">My own cloud.</h1>
       <p class="lede rise">This is Erasmus.works, where I host my own digital infrastructure. My photos,
-        files, documents and home automation run on a small Kubernetes cluster at home. It sits in a
-        10-inch rack I cut from aluminium extrusion, on mounts I designed and 3D printed myself.</p>
+        files, documents and home automation all live here, on machines I own, in a flat in Amsterdam.
+        Everything below is what that actually looks like.</p>
     </div>
   </section>
 
   <section class="sec wrap" id="services">
     <div class="sec-head">
       <p class="eyebrow" style="--tick: var(--green)">Services</p>
-      <h2>What is actually running.</h2>
+      <h2>This is what is running.</h2>
+      <p class="lede">Seven services doing the work I would otherwise rent. Each one replaced something I
+        used to pay a subscription for, or hand my data to.</p>
     </div>
 
     <div class="carousel" style="--accent: var(--green)">
@@ -170,42 +172,13 @@
 
   <section class="sec wrap" id="software">
     <div class="sec-head">
+      <span class="tile-mark sec-mark m-kubernetes" aria-hidden="true"></span>
       <p class="eyebrow" style="--tick: var(--blue)">Software</p>
-      <h2>Every cluster change is a pull request.</h2>
-      <p class="lede">Argo CD is the only thing that touches the cluster. Renovate opens the dependency pull
-        requests, and merging one is the deploy. Rebuilding a node from bare metal takes a single
-        <code>talosctl apply-config</code>. Nothing is applied by hand from a laptop.</p>
-    </div>
-
-    <dl class="stats">
-      <div class="stat">
-        <dt>Nodes</dt>
-        <dd>2<small>Talos Linux, one control plane</small></dd>
-      </div>
-      <div class="stat">
-        <dt>Cloud spend</dt>
-        <dd>&euro;3.35<small>Per month, all in</small></dd>
-      </div>
-      <div class="stat">
-        <dt>Frame cost</dt>
-        <dd>&euro;75<small>10U of 2020 extrusion</small></dd>
-      </div>
-      <div class="stat">
-        <dt>Declared in Git</dt>
-        <dd>100%<small>Apps, infra and machine config</small></dd>
-      </div>
-    </dl>
-
-    <div class="pipeline">
-      <span class="node">GitHub <em>repo</em></span>
-      <span class="arrow"><svg viewBox="0 0 22 10" aria-hidden="true" focusable="false"><path d="M0 5h20M16 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg></span>
-      <span class="node">Argo CD</span>
-      <span class="arrow"><svg viewBox="0 0 22 10" aria-hidden="true" focusable="false"><path d="M0 5h20M16 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg></span>
-      <span class="node">Infrastructure</span>
-      <span class="arrow"><svg viewBox="0 0 22 10" aria-hidden="true" focusable="false"><path d="M0 5h20M16 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg></span>
-      <span class="node">Apps</span>
-      <span class="arrow back"><svg viewBox="0 0 22 10" aria-hidden="true" focusable="false"><path d="M0 5h20M16 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg></span>
-      <span class="node">Cloudflare <em>tunnel</em></span>
+      <h2>All of it runs on Kubernetes.</h2>
+      <p class="lede">Two Talos nodes, one cluster, everything above scheduled onto it. Argo CD is the only
+        thing that touches it: Renovate opens the dependency pull requests, and merging one is the deploy.
+        Rebuilding a node from bare metal takes a single <code>talosctl apply-config</code>. Nothing is
+        applied by hand from a laptop.</p>
     </div>
 
     <h3 class="wall-head">What the cluster is made of.</h3>
@@ -306,9 +279,10 @@
   <section class="sec wrap" id="hardware">
     <div class="sec-head">
       <p class="eyebrow" style="--tick: var(--orange)">Hardware</p>
-      <h2>Ten units, cut from four metres.</h2>
-      <p class="lede">The rack is 2020 aluminium extrusion, slot 6 throughout: 220&nbsp;mm wide, 240&nbsp;mm deep,
-        445&nbsp;mm tall. Twelve pieces come out of four one-metre lengths, with 380&nbsp;mm left over for saw kerf.
+      <h2>And the cluster is hardware I built.</h2>
+      <p class="lede">Ten units, cut from four metres. The rack is 2020 aluminium extrusion, slot 6 throughout:
+        220&nbsp;mm wide, 240&nbsp;mm deep, 445&nbsp;mm tall. Twelve pieces come out of four one-metre lengths,
+        with 380&nbsp;mm left over for saw kerf.
         Machines that do not fit a rack get 3D-printed mounts. The models are published as STEP and 3MF under
         CERN-OHL-S.</p>
     </div>

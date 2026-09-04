@@ -184,60 +184,6 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 .sec-head h2 { margin-top: 18px; }
 .sec-head .lede { margin-top: 20px; }
 
-/* ---------- stats ---------- */
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  overflow: hidden;
-}
-.stat { padding: 26px 24px; border-right: 1px solid var(--line); background: var(--sunk); }
-.stat:last-child { border-right: 0; }
-.stat dt {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-.stat dd {
-  margin: 10px 0 0;
-  font-family: var(--mono);
-  font-weight: 800;
-  font-size: clamp(1.5rem, 2.6vw, 2rem);
-  letter-spacing: -0.04em;
-  font-variant-numeric: tabular-nums;
-  color: var(--paper);
-}
-.stat dd small { display: block; margin-top: 6px; font-family: var(--sans); font-weight: 400; font-size: 0.82rem; letter-spacing: 0; color: var(--dim); }
-
-/* ---------- pipeline ---------- */
-
-.pipeline {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-top: clamp(36px, 5vw, 56px);
-  font-family: var(--mono);
-  font-size: 0.82rem;
-}
-.node {
-  padding: 11px 16px;
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  background: var(--sunk);
-  color: var(--paper);
-  white-space: nowrap;
-}
-.node em { font-style: normal; color: var(--dim); }
-.arrow { display: inline-flex; color: var(--dim); }
-.arrow svg { width: 22px; height: 10px; display: block; }
-.arrow.back svg { transform: scaleX(-1); }
-
 /* ---------- logo tiles ---------- */
 
 .tiles { list-style: none; margin: 0; padding: 0; }
@@ -260,6 +206,15 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
   place-items: center;
 }
 .tiles-wall .tile-mark { margin-bottom: 14px; }
+
+/* the section's own mark: half the hero logo's width at every size.
+   the hero logo is min(100%, 340px), so min(50%, 170px) tracks it exactly.
+   must sit after .tile-mark to override its 46px box. */
+.sec-mark {
+  width: min(50%, 170px);
+  height: auto;
+  margin-bottom: clamp(24px, 3vw, 34px);
+}
 .tile-mark::after {
   content: "";
   position: absolute;
@@ -547,7 +502,6 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
   /* the slide widens as the viewport narrows, so one stays readable while the
      neighbours still show at the edges */
   .carousel-slide { flex-basis: 62%; }
-  .stat { border-right: 0; border-bottom: 1px solid var(--line); }
 }
 
 @media (max-width: 620px) {
@@ -557,25 +511,11 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
 
   .sec { padding-block: 54px; }
 
-  /* stats read as a 2 x 2 block rather than a squashed row */
-  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .stat { padding: 20px 18px; border-right: 1px solid var(--line); }
-  .stat:nth-child(2n) { border-right: 0; }
-  .stat:nth-last-child(-n + 2) { border-bottom: 0; }
-  .stat dd { font-size: 1.5rem; }
-
   .carousel-slide { flex-basis: 84%; transform: scale(0.92); }
   .carousel-track { padding-block: 16px; }
   .carousel-arrow { width: 46px; height: 46px; }
 
   .tiles-wall { grid-template-columns: repeat(auto-fill, minmax(136px, 1fr)); gap: 24px 12px; }
-
-  /* the strip reads top to bottom instead of wrapping mid-arrow */
-  .pipeline { flex-direction: column; align-items: stretch; gap: 7px; font-size: 0.78rem; }
-  .node { padding: 10px 14px; text-align: center; white-space: normal; }
-  .arrow { justify-content: center; }
-  .arrow svg { transform: rotate(90deg); }
-  .arrow.back svg { transform: rotate(90deg) scaleX(-1); }
 
   .rack-figure { padding: 16px; }
 
@@ -586,6 +526,4 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
 @media (max-width: 400px) {
   .tiles-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .carousel-slide { flex-basis: 88%; }
-  .stat { padding: 16px 14px; }
-  .stat dd { font-size: 1.35rem; }
 }
