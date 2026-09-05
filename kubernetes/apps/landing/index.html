@@ -40,14 +40,16 @@
 </script>
 <link rel="preload" href="/JetBrainsMono-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/IBMPlexSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/logo.png" as="image" fetchpriority="high">
 <link rel="stylesheet" href="/style.css">
-<link rel="stylesheet" href="/logos.css">
+<link rel="stylesheet" href="/logos.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="/logos.css"></noscript>
 </head>
 <body>
 <header class="masthead">
   <div class="wrap">
     <a class="brand" href="#top">
-      <span class="brand-slot"><img class="brand-mark" src="/logo-mark.png" alt="" width="456" height="300"></span>
+      <span class="brand-slot"><img class="brand-mark" src="/logo.png" alt="" width="634" height="415"></span>
       <span class="brand-name">Erasmus<span>.works</span></span>
     </a>
     <button class="navtoggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">
@@ -66,7 +68,7 @@
 <main id="top">
   <section class="hero wrap">
     <div class="hero-grid">
-      <img class="logo rise" src="/logo.png" alt="Erasmus Works" width="634" height="415">
+      <img class="logo rise" src="/logo.png" alt="Erasmus Works" width="634" height="415" fetchpriority="high" decoding="async">
       <p class="eyebrow rise" style="--tick: var(--sky)">Amsterdam &middot; homelab</p>
       <h1 class="rise">My own cloud.</h1>
       <p class="lede rise">This is Erasmus.works, where I host my own digital infrastructure. My photos,
@@ -95,7 +97,7 @@
             </header>
             <div class="carousel-media">
               <img class="carousel-shot" src="/shot-immich.webp" alt="My Immich photo library"
-                   width="1016" height="660" loading="lazy" decoding="async">
+                   width="800" height="520" loading="lazy" decoding="async">
             </div>
           </article>
         </div>
@@ -110,7 +112,7 @@
             </header>
             <div class="carousel-media">
               <img class="carousel-shot" src="/shot-nextcloud.webp" alt="My Nextcloud files"
-                   width="1016" height="660" loading="lazy" decoding="async">
+                   width="800" height="520" loading="lazy" decoding="async">
             </div>
           </article>
         </div>
@@ -125,7 +127,7 @@
             </header>
             <div class="carousel-media">
               <img class="carousel-shot" src="/shot-grafana.webp" alt="My Grafana dashboard for the cluster"
-                   width="1016" height="660" loading="lazy" decoding="async">
+                   width="800" height="520" loading="lazy" decoding="async">
             </div>
           </article>
         </div>
@@ -140,7 +142,7 @@
             </header>
             <div class="carousel-media">
               <img class="carousel-shot" src="/shot-authentik.webp" alt="The Authentik application list"
-                   width="1016" height="660" loading="lazy" decoding="async">
+                   width="800" height="520" loading="lazy" decoding="async">
             </div>
           </article>
         </div>
@@ -155,7 +157,7 @@
             </header>
             <div class="carousel-media">
               <img class="carousel-shot" src="/shot-hass.webp" alt="My Home Assistant dashboard"
-                   width="1016" height="660" loading="lazy" decoding="async">
+                   width="800" height="520" loading="lazy" decoding="async">
             </div>
           </article>
         </div>
@@ -170,7 +172,7 @@
             </header>
             <div class="carousel-media">
               <img class="carousel-shot" src="/shot-truenas.webp" alt="My TrueNAS dashboard"
-                   width="1016" height="660" loading="lazy" decoding="async">
+                   width="800" height="520" loading="lazy" decoding="async">
             </div>
           </article>
         </div>
@@ -185,7 +187,7 @@
             </header>
             <div class="carousel-media">
               <img class="carousel-shot" src="/shot-homepage.webp" alt="My Homepage dashboard"
-                   width="1016" height="660" loading="lazy" decoding="async">
+                   width="800" height="520" loading="lazy" decoding="async">
             </div>
           </article>
         </div>

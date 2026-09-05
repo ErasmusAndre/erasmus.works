@@ -12,7 +12,6 @@ configMapGenerator:
       - style.css
       - logos.css
       - logo.png
-      - logo-mark.png
       - favicon.png
       - og.jpg
       - shot-immich.webp

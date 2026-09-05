@@ -82,12 +82,19 @@ h1, h2, h3 {
   font-family: var(--mono);
   font-weight: 800;
   letter-spacing: -0.045em;
+  /* the mono space keeps a full character cell while the negative tracking
+     pulls the letters together, so word gaps end up reading ten times wider
+     than letter gaps. pull the spaces back in to match. */
+  word-spacing: -0.2em;
   line-height: 0.98;
   text-wrap: balance;
   margin: 0;
 }
 
-h1 { font-size: clamp(2.5rem, 7.2vw, 5rem); }
+/* mono sets every glyph on the same advance, so a display-size h1 needs
+   tighter tracking than h2/h3 to stop reading as loose. the tighter tracking
+   also needs less taken off the word gaps than the -0.2em above. */
+h1 { font-size: clamp(2.3rem, 5.6vw, 4rem); letter-spacing: -0.06em; word-spacing: -0.12em; }
 h2 { font-size: clamp(1.9rem, 4.2vw, 3.1rem); }
 h3 { font-size: 1.05rem; letter-spacing: -0.02em; }
 
@@ -447,6 +454,15 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
   /* the sticky bar keeps a solid ground here: backdrop-filter would make it a
      containing block and the fixed drawer would resolve against it, not the viewport */
   .masthead { backdrop-filter: none; background: var(--ink); }
+
+  /* A held-open 62px reads as a gap on a bar this narrow - it looks like an
+     image that failed to load. So on a phone the space is not reserved: the
+     slot widens over the first half of the fade and the mark appears in it
+     over the second. At the top there is no gap, the mark is never caught
+     half-clipped, and both halves are tied to the scroll rather than animated,
+     so the name drifts by about a tenth of a pixel per pixel scrolled. */
+  .brand-slot { width: calc(62px * clamp(0, calc(var(--markfade, 0) * 2), 1)); }
+  .brand-mark { opacity: clamp(0, calc((var(--markfade, 0) - 0.5) * 2), 1); }
 
   /* A phone screen is too short to give the bar 62px permanently, so it moves
      with the scroll: off on the way down, back on the way up, always in step
