@@ -313,65 +313,86 @@
   <section class="sec wrap" id="hardware">
     <div class="sec-head">
       <p class="eyebrow" style="--tick: var(--orange)">Hardware</p>
-      <h2>And the cluster is hardware I built.</h2>
-      <p class="lede">Ten units, cut from four metres. The rack is 2020 aluminium extrusion, slot 6 throughout:
-        220&nbsp;mm wide, 240&nbsp;mm deep, 445&nbsp;mm tall. Twelve pieces come out of four one-metre lengths,
-        with 380&nbsp;mm left over for saw kerf.
-        Machines that do not fit a rack get 3D-printed mounts. The models are published as STEP and 3MF under
-        CERN-OHL-S.</p>
+      <h2>On my own hardware.</h2>
+      <p class="lede">There is no rented server anywhere in this. Everything above runs in ten units of
+        aluminium extrusion standing on my desk, cut to length at home, with 3D-printed trays holding the
+        machines that never came with rack ears. It is never quite finished &mdash; the power module is
+        still to be printed and the bays move around every few months &mdash; so this is where it stands
+        today.</p>
     </div>
 
-    <figure class="rack-figure">
-      <svg viewBox="0 0 300 470" role="img" aria-label="Front elevation of the 10U rack frame: 220 mm wide, 445 mm tall, 240 mm deep, divided into ten 44.5 mm rack units.">
-        <g fill="none" stroke="#83858f" stroke-width="1">
-          <!-- depth ghost -->
-          <g opacity="0.35" stroke-dasharray="3 3">
-            <rect x="96" y="26" width="170" height="344"></rect>
-            <line x1="40" y1="60" x2="96" y2="26"></line>
-            <line x1="210" y1="60" x2="266" y2="26"></line>
-            <line x1="40" y1="404" x2="96" y2="370"></line>
-            <line x1="210" y1="404" x2="266" y2="370"></line>
-          </g>
-          <!-- U divisions -->
-          <g opacity="0.5">
-            <line x1="40" y1="94.4" x2="210" y2="94.4"></line>
-            <line x1="40" y1="128.8" x2="210" y2="128.8"></line>
-            <line x1="40" y1="163.2" x2="210" y2="163.2"></line>
-            <line x1="40" y1="197.6" x2="210" y2="197.6"></line>
-            <line x1="40" y1="232" x2="210" y2="232"></line>
-            <line x1="40" y1="266.4" x2="210" y2="266.4"></line>
-            <line x1="40" y1="300.8" x2="210" y2="300.8"></line>
-            <line x1="40" y1="335.2" x2="210" y2="335.2"></line>
-            <line x1="40" y1="369.6" x2="210" y2="369.6"></line>
-          </g>
-          <!-- frame -->
-          <rect x="40" y="60" width="170" height="344" stroke="#f4f4f4" stroke-width="2"></rect>
-          <!-- uprights -->
-          <line x1="48" y1="60" x2="48" y2="404" stroke="#f4f4f4" stroke-width="2"></line>
-          <line x1="202" y1="60" x2="202" y2="404" stroke="#f4f4f4" stroke-width="2"></line>
-          <!-- dimensions -->
-          <g stroke="#4ca6ff">
-            <line x1="40" y1="430" x2="210" y2="430"></line>
-            <line x1="40" y1="424" x2="40" y2="436"></line>
-            <line x1="210" y1="424" x2="210" y2="436"></line>
-            <line x1="272" y1="60" x2="272" y2="404"></line>
-            <line x1="266" y1="60" x2="278" y2="60"></line>
-            <line x1="266" y1="404" x2="278" y2="404"></line>
-          </g>
-        </g>
-        <g font-family="JetBrains Mono, monospace" font-size="11" fill="#4ca6ff">
-          <text x="125" y="450" text-anchor="middle">220 mm</text>
-          <text x="272" y="232" text-anchor="middle" transform="rotate(-90 272 232)">445 mm</text>
-        </g>
-        <g font-family="JetBrains Mono, monospace" font-size="10" fill="#83858f">
-          <text x="30" y="81" text-anchor="end">10U</text>
-          <text x="30" y="400" text-anchor="end">1U</text>
-          <text x="181" y="20" text-anchor="middle">240 mm deep</text>
-        </g>
-      </svg>
-      <figcaption>Front elevation &middot; 1U = 44.5 mm</figcaption>
-    </figure>
+    <div class="rack" style="--accent: var(--orange)">
+      <figure class="rack-photo">
+        <span class="rack-frame">
+          <img src="/rack.webp" alt="The 10U mini rack: patch panel and router at the top, then a Talos node, the switch,
+               Home Assistant, the NAS with its two hot-swap drives, and the other Talos node at the bottom."
+               width="760" height="1482" loading="lazy" decoding="async">
+          <span class="rack-band" aria-hidden="true"></span>
+        </span>
+        <figcaption>10U on the desk &middot; Amsterdam, August 2026</figcaption>
+      </figure>
+
+      <div class="rack-side">
+        <h3 class="rack-head">What is in it.</h3>
+        <ol class="rack-map">
+          <li class="rack-row" style="--top: 8%; --h: 6.3%">
+            <span class="rack-u">10U</span>
+            <span class="rack-what">Patch panel</span>
+            <span class="rack-note">Twelve keystone ports</span>
+          </li>
+          <li class="rack-row" style="--top: 14.5%; --h: 10.6%">
+            <span class="rack-u">9U</span>
+            <span class="rack-what">Router</span>
+            <span class="rack-note">UniFi Express 7</span>
+          </li>
+          <li class="rack-row" style="--top: 25.5%; --h: 9.7%">
+            <span class="rack-u">8U</span>
+            <span class="rack-what">Node 2 &middot; Talos</span>
+            <span class="rack-note">Blackview MP-80, stripped out of its case onto a printed tray</span>
+          </li>
+          <li class="rack-row" style="--top: 35.4%; --h: 9.4%">
+            <span class="rack-u">7U</span>
+            <span class="rack-what">Switch</span>
+            <span class="rack-note">UniFi Flex 2.5G, eight ports</span>
+          </li>
+          <li class="rack-row" style="--top: 45.3%; --h: 8.3%">
+            <span class="rack-u">6U</span>
+            <span class="rack-what">Home Assistant</span>
+            <span class="rack-note">BMAX B2 Pro, on its own box so the house keeps working</span>
+          </li>
+          <li class="rack-row" style="--top: 54%; --h: 18%">
+            <span class="rack-u">5&ndash;4U</span>
+            <span class="rack-what">NAS</span>
+            <span class="rack-note">ODROID-H4+ &middot; ZFS on the drives below</span>
+          </li>
+          <li class="rack-row" style="--top: 72.5%; --h: 9.5%">
+            <span class="rack-u">3U</span>
+            <span class="rack-what">Disks</span>
+            <span class="rack-note">Two 6 TB drives, hot swappable</span>
+          </li>
+          <li class="rack-row" style="--top: 82%; --h: 12.5%">
+            <span class="rack-u">2&ndash;1U</span>
+            <span class="rack-what">Node 1 &middot; Talos</span>
+            <span class="rack-note">MINISFORUM UN1245 &middot; i5-12450H &middot; 16 GB</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <ul class="rack-specs">
+      <li>10U</li>
+      <li>220 &times; 240 &times; 445 mm</li>
+      <li>2020 extrusion, slot 6</li>
+      <li>&euro;75 in parts</li>
+      <li>3D-printed mounts</li>
+      <li>CERN-OHL-S</li>
+    </ul>
+
+    <p class="rack-cta">
+      <a href="https://github.com/ErasmusAndre/mini-rack">Cut list, parts and the STEP files are public &mdash; build your own</a>
+    </p>
   </section>
+
 
 </main>
 
@@ -732,6 +753,43 @@
   document.addEventListener('bar:pin', pin);
   if (small.addEventListener) small.addEventListener('change', apply);
   apply();
+})();
+</script>
+
+<script>
+/* The rack list and the rack photo are one control: a row's --top/--h move the
+   band on the photo, so pointing at a row dims the picture down to that slot.
+   The list already says everything the band does, so this is decoration only -
+   no tab stops added for it, and on a stacked layout the band is display:none. */
+(function () {
+  var rack = document.querySelector('.rack');
+  if (!rack) return;
+
+  var band = rack.querySelector('.rack-band');
+  var rows = rack.querySelectorAll('.rack-row');
+  var lit = null;
+
+  function light(row) {
+    if (row === lit) return;
+    if (lit) lit.classList.remove('is-lit');
+    lit = row;
+    if (!row) {
+      rack.classList.remove('is-lit');
+      return;
+    }
+    row.classList.add('is-lit');
+    band.style.setProperty('--top', row.style.getPropertyValue('--top'));
+    band.style.setProperty('--h', row.style.getPropertyValue('--h'));
+    rack.classList.add('is-lit');
+  }
+
+  for (var i = 0; i < rows.length; i++) {
+    rows[i].addEventListener('mouseenter', function () { light(this); });
+    /* a tap fires mouseenter but never mouseleave, so let a second tap clear it */
+    rows[i].addEventListener('click', function () { light(this === lit ? null : this); });
+  }
+
+  rack.addEventListener('mouseleave', function () { light(null); });
 })();
 </script>
 </body>

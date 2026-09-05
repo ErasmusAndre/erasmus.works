@@ -407,23 +407,116 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 
 /* ---------- rack ---------- */
 
-.rack-figure {
+/* The photo and the list are one control: hovering a row dims the photo down to
+   that band, so "what is in it" is answered on the picture rather than beside it.
+   The band's position comes from --top/--h on the row, which the script copies
+   onto the band. */
+
+.rack {
+  display: grid;
+  grid-template-columns: minmax(260px, 400px) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 52px);
+  align-items: start;
+  margin-top: clamp(36px, 5vw, 56px);
+}
+
+.rack-photo {
+  margin: 0;
+  padding: 12px;
   background: var(--sunk);
   border: 1px solid var(--line);
   border-radius: 4px;
-  padding: 20px;
-  margin: clamp(36px, 5vw, 56px) auto 0;
-  max-width: 340px;
+  position: sticky;
+  top: 96px;
 }
-.rack-figure svg { width: 100%; height: auto; display: block; }
-.rack-figure figcaption {
-  margin-top: 14px;
+.rack-frame { position: relative; display: block; overflow: hidden; border-radius: 3px; }
+.rack-frame img { width: 100%; height: auto; display: block; }
+.rack-photo figcaption {
+  margin-top: 12px;
   font-family: var(--mono);
   font-size: 0.72rem;
   letter-spacing: 0.06em;
   color: var(--dim);
   text-align: center;
 }
+
+.rack-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--top, 0);
+  height: var(--h, 0);
+  pointer-events: none;
+  opacity: 0;
+  border-block: 1px solid var(--accent);
+  background: rgba(255, 129, 0, 0.12);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  /* the spread is what dims everything outside the band */
+  box-shadow: 0 0 0 2000px rgba(25, 25, 28, 0.66);
+  transition: opacity 0.18s ease,
+              top 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.rack.is-lit .rack-band { opacity: 1; }
+
+.rack-head { margin: 0 0 18px; font-size: 1.3rem; }
+
+.rack-map { list-style: none; margin: 0; padding: 0; }
+.rack-row {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 2px 14px;
+  padding: 13px 12px;
+  border-top: 1px solid var(--line);
+  border-left: 2px solid transparent;
+  transition: background 0.15s ease, border-left-color 0.15s ease;
+}
+.rack-row:last-child { border-bottom: 1px solid var(--line); }
+.rack-row.is-lit { background: var(--sunk); border-left-color: var(--accent); }
+
+.rack-u {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.7;
+  color: var(--dim);
+  transition: color 0.15s ease;
+}
+.rack-row.is-lit .rack-u { color: var(--accent); }
+.rack-what { font-weight: 600; letter-spacing: -0.01em; }
+.rack-note {
+  grid-column: 2;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--dim);
+}
+
+.rack-specs {
+  list-style: none;
+  margin: clamp(30px, 4vw, 44px) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 0;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.rack-specs li { padding-inline: clamp(10px, 1.6vw, 18px); border-right: 1px solid var(--line); }
+.rack-specs li:last-child { border-right: 0; }
+
+.rack-cta { margin-top: 20px; text-align: center; font-family: var(--mono); font-size: 0.85rem; }
+.rack-cta a {
+  display: inline-block;
+  padding-block: 4px;
+  color: var(--paper);
+  text-decoration-color: rgba(244, 244, 244, 0.4);
+  text-underline-offset: 4px;
+}
+.rack-cta a:hover { color: var(--orange); text-decoration-color: currentColor; }
 
 footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px); }
 .foot-grid { display: grid; justify-items: center; text-align: center; gap: 30px; }
@@ -540,6 +633,13 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
   /* the slide widens as the viewport narrows, so one stays readable while the
      neighbours still show at the edges */
   .carousel-slide { flex-basis: 62%; }
+
+  /* stacked, the photo and the list are no longer side by side, so the band
+     would light up off screen - the list carries itself from here down */
+  .rack { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .rack-photo { position: static; max-width: 320px; }
+  .rack-side { width: 100%; }
+  .rack-band { display: none; }
 }
 
 @media (max-width: 620px) {
@@ -557,7 +657,8 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
 
   .tiles-wall { grid-template-columns: repeat(auto-fill, minmax(136px, 1fr)); gap: 24px 12px; }
 
-  .rack-figure { padding: 16px; }
+  .rack-photo { padding: 10px; max-width: 260px; }
+  .rack-row { grid-template-columns: 44px minmax(0, 1fr); padding: 12px 8px; }
 
   .foot-grid { gap: 26px; }
 }

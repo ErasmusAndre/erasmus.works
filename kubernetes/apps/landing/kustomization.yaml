@@ -21,6 +21,7 @@ configMapGenerator:
       - shot-truenas.webp
       - shot-homepage.webp
       - shot-hass.webp
+      - rack.webp
       - JetBrainsMono-Variable.woff2
       - IBMPlexSans-Regular.woff2
       - OFL.txt
