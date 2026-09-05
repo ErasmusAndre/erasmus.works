@@ -3,9 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Erasmus.works is a two-node Talos Kubernetes cluster in a 10-inch rack, built and run at home in Amsterdam. Every change to it goes through Git.">
+<meta name="description" content="Photos, files and home automation, self-hosted on my own hardware. A Kubernetes cluster in a 10-inch rack, 3D-printed mounts, every change in Git.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="theme-color" content="#19191c">
+<link rel="canonical" href="https://erasmus.works/">
 <link rel="icon" type="image/png" href="/favicon.png">
-<title>Erasmus.works</title>
+<title>My own cloud &middot; Open source, self-hosting, 3D printing</title>
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Erasmus.works">
+<meta property="og:url" content="https://erasmus.works/">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="My own cloud &middot; Open source, self-hosting, 3D printing">
+<meta property="og:description" content="Photos, files and home automation, self-hosted on my own hardware. A Kubernetes cluster in a 10-inch rack, 3D-printed mounts, every change in Git.">
+<meta property="og:image" content="https://erasmus.works/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Erasmus Works logo on a dark background.">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Erasmus.works",
+  "url": "https://erasmus.works/",
+  "description": "Photos, files and home automation, self-hosted on my own hardware. A Kubernetes cluster in a 10-inch rack, 3D-printed mounts, every change in Git.",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+    "name": "Andre Erasmus",
+    "url": "https://github.com/ErasmusAndre"
+  }
+}
+</script>
 <link rel="preload" href="/JetBrainsMono-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/IBMPlexSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">
@@ -15,7 +47,7 @@
 <header class="masthead">
   <div class="wrap">
     <a class="brand" href="#top">
-      <img class="brand-mark" src="/logo-mark.png" alt="" width="456" height="300">
+      <span class="brand-slot"><img class="brand-mark" src="/logo-mark.png" alt="" width="456" height="300"></span>
       <span class="brand-name">Erasmus<span>.works</span></span>
     </a>
     <button class="navtoggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">
@@ -38,7 +70,7 @@
       <p class="eyebrow rise" style="--tick: var(--sky)">Amsterdam &middot; homelab</p>
       <h1 class="rise">My own cloud.</h1>
       <p class="lede rise">This is Erasmus.works, where I host my own digital infrastructure. My photos,
-        files, documents and home automation all live here, on machines I own, in a flat in Amsterdam.
+        files, documents and home automation all live here, on my own hardware.
         Everything below is what that actually looks like.</p>
     </div>
   </section>
@@ -363,6 +395,8 @@
 
   function setOpen(open) {
     document.body.classList.toggle('nav-open', open);
+    /* the toggle lives in the bar, so the bar cannot be away while it is used */
+    if (open) document.body.classList.remove('bar-away');
     btn.setAttribute('aria-expanded', String(open));
   }
 
@@ -572,6 +606,124 @@
     track.scrollLeft = restFor(live);
     nav.style.setProperty('--accent', getComputedStyle(all[live]).getPropertyValue('--accent'));
   }
+})();
+</script>
+
+<script>
+/* The bar's mark fades up in step with the hero lockup going behind the bar:
+   0 while the lockup is fully in view, 1 once it has passed. Opacity is the
+   only thing that changes, so nothing moves and there is no threshold to
+   flip back and forth on. */
+(function () {
+  var logo = document.querySelector('.hero-grid .logo');
+  var hero = document.querySelector('.hero');
+  var bar = document.querySelector('.masthead');
+  var root = document.documentElement;
+  if (!logo || !hero || !bar) return;
+
+  var from = 0, span = 1, last = -1, queued = false, ramped = false;
+
+  function measure() {
+    var y = window.pageYOffset, lip = bar.offsetHeight;
+    ramped = logo.getBoundingClientRect().height > 0;
+    /* the fade begins as the lockup meets the bar and is only complete once
+       the whole hero has gone behind it, so the mark is fully in exactly when
+       "My own cloud." is behind the reader */
+    from = logo.getBoundingClientRect().top + y - lip;
+    var to = hero.getBoundingClientRect().bottom + y - lip;
+    span = Math.max(1, to - from);
+  }
+
+  function draw() {
+    queued = false;
+    var p = (window.pageYOffset - from) / span;
+    p = p < 0 ? 0 : p > 1 ? 1 : p;
+    /* a hundred steps is smoother than the eye can follow and keeps the
+       style writes down to one per percent of the ramp */
+    p = Math.round(p * 100) / 100;
+    if (p === last) return;
+    last = p;
+    root.style.setProperty('--markfade', String(p));
+  }
+
+  function onScroll() {
+    if (queued) return;
+    queued = true;
+    window.requestAnimationFrame(draw);
+  }
+
+  function apply() {
+    window.removeEventListener('scroll', onScroll);
+    measure();
+    last = -1;
+    /* with no lockup on screen there is nothing to trade places with, so the
+       bar simply keeps its mark */
+    if (!ramped) {
+      root.style.setProperty('--markfade', '1');
+      return;
+    }
+    draw();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  var resizing;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizing);
+    resizing = setTimeout(apply, 150);
+  });
+  /* the lockup sets the length of the ramp, so wait for its real height */
+  if (logo.complete) apply();
+  else logo.addEventListener('load', apply);
+  window.addEventListener('load', apply);
+})();
+</script>
+
+<script>
+/* On a phone the bar hides on the way down and returns on the way up. By the
+   time it can hide, the hero has gone and the mark has faded in, so what comes
+   back is the full lockup. Desktop keeps the bar in place. */
+(function () {
+  var bar = document.querySelector('.masthead');
+  var body = document.body;
+  if (!bar) return;
+
+  var small = window.matchMedia('(max-width: 880px)');
+  var STEP = 6;
+  var lastY = window.pageYOffset, queued = false;
+
+  function draw() {
+    queued = false;
+    var y = window.pageYOffset;
+    var moved = y - lastY;
+    /* let small movements accumulate rather than acting on every wobble */
+    if (moved > -STEP && moved < STEP) return;
+    lastY = y;
+
+    /* near the top there is nothing to reclaim, and an open drawer needs its
+       toggle, so the bar stays put in both cases */
+    if (y <= bar.offsetHeight * 2 || body.classList.contains('nav-open')) {
+      body.classList.remove('bar-away');
+      return;
+    }
+    body.classList.toggle('bar-away', moved > 0);
+  }
+
+  function onScroll() {
+    if (queued) return;
+    queued = true;
+    window.requestAnimationFrame(draw);
+  }
+
+  function apply() {
+    window.removeEventListener('scroll', onScroll);
+    body.classList.remove('bar-away');
+    lastY = window.pageYOffset;
+    if (!small.matches) return;
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  if (small.addEventListener) small.addEventListener('change', apply);
+  apply();
 })();
 </script>
 </body>

@@ -7,11 +7,14 @@ configMapGenerator:
   - name: landing-content
     files:
       - index.html
+      - robots.txt
+      - sitemap.xml
       - style.css
       - logos.css
       - logo.png
       - logo-mark.png
       - favicon.png
+      - og.jpg
       - shot-immich.webp
       - shot-nextcloud.webp
       - shot-authentik.webp

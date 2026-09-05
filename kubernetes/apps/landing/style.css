@@ -136,7 +136,7 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0;
   font-family: var(--mono);
   font-weight: 700;
   font-size: 0.95rem;
@@ -150,8 +150,23 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 .navlinks a { display: flex; align-items: center; color: var(--muted); text-decoration: none; }
 .navlinks a:hover { color: var(--sky); }
 
-/* the mark and the menu button are mobile only - see the 880px breakpoint */
-.brand-mark { display: none; height: 40px; width: auto; }
+/* The slot holds the mark's space open from the start, so the name sits where
+   it will always sit and never moves. The mark then fades up in that space in
+   step with the scroll: --markfade tracks how much of the hero lockup has gone
+   behind the bar, so the two trade places gradually. Opacity only - no motion,
+   no layout, and no threshold to flicker on. */
+.brand-slot {
+  display: block;
+  flex: none;
+  width: 62px;
+}
+.brand-mark {
+  display: block;
+  height: 34px;
+  width: auto;
+  margin-right: 10px;
+  opacity: var(--markfade, 0);
+}
 .navtoggle { display: none; }
 .navscrim { display: none; }
 
@@ -428,14 +443,20 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
 /* ---------- responsive ---------- */
 
 @media (max-width: 880px) {
-  /* the hero drops the lockup and the masthead picks up the mark instead, so
-     the logo is shown once rather than twice down the top of a phone screen */
-  .hero-grid .logo { display: none; }
-  .brand-mark { display: block; }
-
   /* the sticky bar keeps a solid ground here: backdrop-filter would make it a
      containing block and the fixed drawer would resolve against it, not the viewport */
-  .masthead { backdrop-filter: none; background: var(--ink); }
+  .masthead { backdrop-filter: none; background: var(--ink); transition: transform 0.28s ease; }
+
+  /* a phone screen is too short to give the bar 62px permanently, so it gets
+     out of the way going down and comes back on the way up - by which point
+     the mark has faded in, so it returns as the full lockup.
+     no will-change: transform here - it would make the bar a containing block
+     for the fixed drawer, exactly as backdrop-filter would. */
+  body.bar-away .masthead { transform: translateY(-100%); }
+
+  /* and while the drawer is open the bar must carry no transform at all, not
+     even a transitioning one, or the drawer resolves against it mid-slide */
+  body.nav-open .masthead { transform: none; transition: none; }
 
   .navtoggle {
     display: inline-flex;
@@ -507,6 +528,8 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
 @media (max-width: 620px) {
   .hero { padding-block: 34px 44px; }
   .hero .lede { margin-top: 16px; }
+  /* the lockup has to share the first screen with the headline here */
+  .logo { max-width: 230px; margin-bottom: clamp(20px, 5vw, 28px); }
   .lede { font-size: 1rem; }
 
   .sec { padding-block: 54px; }

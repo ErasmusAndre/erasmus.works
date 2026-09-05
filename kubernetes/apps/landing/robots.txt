@@ -1,0 +1,7 @@
+# https://erasmus.works/robots.txt
+# Everything here is public and meant to be read. Crawl it.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://erasmus.works/sitemap.xml
