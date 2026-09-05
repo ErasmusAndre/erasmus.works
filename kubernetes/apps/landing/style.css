@@ -75,7 +75,9 @@ body {
 }
 
 a { color: var(--sky); text-decoration-color: rgba(76, 166, 255, 0.4); text-underline-offset: 3px; }
-a:hover { color: var(--paper); text-decoration-color: var(--paper); }
+/* Touch browsers latch :hover onto whatever was tapped last and hold it until
+   something else is tapped, so every hover state here is gated on a real pointer. */
+@media (hover: hover) { a:hover { color: var(--paper); text-decoration-color: var(--paper); } }
 :focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; }
 
 h1, h2, h3 {
@@ -155,7 +157,7 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 
 .navlinks { display: flex; align-items: stretch; gap: clamp(14px, 3vw, 32px); font-family: var(--mono); font-size: 0.82rem; }
 .navlinks a { display: flex; align-items: center; color: var(--muted); text-decoration: none; }
-.navlinks a:hover { color: var(--sky); }
+@media (hover: hover) { .navlinks a:hover { color: var(--sky); } }
 
 /* The slot holds the mark's space open from the start, so the name sits where
    it will always sit and never moves. The mark then fades up in that space in
@@ -328,7 +330,7 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
   line-height: 1.5;
 }
 .carousel-head a { color: var(--paper); text-decoration-color: rgba(244, 244, 244, 0.4); text-underline-offset: 4px; }
-.carousel-head a:hover { text-decoration-color: var(--paper); }
+@media (hover: hover) { .carousel-head a:hover { text-decoration-color: var(--paper); } }
 
 /* one panel of the same proportion on every card, pushed to the bottom so the
    three line up however long the description runs */
@@ -403,7 +405,7 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
   transition: border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
 }
 .carousel-arrow svg { width: 22px; height: 22px; }
-.carousel-arrow:hover:not(:disabled) { border-color: currentColor; }
+@media (hover: hover) { .carousel-arrow:hover:not(:disabled) { border-color: currentColor; } }
 
 /* ---------- rack ---------- */
 
@@ -555,7 +557,7 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
   text-decoration-color: rgba(244, 244, 244, 0.4);
   text-underline-offset: 4px;
 }
-.rack-cta a:hover { color: var(--orange); text-decoration-color: currentColor; }
+@media (hover: hover) { .rack-cta a:hover { color: var(--orange); text-decoration-color: currentColor; } }
 
 /* ---------- sources ---------- */
 
@@ -597,12 +599,12 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 
 .panel h3 { font-size: clamp(1.5rem, 2.9vw, 2.2rem); letter-spacing: -0.04em; line-height: 1.05; }
 .panel-name { color: inherit; text-decoration: none; }
-.panel-name:hover { color: var(--accent); }
+@media (hover: hover) { .panel-name:hover { color: var(--accent); } }
 .panel-what { margin-top: 16px; max-width: 44ch; color: var(--muted); font-size: clamp(0.9rem, 1.1vw, 1rem); line-height: 1.55; }
 
 .panel-go { margin-top: 20px; font-family: var(--mono); font-size: 0.8rem; }
 .panel-go a { color: var(--paper); text-decoration-color: rgba(244, 244, 244, 0.35); text-underline-offset: 4px; }
-.panel-go a:hover { color: var(--accent); text-decoration-color: currentColor; }
+@media (hover: hover) { .panel-go a:hover { color: var(--accent); text-decoration-color: currentColor; } }
 
 /* The shot is wider than the space it is given and anchored left, so its right
    edge runs past the panel and gets clipped. Only the far edge of the GitHub
@@ -616,7 +618,7 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 }
 .panel-shotlink { display: block; }
 .panel-shot img { display: block; width: 112%; max-width: none; height: auto; transition: opacity 0.15s ease; }
-.panel-shotlink:hover img { opacity: 0.82; }
+@media (hover: hover) { .panel-shotlink:hover img { opacity: 0.82; } }
 
 .source-facts {
   list-style: none;
@@ -647,11 +649,13 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
   text-decoration: none;
   transition: color 0.15s ease, border-color 0.15s ease;
 }
-.source-star:hover { color: var(--yellow); border-color: var(--yellow); }
 .source-star-mark { width: 12px; height: 12px; flex: none; }
-.source-star:hover .source-star-mark { fill: var(--yellow); }
 .source-star-count { padding-left: 8px; border-left: 1px solid var(--line); }
-.source-star:hover .source-star-count { border-left-color: var(--yellow); }
+@media (hover: hover) {
+  .source-star:hover { color: var(--yellow); border-color: var(--yellow); }
+  .source-star:hover .source-star-mark { fill: var(--yellow); }
+  .source-star:hover .source-star-count { border-left-color: var(--yellow); }
+}
 /* the flex above would otherwise beat [hidden] and leave an empty divider */
 .source-star-count[hidden] { display: none; }
 
@@ -663,7 +667,7 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
   text-decoration-color: rgba(244, 244, 244, 0.4);
   text-underline-offset: 4px;
 }
-.repo-cta a:hover { color: var(--violet); text-decoration-color: currentColor; }
+@media (hover: hover) { .repo-cta a:hover { color: var(--violet); text-decoration-color: currentColor; } }
 
 footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px); }
 .foot-grid { display: grid; justify-items: center; text-align: center; gap: 30px; }
@@ -672,7 +676,7 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
 .foot-bio { margin-top: 10px; color: var(--dim); max-width: 44ch; font-size: 0.92rem; }
 .foot-links { list-style: none; margin: 0; padding: 0; display: grid; justify-items: center; gap: 10px; font-family: var(--mono); font-size: 0.85rem; }
 .foot-links a { display: inline-block; padding-block: 4px; text-decoration: none; }
-.foot-links a:hover { text-decoration: underline; }
+@media (hover: hover) { .foot-links a:hover { text-decoration: underline; } }
 
 /* ---------- motion ---------- */
 
