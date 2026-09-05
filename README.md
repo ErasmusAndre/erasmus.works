@@ -151,3 +151,7 @@ This cluster currently runs on two small-form-factor nodes.
 - [Garage Notes](docs/garage.md)
 - [Linux Init Notes](linux/init.md)
 - [Renovate Config](renovate.json)
+
+---
+
+Star ⭐ this repo if you found it useful.
