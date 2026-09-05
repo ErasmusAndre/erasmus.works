@@ -765,14 +765,34 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
   .carousel-track { padding-block: 16px; }
   .carousel-arrow { width: 46px; height: 46px; }
 
-  .tiles-wall { grid-template-columns: repeat(auto-fill, minmax(136px, 1fr)); gap: 24px 12px; }
+  /* stacked tiles cost ~120px a row, and 18 of them make the wall three phone
+     screens tall. The row form keeps every name and role, at about half that. */
+  .tiles-wall { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px 10px; }
+  .tiles-wall .tile {
+    grid-template-columns: 26px minmax(0, 1fr);
+    column-gap: 8px;
+    align-items: start;
+  }
+  .tiles-wall .tile-mark { width: 26px; height: 26px; margin-bottom: 0; grid-row: span 2; }
+  .tile-name { font-size: 0.78rem; }
+  .tile-role { font-size: 0.66rem; line-height: 1.35; }
 
   /* the full repo URL is one character too wide to hold a single line here */
   .panel-go { font-size: 0.72rem; }
   .panel { padding: clamp(22px, 5vw, 30px); }
 
   .rack-photo { padding: 10px; max-width: 260px; }
-  .rack-row { grid-template-columns: 44px minmax(0, 1fr); padding: 12px 8px; }
+  /* the same squeeze as the tile wall: a narrower U cell, less padding and a
+     tighter note, so eight rows read as a list rather than a second screen */
+  .rack-head { margin-bottom: 12px; }
+  .rack-row {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 1px 10px;
+    padding: 9px 6px;
+  }
+  .rack-u { font-size: 0.68rem; line-height: 1.5; }
+  .rack-what { font-size: 0.94rem; line-height: 1.3; }
+  .rack-note { font-size: 0.66rem; line-height: 1.35; }
 
   .foot-grid { gap: 26px; }
 }
