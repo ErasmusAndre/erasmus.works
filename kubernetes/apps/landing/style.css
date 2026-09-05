@@ -518,6 +518,112 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 }
 .rack-cta a:hover { color: var(--orange); text-decoration-color: currentColor; }
 
+/* ---------- sources ---------- */
+
+/* Two repos will not fill a carousel - that pattern wants three or more before
+   the peeking neighbours mean anything. This is the TeamCity feature-row layout
+   instead: one full-width panel per repo, text held left, the screenshot running
+   off the right edge so the panel reads as a window onto the page rather than a
+   framed thumbnail. */
+
+.panels { list-style: none; margin: clamp(36px, 5vw, 56px) 0 0; padding: 0; display: grid; gap: clamp(14px, 1.8vw, 22px); }
+
+.panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  align-items: center;
+  gap: clamp(24px, 3vw, 44px);
+  padding: clamp(28px, 3.6vw, 52px);
+  /* no padding on the right: the screenshot is meant to reach the edge */
+  padding-right: 0;
+  border-radius: clamp(22px, 2.6vw, 32px);
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.panel-kind {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.panel-mark { width: 18px; height: 18px; flex: none; color: var(--paper); }
+.panel-mark svg { width: 100%; height: 100%; display: block; }
+
+.panel h3 { font-size: clamp(1.5rem, 2.9vw, 2.2rem); letter-spacing: -0.04em; line-height: 1.05; }
+.panel-what { margin-top: 16px; max-width: 44ch; color: var(--muted); font-size: clamp(0.9rem, 1.1vw, 1rem); line-height: 1.55; }
+
+.panel-go { margin-top: 20px; font-family: var(--mono); font-size: 0.8rem; }
+.panel-go a { color: var(--paper); text-decoration-color: rgba(244, 244, 244, 0.35); text-underline-offset: 4px; }
+.panel-go a:hover { color: var(--accent); text-decoration-color: currentColor; }
+
+/* The shot is wider than the space it is given and anchored left, so its right
+   edge runs past the panel and gets clipped. Only the far edge of the GitHub
+   sidebar is lost, and the panel stops looking like a framed thumbnail. */
+.panel-shot {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 0;
+  border-radius: clamp(10px, 1.2vw, 14px) 0 0 clamp(10px, 1.2vw, 14px);
+  background: #1e2022;
+  overflow: hidden;
+}
+.panel-shotlink { display: block; }
+.panel-shot img { display: block; width: 112%; max-width: none; height: auto; transition: opacity 0.15s ease; }
+.panel-shotlink:hover img { opacity: 0.82; }
+
+.source-facts {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.source-facts > li { padding: 4px 9px; border: 1px solid var(--line); border-radius: 2px; }
+/* the star sits in the chip row but is a link, so it carries its own box */
+.source-starwrap { padding: 0 !important; border: 0 !important; }
+
+.source-star {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: var(--dim);
+  text-decoration: none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.source-star:hover { color: var(--yellow); border-color: var(--yellow); }
+.source-star-mark { width: 12px; height: 12px; flex: none; }
+.source-star:hover .source-star-mark { fill: var(--yellow); }
+.source-star-count { padding-left: 8px; border-left: 1px solid var(--line); }
+.source-star:hover .source-star-count { border-left-color: var(--yellow); }
+/* the flex above would otherwise beat [hidden] and leave an empty divider */
+.source-star-count[hidden] { display: none; }
+
+.repo-cta { margin-top: clamp(26px, 3vw, 36px); text-align: center; font-family: var(--mono); font-size: 0.85rem; }
+.repo-cta a {
+  display: inline-block;
+  padding-block: 4px;
+  color: var(--paper);
+  text-decoration-color: rgba(244, 244, 244, 0.4);
+  text-underline-offset: 4px;
+}
+.repo-cta a:hover { color: var(--violet); text-decoration-color: currentColor; }
+
 footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px); }
 .foot-grid { display: grid; justify-items: center; text-align: center; gap: 30px; }
 .foot-name span { color: var(--dim); }
@@ -629,6 +735,10 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
   body.nav-open { overflow: hidden; }
 
 
+  .panel { grid-template-columns: minmax(0, 1fr); padding-right: clamp(28px, 3.6vw, 52px); gap: clamp(22px, 3vw, 30px); }
+  .panel-shot { border-right: 1px solid rgba(255, 255, 255, 0.1); border-radius: clamp(10px, 1.2vw, 14px); }
+  .panel-shot img { width: 100%; }
+
   /* the card stacks and the peek narrows so the text still gets a full column */
   /* the slide widens as the viewport narrows, so one stays readable while the
      neighbours still show at the edges */
@@ -656,6 +766,10 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
   .carousel-arrow { width: 46px; height: 46px; }
 
   .tiles-wall { grid-template-columns: repeat(auto-fill, minmax(136px, 1fr)); gap: 24px 12px; }
+
+  /* the full repo URL is one character too wide to hold a single line here */
+  .panel-go { font-size: 0.72rem; }
+  .panel { padding: clamp(22px, 5vw, 30px); }
 
   .rack-photo { padding: 10px; max-width: 260px; }
   .rack-row { grid-template-columns: 44px minmax(0, 1fr); padding: 12px 8px; }
