@@ -14,6 +14,11 @@ configMapGenerator:
       - logo.png
       - favicon.png
       - og.jpg
+      - JetBrainsMono-Variable.woff2
+      - IBMPlexSans-Regular.woff2
+      - OFL.txt
+  - name: landing-shots
+    files:
       - shot-immich.webp
       - shot-nextcloud.webp
       - shot-authentik.webp
@@ -24,9 +29,6 @@ configMapGenerator:
       - rack.webp
       - shot-repo-works.webp
       - shot-repo-rack.webp
-      - JetBrainsMono-Variable.woff2
-      - IBMPlexSans-Regular.woff2
-      - OFL.txt
 resources:
   - app.yaml
   - backendtrafficpolicy.yaml

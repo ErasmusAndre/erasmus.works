@@ -49,8 +49,12 @@ spec:
               mountPath: /tmp
       volumes:
         - name: content
-          configMap:
-            name: landing-content
+          projected:
+            sources:
+              - configMap:
+                  name: landing-content
+              - configMap:
+                  name: landing-shots
         - name: tmp
           emptyDir: {}
 ---
