@@ -167,6 +167,7 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
   margin-right: 10px;
   opacity: var(--markfade, 0);
 }
+/* the menu button and its scrim are mobile only - see the 880px breakpoint */
 .navtoggle { display: none; }
 .navscrim { display: none; }
 
@@ -445,18 +446,18 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
 @media (max-width: 880px) {
   /* the sticky bar keeps a solid ground here: backdrop-filter would make it a
      containing block and the fixed drawer would resolve against it, not the viewport */
-  .masthead { backdrop-filter: none; background: var(--ink); transition: transform 0.28s ease; }
+  .masthead { backdrop-filter: none; background: var(--ink); }
 
-  /* a phone screen is too short to give the bar 62px permanently, so it gets
-     out of the way going down and comes back on the way up - by which point
-     the mark has faded in, so it returns as the full lockup.
-     no will-change: transform here - it would make the bar a containing block
-     for the fixed drawer, exactly as backdrop-filter would. */
-  body.bar-away .masthead { transform: translateY(-100%); }
+  /* A phone screen is too short to give the bar 62px permanently, so it moves
+     with the scroll: off on the way down, back on the way up, always in step
+     with the finger rather than animating on a threshold. The offset is set
+     inline by the script - no transition here, it would lag the scroll, and no
+     will-change: transform, which would make the bar a containing block for
+     the fixed drawer exactly as backdrop-filter would.
 
-  /* and while the drawer is open the bar must carry no transform at all, not
-     even a transitioning one, or the drawer resolves against it mid-slide */
-  body.nav-open .masthead { transform: none; transition: none; }
+     The drawer is the reason for the !important: while it is open the bar must
+     carry no transform at all, and this has to beat the inline one. */
+  body.nav-open .masthead { transform: none !important; }
 
   .navtoggle {
     display: inline-flex;

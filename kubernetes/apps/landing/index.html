@@ -395,8 +395,8 @@
 
   function setOpen(open) {
     document.body.classList.toggle('nav-open', open);
-    /* the toggle lives in the bar, so the bar cannot be away while it is used */
-    if (open) document.body.classList.remove('bar-away');
+    /* the toggle lives in the bar, so the bar has to be fully in place to use it */
+    if (open) document.dispatchEvent(new CustomEvent('bar:pin'));
     btn.setAttribute('aria-expanded', String(open));
   }
 
@@ -679,33 +679,33 @@
 </script>
 
 <script>
-/* On a phone the bar hides on the way down and returns on the way up. By the
-   time it can hide, the hero has gone and the mark has faded in, so what comes
+/* On a phone the bar moves with the scroll rather than snapping: every pixel
+   down slides it up by one until it is gone, every pixel up brings it back.
+   Nothing animates on a threshold, so it never pulls the eye. By the time it
+   can be off screen the hero has gone and the mark has faded in, so what comes
    back is the full lockup. Desktop keeps the bar in place. */
 (function () {
   var bar = document.querySelector('.masthead');
-  var body = document.body;
   if (!bar) return;
 
   var small = window.matchMedia('(max-width: 880px)');
-  var STEP = 6;
-  var lastY = window.pageYOffset, queued = false;
+  var lastY = Math.max(0, window.pageYOffset);
+  var offset = 0, queued = false;
 
   function draw() {
     queued = false;
-    var y = window.pageYOffset;
+    var y = Math.max(0, window.pageYOffset);
     var moved = y - lastY;
-    /* let small movements accumulate rather than acting on every wobble */
-    if (moved > -STEP && moved < STEP) return;
     lastY = y;
 
-    /* near the top there is nothing to reclaim, and an open drawer needs its
-       toggle, so the bar stays put in both cases */
-    if (y <= bar.offsetHeight * 2 || body.classList.contains('nav-open')) {
-      body.classList.remove('bar-away');
-      return;
-    }
-    body.classList.toggle('bar-away', moved > 0);
+    var limit = bar.offsetHeight;
+    offset += moved;
+    if (offset < 0) offset = 0;
+    else if (offset > limit) offset = limit;
+
+    /* cleared rather than zeroed, so a settled bar carries no transform and
+       cannot act as a containing block for the drawer inside it */
+    bar.style.transform = offset ? 'translateY(' + -offset + 'px)' : '';
   }
 
   function onScroll() {
@@ -714,14 +714,20 @@
     window.requestAnimationFrame(draw);
   }
 
+  function pin() {
+    offset = 0;
+    lastY = Math.max(0, window.pageYOffset);
+    bar.style.transform = '';
+  }
+
   function apply() {
     window.removeEventListener('scroll', onScroll);
-    body.classList.remove('bar-away');
-    lastY = window.pageYOffset;
+    pin();
     if (!small.matches) return;
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
+  document.addEventListener('bar:pin', pin);
   if (small.addEventListener) small.addEventListener('change', apply);
   apply();
 })();
