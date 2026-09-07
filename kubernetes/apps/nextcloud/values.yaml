@@ -5,6 +5,18 @@ nextcloud:
     secretName: nextcloud-admin
     usernameKey: nextcloud-username
     passwordKey: nextcloud-password
+    smtpHostKey: smtp-host
+    smtpUsernameKey: smtp-username
+    smtpPasswordKey: smtp-password
+  mail:
+    enabled: true
+    fromAddress: notifications
+    domain: erasmus.works
+    smtp:
+      host: mail-eu.smtp2go.com
+      secure: tls
+      port: 587
+      authtype: LOGIN
   trustedDomains:
     - nextcloud.erasmus.works
     - nextcloud.homelab
@@ -32,7 +44,7 @@ nextcloud:
     reverse-proxy.config.php: true
     redis.config.php: true
     autoconfig.php: true
-    smtp.config.php: false
+    smtp.config.php: true
     s3.config.php: false
     swift.config.php: false
   phpConfigs:
