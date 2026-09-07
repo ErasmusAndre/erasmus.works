@@ -132,7 +132,7 @@ spec:
             - name: SMTP_SECURE
               value: "false"
             - name: SMTP_FROM_ADDRESS
-              value: notifications@erasmus.works
+              value: no-reply@erasmus.works
             - name: SMTP_FROM_NAME
               value: Docmost Restore Drill
           ports:
