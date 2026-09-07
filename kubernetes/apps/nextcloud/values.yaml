@@ -10,7 +10,7 @@ nextcloud:
     smtpPasswordKey: smtp-password
   mail:
     enabled: true
-    fromAddress: admin
+    fromAddress: no-reply
     domain: erasmus.works
     smtp:
       host: mail-eu.smtp2go.com
