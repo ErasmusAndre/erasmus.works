@@ -27,6 +27,12 @@
       "platformAutomerge": false
     },
     {
+      "description": "Track Euro-Office v-prefixed tags and treat -hotfix.N as a build component",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/euro-office/documentserver"],
+      "versioning": "regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:-hotfix\\.(?<build>\\d+))?$"
+    },
+    {
       "description": "Normalize Talos image-factory installer names",
       "matchDatasources": ["docker"],
       "matchPackageNames": ["/factory\\.talos\\.dev\\/installer\\//"],
