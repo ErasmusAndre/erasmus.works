@@ -49,8 +49,10 @@ spec:
             periodSeconds: 20
           resources:
             requests:
-              cpu: 250m
+              cpu: 500m
               memory: 2Gi
+            limits:
+              memory: 6Gi
 ---
 apiVersion: v1
 kind: Service
