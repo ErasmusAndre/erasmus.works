@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: euro-office
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  strategy:
+    type: Recreate
+    rollingUpdate: null
+  replicas: 1
+  selector:
+    matchLabels:
+      app: euro-office
+  template:
+    metadata:
+      labels:
+        app: euro-office
+    spec:
+      containers:
+        - name: euro-office
+          image: ghcr.io/euro-office/documentserver:9.3.4
+          env:
+            - name: JWT_ENABLED
+              value: "true"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: euro-office-jwt
+                  key: jwt-secret
+          ports:
+            - name: http
+              containerPort: 80
+          startupProbe:
+            httpGet:
+              path: /healthcheck
+              port: http
+            periodSeconds: 10
+            failureThreshold: 60
+          readinessProbe:
+            httpGet:
+              path: /healthcheck
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: http
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 250m
+              memory: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: euro-office
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  selector:
+    app: euro-office
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: euro-office
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+spec:
+  parentRefs:
+    - name: homelab
+      namespace: envoy-gateway-system
+      group: gateway.networking.k8s.io
+      kind: Gateway
+  hostnames:
+    - euro-office.homelab
+    - euro-office.erasmus.works
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: euro-office
+          group: ""
+          kind: Service
+          port: 80
+          weight: 1

@@ -7,6 +7,7 @@ Short reference for what is deployed in this repo.
 | App | Type | Database | Volume Backup | Database Backup | Prometheus | SSO | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `docmost` | Plain manifests | CNPG | VolSync | CNPG | Yes | No |  |
+| `euro-office` | Plain manifests | Bundled | None | None | No | No | Nextcloud Office backend; state is disposable |
 | `homepage` | Plain manifests | N/A | N/A | N/A | N/A | N/A |  |
 | `immich` | Helm based | CNPG | None | CNPG | Yes | Yes | Media stored on NAS |
 | `nextcloud` | Helm based | CNPG | VolSync | CNPG | Yes | Yes |  |
