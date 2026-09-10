@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: blocky-metrics
+  namespace: blocky
+  labels:
+    app.kubernetes.io/instance: blocky
+    app.kubernetes.io/name: blocky
+spec:
+  # Metrics only. LAN clients reach DNS through hostPort 53 on each node.
+  selector:
+    app.kubernetes.io/instance: blocky
+    app.kubernetes.io/name: blocky
+  ports:
+    - name: http
+      port: 4000
+      targetPort: http

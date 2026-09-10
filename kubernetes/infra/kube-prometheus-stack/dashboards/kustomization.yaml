@@ -45,3 +45,6 @@ configMapGenerator:
   - name: grafana-dashboard-resource-requests-tuning
     files:
       - resource-requests-tuning.json
+  - name: grafana-dashboard-blocky-dashboard
+    files:
+      - blocky-dashboard.json

@@ -29,6 +29,9 @@ The following files are provisioned from this directory. Most were imported from
   - Source: https://grafana.com/grafana/dashboards/21356-volsync-dashboard/
 - `resource-requests-tuning.json`
   - Repo-managed dashboard for comparing pod usage vs resource requests and spotting missing requests
+- `blocky-dashboard.json`
+  - Source: https://github.com/0xERR0R/blocky/blob/v0.35.0/docs/blocky-grafana.json
+  - The blocking control links use the Blocky HTTP API, which is not exposed outside the cluster
 
 ## Local tags
 

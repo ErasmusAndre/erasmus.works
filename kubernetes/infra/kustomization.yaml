@@ -24,4 +24,5 @@ resources:
   - victorialogs
   - fluent-bit
   - cloudflared
+  - blocky
   - status

@@ -1,0 +1,80 @@
+# Blocky v0.35.0 - https://0xerr0r.github.io/blocky/v0.35.0/configuration/
+# LAN DNS resolver and ad-blocker. AdGuard Home on Home Assistant stays as a fallback only.
+
+upstreams:
+  # Serve DNS as soon as the process starts instead of waiting for upstream checks.
+  init:
+    strategy: fast
+  groups:
+    default:
+      # Quad9 (DoH / DoT)
+      - https://dns.quad9.net/dns-query
+      - tcp-tls:dns.quad9.net:853
+      # Cloudflare (DoH / DoT)
+      - https://cloudflare-dns.com/dns-query
+      - tcp-tls:one.one.one.one:853
+  strategy: parallel_best
+  timeout: 2s
+
+# Plain IPs used to resolve the upstream hostnames above and the denylist URLs.
+# Without this Blocky would use the pod resolver, which resolves back through Blocky.
+bootstrapDns:
+  - tcp+udp:9.9.9.9
+  - tcp+udp:149.112.112.112
+  - tcp+udp:1.1.1.1
+  - tcp+udp:1.0.0.1
+
+blocking:
+  denylists:
+    ads:
+      # AdGuard DNS filter. No hosts/domains export exists, only AdGuard/ABP syntax.
+      # Blocky strips the `||` and `^` markers, so the plain rules load; the ~235
+      # lines carrying modifiers ($important, $badfilter, ...) are skipped, which is
+      # why maxErrorsPerSource is disabled below.
+      - https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt
+      # OISD Blocklist Small - domains without the `*.` prefix
+      - https://small.oisd.nl/domainswild2
+      # 1Hosts (Lite) - domains without the `*.` prefix
+      - https://raw.githubusercontent.com/badmojr/1Hosts/master/Lite/domains.wildcards
+  clientGroupsBlock:
+    default:
+      - ads
+  blockType: zeroIp
+  loading:
+    # Answer queries while the lists are still downloading and never fail startup
+    # on a download error; a failed list is simply retried on the next refresh.
+    strategy: fast
+    refreshPeriod: 24h
+    # The AdGuard list always contains a few unparsable rules, so do not cap them.
+    maxErrorsPerSource: -1
+    downloads:
+      timeout: 60s
+      attempts: 5
+      cooldown: 10s
+
+caching:
+  minTime: 5m
+  maxTime: 30m
+  prefetching: true
+
+# Local names. More specific entries win: the resolver strips one label at a time,
+# so `talos01.homelab` is matched before it ever falls back to `homelab`.
+customDNS:
+  customTTL: 1h
+  mapping:
+    # `homelab` covers the bare name and every subdomain (replaces AdGuard's *.homelab)
+    homelab: 192.168.20.241
+    talos01.homelab: 192.168.20.33
+    truenas.homelab: 192.168.20.40
+    victus: 192.168.178.81
+
+ports:
+  dns:
+    - 1053
+  http: 4000
+
+prometheus:
+  enable: true
+
+log:
+  level: info

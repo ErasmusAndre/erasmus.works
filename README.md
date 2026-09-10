@@ -56,6 +56,7 @@ control-plane node.
 - [Envoy Gateway](https://gateway.envoyproxy.io/): Handles in-cluster ingress and HTTP routing.
 - [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/): Publishes selected services externally without opening inbound ports.
 - [ExternalDNS](https://kubernetes-sigs.github.io/external-dns/latest/): Syncs DNS records to Cloudflare.
+- [Blocky](https://0xerr0r.github.io/blocky/): Serves LAN DNS and blocks ads on every node.
 - [External Secrets Operator](https://external-secrets.io/): Syncs Kubernetes secrets from Bitwarden Secrets Manager.
 - [Longhorn](https://longhorn.io/): Provides persistent volumes for stateful workloads.
 - [CloudNativePG](https://cloudnative-pg.io/): Runs PostgreSQL workloads in-cluster.
