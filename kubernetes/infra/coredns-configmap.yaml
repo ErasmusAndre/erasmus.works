@@ -10,6 +10,14 @@ data:
         cache 30
     }
 
+    # Only *.homelab goes to Blocky (blocky-dns LoadBalancer). Everything else stays on the
+    # host resolver, so a Blocky outage cannot take down cluster DNS.
+    homelab:53 {
+        errors
+        forward . 192.168.20.242
+        cache 30
+    }
+
     .:53 {
         errors
         health {
