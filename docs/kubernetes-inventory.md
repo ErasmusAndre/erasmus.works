@@ -18,7 +18,7 @@ Short reference for what is deployed in this repo.
 | --- | --- | --- | --- | --- |
 | `argocd` | Helm based | Yes | Yes |  |
 | `authentik` | Helm based | Yes | N/A | SSO provider; Database Backups (CNPG) |
-| `blocky` | Plain manifests | Yes | N/A | LAN DNS and ad-blocker; DaemonSet on hostPort 53 |
+| `blocky` | Plain manifests | Yes | N/A | LAN DNS and ad-blocker; MetalLB IP `192.168.20.242` port 53 |
 | `cloudnative-pg` | Helm based | Yes | N/A |  |
 | `envoy-gateway` | Helm based | Yes | N/A |  |
 | `external-dns` | Helm based | No | N/A |  |

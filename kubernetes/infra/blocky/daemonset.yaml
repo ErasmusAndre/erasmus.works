@@ -44,11 +44,9 @@ spec:
           ports:
             - name: dns-udp
               containerPort: 1053
-              hostPort: 53
               protocol: UDP
             - name: dns-tcp
               containerPort: 1053
-              hostPort: 53
               protocol: TCP
             - name: http
               containerPort: 4000
