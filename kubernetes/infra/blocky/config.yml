@@ -28,14 +28,16 @@ blocking:
   denylists:
     ads:
       # AdGuard DNS filter. No hosts/domains export exists, only AdGuard/ABP syntax.
-      # Blocky strips the `||` and `^` markers, so the plain rules load; the ~235
-      # lines carrying modifiers ($important, $badfilter, ...) are skipped, which is
-      # why maxErrorsPerSource is disabled below.
+      # Blocky strips the `||` and `^` markers, so the plain rules load as exact
+      # domains (no subdomains); the ~235 lines carrying modifiers ($important,
+      # $badfilter, ...) are skipped, which is why maxErrorsPerSource is disabled below.
       - https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt
-      # OISD Blocklist Small - domains without the `*.` prefix
-      - https://small.oisd.nl/domainswild2
-      # 1Hosts (Lite) - domains without the `*.` prefix
-      - https://raw.githubusercontent.com/badmojr/1Hosts/master/Lite/domains.wildcards
+      # Blocky matches plain entries exactly; only `*.` entries also block subdomains,
+      # so use the `*.`-prefixed exports of these lists.
+      # OISD Blocklist Small
+      - https://small.oisd.nl/domainswild
+      # 1Hosts (Lite)
+      - https://raw.githubusercontent.com/badmojr/1Hosts/master/Lite/wildcards.txt
   clientGroupsBlock:
     default:
       - ads
