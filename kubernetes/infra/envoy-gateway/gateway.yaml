@@ -12,8 +12,15 @@ metadata:
   namespace: envoy-gateway-system
   annotations:
     external-dns.alpha.kubernetes.io/target: 27d05b1e-edcb-4f15-b9d5-b7bd3fa6ccc4.cfargotunnel.com
+    # After the EnvoyProxy it references, so the Gateway never sees a missing parametersRef.
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   gatewayClassName: envoy
+  infrastructure:
+    parametersRef:
+      group: gateway.envoyproxy.io
+      kind: EnvoyProxy
+      name: homelab
   listeners:
     - name: http
       protocol: HTTP

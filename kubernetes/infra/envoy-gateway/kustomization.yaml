@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   # Core
   - application.yaml
+  - envoyproxy.yaml
 
   # Networking
   - clienttrafficpolicy.yaml
