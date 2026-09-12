@@ -289,7 +289,9 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
   padding-block: 26px;
 }
 .carousel-track::-webkit-scrollbar { display: none; }
-.carousel-track.is-dragging { scroll-snap-type: none; cursor: grabbing; user-select: none; }
+.carousel-track.is-dragging { cursor: grabbing; user-select: none; }
+.carousel-track.is-dragging,
+.carousel-track.is-settling { scroll-snap-type: none; }
 /* the 700ms settle is right when a card arrives, but during a drag it lags the
    pointer, which reads as the track sticking */
 .carousel-track.is-dragging .carousel-slide { transition: none; }
