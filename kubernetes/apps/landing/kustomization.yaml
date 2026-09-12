@@ -27,6 +27,7 @@ configMapGenerator:
       - shot-homepage.webp
       - shot-hass.webp
       - rack.webp
+      - power.webp
       - shot-repo-works.webp
       - shot-repo-rack.webp
 resources:

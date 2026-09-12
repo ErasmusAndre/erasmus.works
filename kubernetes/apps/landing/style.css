@@ -500,6 +500,58 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
   color: var(--dim);
 }
 
+/* The same two columns as the block above, mirrored: the rack photo is shot from
+   the front, so putting the back of it on the other side keeps the pair reading
+   as one object turned round. No band here - there is nothing to point at. */
+.power {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 400px);
+  gap: clamp(24px, 4vw, 52px);
+  align-items: start;
+  margin-top: clamp(36px, 5vw, 56px);
+}
+
+.power-photo {
+  margin: 0;
+  padding: 12px;
+  background: var(--sunk);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+.power-frame { display: block; overflow: hidden; border-radius: 3px; }
+.power-frame img { width: 100%; height: auto; display: block; }
+.power-photo figcaption {
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+  text-align: center;
+}
+
+.power-lede { margin: 0 0 20px; color: var(--muted); max-width: 54ch; }
+
+.power-facts { list-style: none; margin: 0; padding: 0; }
+.power-fact {
+  padding: 13px 12px;
+  border-top: 1px solid var(--line);
+  border-left: 2px solid transparent;
+}
+.power-fact:last-child { border-bottom: 1px solid var(--line); }
+.power-what { display: block; font-weight: 600; letter-spacing: -0.01em; }
+.power-note {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--dim);
+}
+
+.power-go { margin-top: 20px; font-family: var(--mono); font-size: 0.8rem; }
+.power-go a { color: var(--paper); text-decoration-color: rgba(244, 244, 244, 0.35); text-underline-offset: 4px; }
+@media (hover: hover) { .power-go a:hover { color: var(--accent); text-decoration-color: currentColor; } }
+
 .rack-specs {
   list-style: none;
   margin: clamp(30px, 4vw, 44px) 0 0;
@@ -803,6 +855,12 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
   .rack-photo { position: static; max-width: 320px; }
   .rack-side { width: 100%; }
   .rack-band { display: none; }
+
+  /* stacked, the mirror is gone, so the photo goes back on top the way the
+     block above it stacks */
+  .power { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .power-photo { max-width: 320px; order: -1; }
+  .power-side { width: 100%; }
 }
 
 @media (max-width: 620px) {
@@ -849,6 +907,12 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
   .rack-u { font-size: 0.68rem; line-height: 1.5; }
   .rack-what { font-size: 0.94rem; line-height: 1.3; }
   .rack-note { font-size: 0.66rem; line-height: 1.35; }
+
+  .power-photo { padding: 10px; max-width: 260px; }
+  .power-fact { padding: 9px 6px; }
+  .power-what { font-size: 0.94rem; line-height: 1.3; }
+  .power-note { font-size: 0.66rem; line-height: 1.35; }
+  .power-go { font-size: 0.72rem; }
 
   .foot-grid { gap: 26px; }
 }

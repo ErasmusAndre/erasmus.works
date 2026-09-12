@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- minimum-scale pins the page at the width it loads on: pinching out past that
+     left the layout floating in a grey margin. Zooming in is untouched. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="description" content="A self-hosted cloud for photos, files, documents and home automation. Kubernetes in a 10-inch rack at home, 3D-printed mounts, every change in Git.">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="theme-color" content="#19191c">
@@ -376,6 +378,42 @@
           </li>
         </ol>
       </div>
+    </div>
+
+    <div class="power" style="--accent: var(--orange)">
+      <div class="power-side">
+        <h3 class="rack-head">Power, one module at a time.</h3>
+        <p class="power-lede">No power strip fits a 10-inch rack, so the back of it is printed too. It is a stack
+          rather than a strip: every box brings its own module up with it, and nothing else in the rack changes.</p>
+        <ul class="power-facts">
+          <li class="power-fact">
+            <span class="power-what">One per box</span>
+            <span class="power-note">Its own switch, so a box can be cut without reaching for anything else</span>
+          </li>
+          <li class="power-fact">
+            <span class="power-what">Chained</span>
+            <span class="power-note">A 30 cm cord from each module to the one below, so one cable leaves the rack</span>
+          </li>
+          <li class="power-fact">
+            <span class="power-what">Same face plate</span>
+            <span class="power-note">A C14 inlet, an illuminated rocker and a C13 outlet, whatever sits behind it</span>
+          </li>
+          <li class="power-fact">
+            <span class="power-what">Two variants</span>
+            <span class="power-note">A DIN rail socket for wall plugs, or a right-angle C13 onto the power brick</span>
+          </li>
+        </ul>
+        <p class="power-go"><a href="https://github.com/ErasmusAndre/mini-rack/tree/main/printed-parts/rack-power-module" target="_blank" rel="noopener">Wiring, parts and print files &rarr;</a></p>
+      </div>
+
+      <figure class="power-photo">
+        <span class="power-frame">
+          <img src="/power.webp" alt="The back of the rack: printed power modules stacked down it, each with a lit red
+               rocker switch between an inlet and an outlet, and a short cord looping from one module to the next."
+               width="800" height="1067" loading="lazy" decoding="async">
+        </span>
+        <figcaption>Six modules &middot; one cord out</figcaption>
+      </figure>
     </div>
 
     <ul class="rack-specs">
