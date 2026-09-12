@@ -23,6 +23,7 @@ resources:
   - kube-prometheus-stack
   - victorialogs
   - fluent-bit
+  - umami
   - cloudflared
   - blocky
   - status

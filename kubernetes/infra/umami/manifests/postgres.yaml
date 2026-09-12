@@ -1,0 +1,66 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: umami-postgres
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  instances: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  monitoring:
+    enablePodMonitor: true
+  storage:
+    size: 10Gi
+    storageClass: longhorn
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://cnpg-umami
+      endpointURL: http://garage.garage.svc.cluster.local:3900
+      serverName: umami-postgres
+      s3Credentials:
+        accessKeyId:
+          name: umami-postgres-backup-s3
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: umami-postgres-backup-s3
+          key: ACCESS_SECRET_KEY
+      wal:
+        compression: gzip
+    retentionPolicy: "30d"
+  bootstrap:
+    initdb:
+      database: umami
+      owner: umami
+      secret:
+        name: umami-postgres-auth
+  externalClusters:
+    - name: umami-postgres
+      barmanObjectStore:
+        destinationPath: s3://cnpg-umami
+        endpointURL: http://garage.garage.svc.cluster.local:3900
+        serverName: umami-postgres
+        s3Credentials:
+          accessKeyId:
+            name: umami-postgres-backup-s3
+            key: ACCESS_KEY_ID
+          secretAccessKey:
+            name: umami-postgres-backup-s3
+            key: ACCESS_SECRET_KEY
+        wal:
+          compression: gzip
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: umami-postgres-backup
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  schedule: "0 50 2 * * *" # every day at 2:50am, ahead of the 3:00am block
+  immediate: true
+  backupOwnerReference: cluster
+  cluster:
+    name: umami-postgres

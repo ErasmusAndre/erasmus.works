@@ -90,3 +90,10 @@ For Nextcloud, the repo expects these Bitwarden secrets:
 
 Those values map to the `ExternalSecret` in
 `kubernetes/apps/nextcloud/externalsecrets.yaml`.
+
+For Umami, the repo expects these Bitwarden secrets:
+
+- `umami-cnpg-backup-secret-access-key`
+
+Those values map to the `ExternalSecret` in
+`kubernetes/infra/umami/manifests/externalsecrets.yaml`.
