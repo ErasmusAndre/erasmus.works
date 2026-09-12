@@ -537,6 +537,8 @@
     var all = Array.prototype.slice.call(track.querySelectorAll('.carousel-slide'));
     var centres = [];
     var span = 0;
+    var step = 0;
+    var rest = 0.87;
     var live = real + opening;
 
     all.forEach(function (slide) { slide.classList.remove('is-current'); });
@@ -554,6 +556,25 @@
         return at + (r.left - box.left) + r.width / 2;
       });
       span = centres[real] - centres[0];
+      step = centres[1] - centres[0];
+      // the resting scale is a breakpoint's business, so read it back rather
+      // than keeping a second copy of 0.87 here
+      rest = parseFloat(getComputedStyle(all[0]).getPropertyValue('--rest')) || 0.87;
+    }
+
+    /* The scale follows the scroll position instead of flipping when is-current
+       moves: mid-drag that flip reads as the card jumping between two sizes.
+       Centres are already cached and only transforms are written, so a frame
+       here costs no layout. Slides further than one step out sit at rest and
+       have their inline transform dropped, leaving the stylesheet in charge. */
+    function shape() {
+      var middle = track.scrollLeft + track.clientWidth / 2;
+      for (var n = 0; n < all.length; n++) {
+        var away = Math.abs(centres[n] - middle) / step;
+        all[n].style.transform = away < 1
+          ? 'scale(' + (rest + (1 - rest) * (1 - away)) + ')'
+          : '';
+      }
     }
 
     function restFor(i) { return centres[i] - track.clientWidth / 2; }
@@ -595,7 +616,7 @@
     var resting;
     track.addEventListener('scroll', function () {
       window.cancelAnimationFrame(pending);
-      pending = window.requestAnimationFrame(function () { mark(current()); });
+      pending = window.requestAnimationFrame(function () { shape(); mark(current()); });
       // the jump waits for the scroll to stop, so it never fights a swipe
       window.clearTimeout(resting);
       resting = window.setTimeout(settle, 140);
@@ -677,10 +698,13 @@
     window.addEventListener('resize', function () {
       measure();
       track.scrollLeft = restFor(live);
+      shape();
     });
 
+    track.classList.add('is-live');
     measure();
     track.scrollLeft = restFor(live);
+    shape();
     nav.style.setProperty('--accent', getComputedStyle(all[live]).getPropertyValue('--accent'));
   }
 })();
