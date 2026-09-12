@@ -10,3 +10,4 @@ resources:
 
   # Networking
   - httproute.yaml
+  - backendtrafficpolicy.yaml

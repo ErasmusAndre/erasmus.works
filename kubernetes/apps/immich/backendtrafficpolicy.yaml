@@ -11,6 +11,11 @@ spec:
     type: Local
     local:
       rules:
-        - limit:
+        - clientSelectors:
+            - sourceCIDR:
+                value: 0.0.0.0/0
+                type: Distinct
+                invert: false
+          limit:
             requests: 3000
             unit: Minute

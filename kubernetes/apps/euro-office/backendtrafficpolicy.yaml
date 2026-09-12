@@ -1,13 +1,12 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: BackendTrafficPolicy
 metadata:
-  name: authentik
-  namespace: authentik
+  name: euro-office
 spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
-      name: authentik
+      name: euro-office
   rateLimit:
     type: Local
     local:
@@ -18,5 +17,5 @@ spec:
                 type: Distinct
                 invert: false
           limit:
-            requests: 600
+            requests: 3000
             unit: Minute

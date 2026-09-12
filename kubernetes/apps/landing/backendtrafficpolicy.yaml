@@ -11,13 +11,11 @@ spec:
     type: Local
     local:
       rules:
-        # Per-client bucket: the Gateway's ClientTrafficPolicy recovers the real
-        # client IP from CF-Connecting-IP, so one abusive caller cannot 429 everyone.
         - clientSelectors:
             - sourceCIDR:
                 value: 0.0.0.0/0
                 type: Distinct
                 invert: false
           limit:
-            requests: 60
+            requests: 300
             unit: Minute

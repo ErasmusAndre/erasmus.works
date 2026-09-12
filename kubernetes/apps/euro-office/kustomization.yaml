@@ -4,3 +4,4 @@ namespace: app-euro-office
 resources:
   - externalsecrets.yaml
   - app.yaml
+  - backendtrafficpolicy.yaml
