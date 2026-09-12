@@ -37,7 +37,7 @@ spec:
             - until nc -z umami-postgres-rw.umami.svc.cluster.local 5432; do sleep 2; done
       containers:
         - name: umami
-          image: ghcr.io/umami-software/umami:postgresql-v2.15.1
+          image: ghcr.io/umami-software/umami:postgresql-v2.20.2
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
