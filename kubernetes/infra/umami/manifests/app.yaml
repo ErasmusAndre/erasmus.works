@@ -39,6 +39,8 @@ spec:
         - name: umami
           image: ghcr.io/umami-software/umami:postgresql-v2.15.1
           securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
             allowPrivilegeEscalation: false
             capabilities:
               drop:
