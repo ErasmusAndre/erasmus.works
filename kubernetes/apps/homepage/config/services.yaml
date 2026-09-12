@@ -102,3 +102,8 @@
         href: https://longhorn.erasmus.works
         siteMonitor: https://longhorn.erasmus.works
         description: Kubernetes storage dashboard
+    - Umami:
+        icon: umami.png
+        href: https://umami.erasmus.works
+        siteMonitor: https://umami.erasmus.works
+        description: Landing page web analytics
