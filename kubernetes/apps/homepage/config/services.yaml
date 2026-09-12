@@ -48,8 +48,8 @@
 - Projects:
     - erasmus.works:
         icon: https://raw.githubusercontent.com/ErasmusAndre/erasmus.works/main/Erasmus-Works-Logo.png
-        href: https://github.com/ErasmusAndre/erasmus.works
-        siteMonitor: https://github.com/ErasmusAndre/erasmus.works
+        href: https://github.com/ErasmusAndre
+        siteMonitor: https://github.com/ErasmusAndre
         description: Erasmus Works GitHub repository
     - Argo CD:
         icon: argo-cd.png
@@ -104,6 +104,6 @@
         description: Kubernetes storage dashboard
     - Umami:
         icon: umami.png
-        href: https://umami.erasmus.works
-        siteMonitor: https://umami.erasmus.works
+        href: https://umami.erasmus.works/websites/5af6e1b8-9edd-40c8-aff9-4457d4bfbb08
+        siteMonitor: https://umami.erasmus.works/websites/5af6e1b8-9edd-40c8-aff9-4457d4bfbb08
         description: Landing page web analytics
