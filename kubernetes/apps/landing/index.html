@@ -615,6 +615,8 @@
     var drag = null;
     var dragged = false;
 
+    track.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
     track.addEventListener('pointerdown', function (e) {
       dragged = false;
       if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('a')) return;
