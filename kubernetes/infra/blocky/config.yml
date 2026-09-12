@@ -27,17 +27,8 @@ bootstrapDns:
 blocking:
   denylists:
     ads:
-      # AdGuard DNS filter. No hosts/domains export exists, only AdGuard/ABP syntax.
-      # Blocky strips the `||` and `^` markers, so the plain rules load as exact
-      # domains (no subdomains); the ~235 lines carrying modifiers ($important,
-      # $badfilter, ...) are skipped, which is why maxErrorsPerSource is disabled below.
-      - https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt
-      # Blocky matches plain entries exactly; only `*.` entries also block subdomains,
-      # so use the `*.`-prefixed exports of these lists.
-      # OISD Blocklist Small
-      - https://small.oisd.nl/domainswild
-      # 1Hosts (Lite)
-      - https://raw.githubusercontent.com/badmojr/1Hosts/master/Lite/wildcards.txt
+      # OISD Big, whose stated rule is "block, don't break"
+      - https://big.oisd.nl/domainswild
   clientGroupsBlock:
     default:
       - ads
@@ -47,8 +38,6 @@ blocking:
     # on a download error; a failed list is simply retried on the next refresh.
     strategy: fast
     refreshPeriod: 24h
-    # The AdGuard list always contains a few unparsable rules, so do not cap them.
-    maxErrorsPerSource: -1
     downloads:
       timeout: 60s
       attempts: 5
