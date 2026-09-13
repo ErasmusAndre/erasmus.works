@@ -33,10 +33,10 @@
       "versioning": "regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:-hotfix\\.(?<build>\\d+))?$"
     },
     {
-      "description": "Track Umami tags, which carry a postgresql- database prefix",
+      "description": "Track Umami v3+ plain semver tags, ignoring legacy postgresql-/mysql- prefixed and floating major.minor tags",
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/umami-software/umami"],
-      "versioning": "regex:^postgresql-v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
     },
     {
       "description": "Normalize Talos image-factory installer names",
