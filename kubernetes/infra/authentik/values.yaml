@@ -83,6 +83,11 @@ worker:
               items:
                 - key: session-duration.yaml
                   path: session-duration.yaml
+          - configMap:
+              name: authentik-blueprint-umami
+              items:
+                - key: umami.yaml
+                  path: umami.yaml
   volumeMounts:
     - name: media
       mountPath: /data

@@ -15,6 +15,35 @@ spec:
     - umami.homelab
     - umami.erasmus.works
   rules:
+    # Password login stays reachable at /login?local=1 in case Authentik is down.
+    # It wins over the bridge rule below because it has an extra query match.
+    - matches:
+        - path:
+            type: Exact
+            value: /login
+          queryParams:
+            - type: Exact
+              name: local
+              value: "1"
+      backendRefs:
+        - name: umami
+          group: ""
+          kind: Service
+          port: 3000
+          weight: 1
+    - matches:
+        - path:
+            type: Exact
+            value: /login
+        - path:
+            type: Exact
+            value: /oidc/callback
+      backendRefs:
+        - name: umami-sso
+          group: ""
+          kind: Service
+          port: 3001
+          weight: 1
     - matches:
         - path:
             type: PathPrefix

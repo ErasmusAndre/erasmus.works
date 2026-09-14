@@ -44,6 +44,7 @@ Example Bitwarden secret names:
 - `grafana-oauth2-client-secret`
 - `immich-oauth2-client-secret`
 - `nextcloud-oauth2-client-secret`
+- `umami-oauth2-client-secret`
 
 ## After Sync
 

@@ -25,6 +25,10 @@ configMapGenerator:
     namespace: authentik
     files:
       - blueprints/session-duration.yaml
+  - name: authentik-blueprint-umami
+    namespace: authentik
+    files:
+      - blueprints/umami.yaml
 resources:
   # Core
   - application.yaml

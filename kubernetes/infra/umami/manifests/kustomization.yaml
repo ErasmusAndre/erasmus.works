@@ -11,3 +11,12 @@ resources:
   # Networking
   - httproute.yaml
   - backendtrafficpolicy.yaml
+
+  # SSO
+  - sso-externalsecret.yaml
+  - sso.yaml
+
+configMapGenerator:
+  - name: umami-sso-script
+    files:
+      - sso/server.mjs

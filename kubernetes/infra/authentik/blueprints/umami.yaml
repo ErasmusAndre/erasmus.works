@@ -1,0 +1,34 @@
+version: 1
+metadata:
+  name: Umami OAuth application
+  labels:
+    blueprints.goauthentik.io/instantiate: "true"
+    blueprints.goauthentik.io/description: "GitOps-managed Umami OIDC application and provider for the umami-sso bridge."
+entries:
+  - model: authentik_providers_oauth2.oauth2provider
+    id: umami-provider
+    identifiers:
+      name: Umami OAuth
+    attrs:
+      name: Umami OAuth
+      authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
+      invalidation_flow: !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+      client_type: confidential
+      client_id: umami-erasmus-works
+      client_secret: !Env UMAMI_OAUTH2_CLIENT_SECRET
+      redirect_uris:
+        - matching_mode: strict
+          url: https://umami.erasmus.works/oidc/callback
+      property_mappings:
+        - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-openid]]
+        - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-email]]
+        - !Find [authentik_providers_oauth2.scopemapping, [managed, goauthentik.io/providers/oauth2/scope-profile]]
+      signing_key: !Find [authentik_crypto.certificatekeypair, [name, authentik Self-signed Certificate]]
+  - model: authentik_core.application
+    identifiers:
+      slug: umami
+    attrs:
+      name: Umami
+      slug: umami
+      launch_url: https://umami.erasmus.works
+      provider: !KeyOf umami-provider
