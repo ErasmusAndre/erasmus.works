@@ -12,6 +12,14 @@ server:
   deploymentStrategy:
     type: Recreate
     rollingUpdate: null
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/instance: authentik
+              app.kubernetes.io/name: authentik
+          topologyKey: kubernetes.io/hostname
   initContainers:
     - name: wait-for-postgres
       image: busybox:1.38
@@ -39,6 +47,17 @@ worker:
   deploymentStrategy:
     type: Recreate
     rollingUpdate: null
+  # Server and worker share the ReadWriteOnce authentik-media volume, so they
+  # must run on the same node. Matching both components lets whichever pod
+  # schedules first pick the node.
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/instance: authentik
+              app.kubernetes.io/name: authentik
+          topologyKey: kubernetes.io/hostname
   initContainers:
     - name: wait-for-postgres
       image: busybox:1.38

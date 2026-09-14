@@ -30,7 +30,7 @@ Short reference for what is deployed in this repo.
 | `longhorn` | Helm based | Yes | Yes |  |
 | `metallb` | Plain manifests | No | N/A |  |
 | `status` | Plain manifests | N/A | No | Intentionally not behind SSO |
-| `umami` | Plain manifests | No | Yes | Web analytics for the landing page; Database Backups (CNPG); SSO via the `umami-sso` bridge, password login at `/login?local=1` |
+| `umami` | Plain manifests | No | Yes | Web analytics for the landing page; Database Backups (CNPG); SSO via the `umami-sso` bridge |
 | `victorialogs` | Helm based | N/A | N/A |  |
 | `volsync` | Helm based | Yes | N/A |  |
 | `volume-snapshots` | Helm based | N/A | N/A |  |
