@@ -14,6 +14,8 @@ entries:
       authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
       invalidation_flow: !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
       client_type: confidential
+      grant_types:
+        - authorization_code
       client_id: umami-erasmus-works
       client_secret: !Env UMAMI_OAUTH2_CLIENT_SECRET
       redirect_uris:
