@@ -19,6 +19,10 @@ spec:
         - path:
             type: PathPrefix
             value: /
+      timeouts:
+        # Envoy's default 15s route timeout covers the whole response body,
+        # which truncates large asset downloads mid-stream.
+        request: 0s
       backendRefs:
         - name: immich-server
           group: ""
