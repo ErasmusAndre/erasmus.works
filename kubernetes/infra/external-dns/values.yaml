@@ -18,6 +18,7 @@ env:
         key: api-token
 extraArgs:
   cloudflare-dns-records-per-page: "5000"
+  annotation-prefix: external-dns.alpha.kubernetes.io/
 rbac:
   additionalPermissions:
     - apiGroups:
