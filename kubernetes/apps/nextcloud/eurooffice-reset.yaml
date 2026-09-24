@@ -1,0 +1,102 @@
+# The eurooffice connector's EditorsCheck returns early once settings_error is set, so a
+# single transient failure latches it and documents download instead of opening. This
+# clears the flag and forces a real health check; if the check fails again the job fails.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: eurooffice-reset
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: eurooffice-reset
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    resourceNames: ["nextcloud"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: eurooffice-reset
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: eurooffice-reset
+subjects:
+  - kind: ServiceAccount
+    name: eurooffice-reset
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: eurooffice-reset
+spec:
+  schedule: "*/15 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          serviceAccountName: eurooffice-reset
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: reset
+              image: alpine/kubectl:1.35.4
+              env:
+                - name: HOME
+                  value: /tmp
+              command:
+                - sh
+                - -c
+                - |
+                  set -eu
+                  occ() { kubectl exec -n app-nextcloud deploy/nextcloud -c nextcloud -- php occ "$@"; }
+
+                  if ! err=$(occ config:app:get eurooffice settings_error); then
+                    echo "settings_error not set"
+                    exit 0
+                  fi
+
+                  echo "Clearing settings_error: $err"
+                  occ config:app:delete eurooffice settings_error
+                  id=$(occ background-job:list --class 'OCA\Eurooffice\Cron\EditorsCheck' --output=json \
+                    | sed -n 's/.*"id":"\([0-9]*\)".*/\1/p')
+                  occ background-job:execute "$id" --force-execute
+
+                  if err=$(occ config:app:get eurooffice settings_error); then
+                    echo "Health check failed again: $err"
+                    exit 1
+                  fi
+                  echo "Health check passed"
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: ["ALL"]
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 32Mi
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+          volumes:
+            - name: tmp
+              emptyDir: {}

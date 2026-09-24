@@ -5,6 +5,7 @@ resources:
   # Core
   - externalsecrets.yaml
   - postgres.yaml
+  - eurooffice-reset.yaml
 
   # Storage
   - pvc.yaml
