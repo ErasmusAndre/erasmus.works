@@ -58,7 +58,7 @@ spec:
               type: RuntimeDefault
           containers:
             - name: reset
-              image: alpine/kubectl:1.35.4
+              image: alpine/kubectl:1.37.1
               env:
                 - name: HOME
                   value: /tmp
