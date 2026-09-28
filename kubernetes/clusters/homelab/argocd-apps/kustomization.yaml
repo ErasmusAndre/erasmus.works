@@ -10,3 +10,4 @@ resources:
   - landing/application.yaml
   - media/application.yaml
   - nextcloud/application.yaml
+  - ntfy/application.yaml

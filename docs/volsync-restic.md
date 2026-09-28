@@ -25,6 +25,7 @@ Current backup PVCs:
 app-docmost/volsync-repository
 app-media/volsync-repository
 app-nextcloud/volsync-repository
+app-ntfy/volsync-repository
 500Gi each
 ```
 
@@ -40,6 +41,7 @@ Backup schedule:
 03:40  sonarr-config VolSync
 03:45  radarr-config VolSync
 03:50  jellyfin-config VolSync
+03:55  ntfy-data VolSync
 ```
 
 The backups are grouped by app where needed, while still staggering apps to

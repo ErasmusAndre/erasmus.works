@@ -10,3 +10,5 @@ resources:
   - nfs-backup-pvc-app-media.yaml
   - nfs-backup-pv-app-nextcloud.yaml
   - nfs-backup-pvc-app-nextcloud.yaml
+  - nfs-backup-pv-app-ntfy.yaml
+  - nfs-backup-pvc-app-ntfy.yaml

@@ -98,7 +98,7 @@ spec:
             description: VolSync source {{ $labels.obj_namespace }}/{{ $labels.obj_name }} has no successful sync newer than 54 hours.
             runbook_url: https://todo.local/runbooks/backup-alerts
         - alert: VolSyncBackupRepositoryAlmostFull
-          expr: max by (namespace, persistentvolumeclaim) (1 - kubelet_volume_stats_available_bytes{namespace=~"app-docmost|app-nextcloud", persistentvolumeclaim="volsync-repository"} / kubelet_volume_stats_capacity_bytes{namespace=~"app-docmost|app-nextcloud", persistentvolumeclaim="volsync-repository"}) > 0.85
+          expr: max by (namespace, persistentvolumeclaim) (1 - kubelet_volume_stats_available_bytes{namespace=~"app-docmost|app-nextcloud|app-ntfy", persistentvolumeclaim="volsync-repository"} / kubelet_volume_stats_capacity_bytes{namespace=~"app-docmost|app-nextcloud|app-ntfy", persistentvolumeclaim="volsync-repository"}) > 0.85
           for: 2h
           labels:
             severity: warning

@@ -14,6 +14,11 @@
         href: https://docmost.erasmus.works
         siteMonitor: https://docmost.erasmus.works
         description: Collaborative wiki and docs
+    - ntfy:
+        icon: ntfy.png
+        href: https://ntfy.erasmus.works
+        siteMonitor: https://ntfy.erasmus.works
+        description: Push notifications
     - Home Assistant:
         icon: home-assistant.png
         href: https://ha.erasmus.works

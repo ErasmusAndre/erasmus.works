@@ -1,0 +1,57 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: ntfy-data-restic-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    name: bitwarden-secrets-manager
+    kind: ClusterSecretStore
+  target:
+    name: ntfy-data-restic-config
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      engineVersion: v2
+      mergePolicy: Replace
+      type: Opaque
+      data:
+        RESTIC_REPOSITORY: /mnt/repo/ntfy-data
+        RESTIC_PASSWORD: "{{ .restic_password }}"
+  data:
+    - secretKey: restic_password
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        key: volsync-restic-password
+        metadataPolicy: None
+        nullBytePolicy: Ignore
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: ntfy-data
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  sourcePVC: ntfy-data
+  trigger:
+    schedule: "55 3 * * *" # Every day at 3:55 AM
+  restic:
+    # Reuse the same policy for other app PVCs and only change the PVC name
+    # and RESTIC_REPOSITORY path in the companion ExternalSecret above.
+    repository: ntfy-data-restic-config
+    copyMethod: Direct
+    pruneIntervalDays: 7
+    cacheCapacity: 2Gi
+    retain:
+      daily: 7
+      weekly: 4
+      monthly: 3
+    moverVolumes:
+      - mountPath: repo
+        volumeSource:
+          persistentVolumeClaim:
+            claimName: volsync-repository
