@@ -68,6 +68,7 @@
       <a href="#software">Software</a>
       <a href="#hardware">Hardware</a>
       <a href="#source">Source</a>
+      <a href="#contact">Contact</a>
     </nav>
   </div>
 </header>
@@ -486,6 +487,39 @@
     </div>
   </section>
 
+  <section class="sec wrap" id="contact">
+    <div class="sec-head">
+      <p class="eyebrow" style="--tick: var(--pink)">Contact</p>
+      <h2>Get in touch.</h2>
+      <p class="lede">Questions about the rack, the cluster or anything else on this page. I read everything that comes in.</p>
+    </div>
+
+    <form class="contact-form" action="/api/contact" method="post">
+      <div class="contact-row">
+        <label class="contact-field">
+          <span>Name</span>
+          <input type="text" name="name" autocomplete="name" maxlength="100" required>
+        </label>
+        <label class="contact-field">
+          <span>Email</span>
+          <input type="email" name="email" autocomplete="email" maxlength="254" required>
+        </label>
+      </div>
+      <label class="contact-field">
+        <span>Message</span>
+        <textarea name="message" rows="6" maxlength="5000" required></textarea>
+      </label>
+      <label class="contact-extra" aria-hidden="true">
+        Website <input type="text" name="website" tabindex="-1" autocomplete="off">
+      </label>
+      <div class="cf-turnstile" data-sitekey="TURNSTILE_SITE_KEY" data-theme="dark" data-appearance="interaction-only"></div>
+      <div class="contact-foot">
+        <button class="contact-send" type="submit">Send message</button>
+        <p class="contact-status" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+  </section>
+
 </main>
 
 <footer class="wrap">
@@ -496,6 +530,7 @@
     </div>
     <ul class="foot-links">
       <li><a href="https://github.com/ErasmusAndre" target="_blank" rel="noopener">github.com/ErasmusAndre</a></li>
+      <li><a href="#contact">Contact me</a></li>
     </ul>
   </div>
 </footer>
@@ -982,6 +1017,70 @@
     load();
   }, { rootMargin: '200px' });
   watch.observe(section);
+})();
+</script>
+
+<script>
+(function () {
+  var section = document.getElementById('contact');
+  var form = section.querySelector('.contact-form');
+  var send = form.querySelector('.contact-send');
+  var status = form.querySelector('.contact-status');
+
+  /* Turnstile only loads once the form is close to being seen */
+  function loadTurnstile() {
+    var s = document.createElement('script');
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
+
+  if (window.IntersectionObserver) {
+    var watch = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      watch.disconnect();
+      loadTurnstile();
+    }, { rootMargin: '400px' });
+    watch.observe(section);
+  } else {
+    loadTurnstile();
+  }
+
+  function say(text, kind) {
+    status.textContent = text;
+    status.dataset.kind = kind || '';
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    send.disabled = true;
+    say('Sending\u2026');
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form))
+    })
+      .then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (d) {
+          if (r.ok && d.ok) {
+            form.reset();
+            say('Thanks, your message is on its way. I\u2019ll reply by email.', 'ok');
+            return;
+          }
+          if (r.status === 429) throw new Error('Too many messages from here. Please try again later.');
+          throw new Error(d.error || 'Something went wrong. Please try again.');
+        });
+      })
+      .catch(function (err) {
+        /* a TypeError is fetch failing outright, and its message is not for people */
+        say(err instanceof TypeError || !err.message ? 'Something went wrong. Please try again.' : err.message, 'error');
+      })
+      .then(function () {
+        send.disabled = false;
+        /* a Turnstile token is single use */
+        if (window.turnstile) window.turnstile.reset();
+      });
+  });
 })();
 </script>
 </body>

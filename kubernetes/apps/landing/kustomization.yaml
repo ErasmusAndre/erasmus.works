@@ -30,7 +30,13 @@ configMapGenerator:
       - power.webp
       - shot-repo-works.webp
       - shot-repo-rack.webp
+  - name: contact-app
+    options:
+      disableNameSuffixHash: false
+    files:
+      - contact.py
 resources:
   - app.yaml
+  - contact.yaml
   - backendtrafficpolicy.yaml
   - httproute.yaml

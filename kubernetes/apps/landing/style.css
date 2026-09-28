@@ -728,6 +728,59 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 }
 @media (hover: hover) { .repo-cta a:hover { color: var(--violet); text-decoration-color: currentColor; } }
 
+/* ---------- contact ---------- */
+
+.contact-form {
+  display: grid;
+  gap: 18px;
+  width: 100%;
+  max-width: 640px;
+  margin: clamp(36px, 5vw, 56px) auto 0;
+}
+.contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.contact-field { display: grid; gap: 8px; }
+.contact-field span {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.contact-field input,
+.contact-field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--sunk);
+  color: var(--paper);
+  /* 16px or more, or iOS zooms the page in on focus */
+  font: inherit;
+  font-size: 1rem;
+  transition: border-color 0.15s ease;
+}
+.contact-field textarea { resize: vertical; min-height: 140px; }
+.contact-field input:focus,
+.contact-field textarea:focus { outline: none; border-color: var(--pink); }
+.contact-extra { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.contact-foot { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
+.contact-send {
+  padding: 11px 22px;
+  border: 1px solid var(--pink);
+  border-radius: 2px;
+  background: none;
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+@media (hover: hover) { .contact-send:hover:not(:disabled) { background: var(--pink); color: var(--ink); } }
+.contact-send:disabled { opacity: 0.5; cursor: progress; }
+.contact-status { font-family: var(--mono); font-size: 0.85rem; color: var(--muted); }
+.contact-status[data-kind="ok"] { color: var(--green); }
+.contact-status[data-kind="error"] { color: var(--orange); }
+
 footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px); }
 .foot-grid { display: grid; justify-items: center; text-align: center; gap: 30px; }
 .foot-name span { color: var(--dim); }
@@ -864,6 +917,7 @@ footer { border-top: 1px solid var(--line); padding-block: clamp(48px, 6vw, 72px
 }
 
 @media (max-width: 620px) {
+  .contact-row { grid-template-columns: 1fr; }
   .hero { padding-block: 34px 44px; }
   .hero .lede { margin-top: 16px; }
   /* the lockup has to share the first screen with the headline here */

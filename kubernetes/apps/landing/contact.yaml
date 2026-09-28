@@ -1,0 +1,129 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contact
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: contact
+  template:
+    metadata:
+      labels:
+        app: contact
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: contact
+          image: python:3.14.7-alpine
+          command: ["python", "/app/contact.py"]
+          env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            - name: PYTHONDONTWRITEBYTECODE
+              value: "1"
+            - name: CONTACT_TO
+              value: contact@erasmus.works
+            - name: CONTACT_FROM
+              value: "Erasmus.works contact form <no-reply@erasmus.works>"
+            - name: SMTP_HOST
+              value: mail-eu.smtp2go.com
+            - name: SMTP_PORT
+              value: "587"
+            - name: SMTP_USERNAME
+              value: erasmus.works
+            - name: SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: contact-secrets
+                  key: smtp-password
+            - name: TURNSTILE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: contact-secrets
+                  key: turnstile-secret
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+          ports:
+            - name: http
+              containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+          volumeMounts:
+            - name: app
+              mountPath: /app
+              readOnly: true
+      volumes:
+        - name: app
+          configMap:
+            name: contact-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: contact
+spec:
+  selector:
+    app: contact
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: contact-secrets
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: bitwarden-secrets-manager
+    kind: ClusterSecretStore
+  target:
+    name: contact-secrets
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      engineVersion: v2
+      mergePolicy: Replace
+      type: Opaque
+      data:
+        smtp-password: "{{ .smtp_password }}"
+        turnstile-secret: "{{ .turnstile_secret }}"
+  data:
+    - secretKey: smtp_password
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        key: smtp2go-password
+        metadataPolicy: None
+        nullBytePolicy: Ignore
+    - secretKey: turnstile_secret
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        key: landing-turnstile-secret
+        metadataPolicy: None
+        nullBytePolicy: Ignore
