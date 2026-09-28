@@ -24,7 +24,7 @@ alertmanager:
       routes:
         - receiver: 'null'
           matchers:
-            - alertname =~ "Watchdog|InfoInhibitor"
+            - alertname =~ "Watchdog|InfoInhibitor|KubeCPUOvercommit"
         - receiver: ntfy-critical
           matchers:
             - severity = "critical"
