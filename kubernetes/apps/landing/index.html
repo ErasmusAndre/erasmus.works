@@ -484,40 +484,34 @@
         Leave a star if you like what you see
       </p>
       <p class="repo-cta"><a href="https://github.com/ErasmusAndre" target="_blank" rel="noopener">Everything is at github.com/ErasmusAndre</a></p>
+      <details class="contact-box" id="contact">
+        <summary class="contact-toggle">Contact me</summary>
+        <form class="contact-form" action="/api/contact" method="post">
+          <div class="contact-row">
+            <label class="contact-field">
+              <span>Name</span>
+              <input type="text" name="name" autocomplete="name" maxlength="100" required>
+            </label>
+            <label class="contact-field">
+              <span>Email</span>
+              <input type="email" name="email" autocomplete="email" maxlength="254" required>
+            </label>
+          </div>
+          <label class="contact-field">
+            <span>Message</span>
+            <textarea name="message" rows="6" maxlength="5000" required></textarea>
+          </label>
+          <label class="contact-extra" aria-hidden="true">
+            Website <input type="text" name="website" tabindex="-1" autocomplete="off">
+          </label>
+          <div class="cf-turnstile" data-sitekey="TURNSTILE_SITE_KEY" data-theme="dark" data-appearance="interaction-only"></div>
+          <div class="contact-foot">
+            <button class="contact-send" type="submit">Send message</button>
+            <p class="contact-status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </details>
     </div>
-  </section>
-
-  <section class="sec wrap" id="contact">
-    <div class="sec-head">
-      <p class="eyebrow" style="--tick: var(--pink)">Contact</p>
-      <h2>Get in touch.</h2>
-      <p class="lede">Questions about the rack, the cluster or anything else on this page. I read everything that comes in.</p>
-    </div>
-
-    <form class="contact-form" action="/api/contact" method="post">
-      <div class="contact-row">
-        <label class="contact-field">
-          <span>Name</span>
-          <input type="text" name="name" autocomplete="name" maxlength="100" required>
-        </label>
-        <label class="contact-field">
-          <span>Email</span>
-          <input type="email" name="email" autocomplete="email" maxlength="254" required>
-        </label>
-      </div>
-      <label class="contact-field">
-        <span>Message</span>
-        <textarea name="message" rows="6" maxlength="5000" required></textarea>
-      </label>
-      <label class="contact-extra" aria-hidden="true">
-        Website <input type="text" name="website" tabindex="-1" autocomplete="off">
-      </label>
-      <div class="cf-turnstile" data-sitekey="TURNSTILE_SITE_KEY" data-theme="dark" data-appearance="interaction-only"></div>
-      <div class="contact-foot">
-        <button class="contact-send" type="submit">Send message</button>
-        <p class="contact-status" role="status" aria-live="polite"></p>
-      </div>
-    </form>
   </section>
 
 </main>
@@ -1022,29 +1016,34 @@
 
 <script>
 (function () {
-  var section = document.getElementById('contact');
-  var form = section.querySelector('.contact-form');
+  var box = document.getElementById('contact');
+  var form = box.querySelector('.contact-form');
   var send = form.querySelector('.contact-send');
   var status = form.querySelector('.contact-status');
 
-  /* Turnstile only loads once the form is close to being seen */
+  /* Turnstile only loads once someone opens the form */
+  var loaded = false;
   function loadTurnstile() {
+    if (loaded) return;
+    loaded = true;
     var s = document.createElement('script');
     s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
     s.async = true;
     document.head.appendChild(s);
   }
 
-  if (window.IntersectionObserver) {
-    var watch = new IntersectionObserver(function (entries) {
-      if (!entries[0].isIntersecting) return;
-      watch.disconnect();
-      loadTurnstile();
-    }, { rootMargin: '400px' });
-    watch.observe(section);
-  } else {
-    loadTurnstile();
+  box.addEventListener('toggle', function () {
+    if (box.open) loadTurnstile();
+  });
+
+  /* the Contact links are the visitor asking for the form, so they open it */
+  function openBox() {
+    box.open = true;
   }
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('a[href="#contact"]')) openBox();
+  });
+  if (location.hash === '#contact') openBox();
 
   function say(text, kind) {
     status.textContent = text;

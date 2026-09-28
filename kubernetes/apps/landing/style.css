@@ -730,12 +730,42 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 
 /* ---------- contact ---------- */
 
+.contact-box {
+  /* the band centres its items to their own width; the form needs the full row */
+  justify-self: stretch;
+  text-align: center;
+}
+.contact-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 11px 22px;
+  border: 1px solid var(--dim);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--paper);
+  cursor: pointer;
+  list-style: none;
+  transition: border-color 0.15s ease;
+}
+.contact-toggle::-webkit-details-marker { display: none; }
+.contact-toggle::after { content: "+"; color: var(--dim); font-weight: 700; transition: color 0.15s ease; }
+.contact-box[open] .contact-toggle::after { content: "\2212"; }
+@media (hover: hover) {
+  .contact-toggle:hover { border-color: var(--paper); }
+  .contact-toggle:hover::after { color: var(--paper); }
+}
+.contact-toggle:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+
 .contact-form {
   display: grid;
   gap: 18px;
   width: 100%;
   max-width: 640px;
-  margin: clamp(36px, 5vw, 56px) auto 0;
+  margin: clamp(28px, 4vw, 40px) auto 0;
+  text-align: left;
 }
 .contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .contact-field { display: grid; gap: 8px; }
@@ -761,21 +791,21 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 }
 .contact-field textarea { resize: vertical; min-height: 140px; }
 .contact-field input:focus,
-.contact-field textarea:focus { outline: none; border-color: var(--pink); }
+.contact-field textarea:focus { outline: none; border-color: var(--dim); }
 .contact-extra { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .contact-foot { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
 .contact-send {
   padding: 11px 22px;
-  border: 1px solid var(--pink);
+  border: 1px solid var(--dim);
   border-radius: 2px;
   background: none;
   color: var(--paper);
   font-family: var(--mono);
   font-size: 0.85rem;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: border-color 0.15s ease;
 }
-@media (hover: hover) { .contact-send:hover:not(:disabled) { background: var(--pink); color: var(--ink); } }
+@media (hover: hover) { .contact-send:hover:not(:disabled) { border-color: var(--paper); } }
 .contact-send:disabled { opacity: 0.5; cursor: progress; }
 .contact-status { font-family: var(--mono); font-size: 0.85rem; color: var(--muted); }
 .contact-status[data-kind="ok"] { color: var(--green); }
