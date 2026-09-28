@@ -56,6 +56,16 @@ spec:
                 secretKeyRef:
                   name: ntfy-app-secrets
                   key: auth-users
+            - name: NTFY_AUTH_ACCESS
+              valueFrom:
+                secretKeyRef:
+                  name: ntfy-app-secrets
+                  key: auth-access
+            - name: NTFY_AUTH_TOKENS
+              valueFrom:
+                secretKeyRef:
+                  name: ntfy-app-secrets
+                  key: auth-tokens
             - name: NTFY_ENABLE_LOGIN
               value: "true"
             # Relays poll requests through ntfy.sh so the iOS app gets instant push

@@ -20,6 +20,9 @@ spec:
         - name: gatus
           image: ghcr.io/twin/gatus:v5.36.0
           imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: gatus-ntfy
           ports:
             - name: http
               containerPort: 8080

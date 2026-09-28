@@ -138,3 +138,56 @@ applicationSet:
 notifications:
   metrics:
     enabled: true
+  argocdUrl: https://argocd.erasmus.works
+  notifiers:
+    service.webhook.ntfy: |
+      url: http://ntfy.app-ntfy.svc.cluster.local:8080
+      headers:
+        - name: Authorization
+          value: Bearer $ntfyToken
+        - name: Content-Type
+          value: application/json
+  templates:
+    template.app-sync-failed: |
+      webhook:
+        ntfy:
+          method: POST
+          body: |
+            {
+              "topic": "homelab-argocd",
+              "title": "Argo CD: {{.app.metadata.name}} sync failed",
+              "message": {{ .app.status.operationState.message | toJson }},
+              "priority": 4,
+              "tags": ["x"],
+              "click": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true"
+            }
+    template.app-health-degraded: |
+      webhook:
+        ntfy:
+          method: POST
+          body: |
+            {
+              "topic": "homelab-argocd",
+              "title": "Argo CD: {{.app.metadata.name}} degraded",
+              "message": {{ printf "Health is %s. %s" .app.status.health.status (.app.status.health.message | default "") | toJson }},
+              "priority": 4,
+              "tags": ["warning"],
+              "click": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}"
+            }
+  triggers:
+    trigger.on-sync-failed: |
+      - description: Application syncing has failed
+        send:
+          - app-sync-failed
+        when: app.status.operationState != nil and app.status.operationState.phase in ['Error', 'Failed']
+    trigger.on-health-degraded: |
+      - description: Application has degraded
+        send:
+          - app-health-degraded
+        when: app.status.health.status == 'Degraded'
+  subscriptions:
+    - recipients:
+        - ntfy
+      triggers:
+        - on-sync-failed
+        - on-health-degraded

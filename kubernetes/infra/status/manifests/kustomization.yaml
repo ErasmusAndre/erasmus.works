@@ -6,6 +6,7 @@ resources:
   - kromgo-service.yaml
   - kromgo-httproute.yaml
   - kromgo-backendtrafficpolicy.yaml
+  - gatus-externalsecret.yaml
   - gatus-deployment.yaml
   - gatus-service.yaml
   - gatus-httproute.yaml

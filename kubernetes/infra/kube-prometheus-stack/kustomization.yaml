@@ -4,6 +4,7 @@ resources:
   # Core
   - namespace.yaml
   - externalsecret.yaml
+  - ntfy-externalsecret.yaml
   - application.yaml
 
   # Networking

@@ -1,3 +1,14 @@
+alerting:
+  ntfy:
+    url: http://ntfy.app-ntfy.svc.cluster.local:8080
+    topic: homelab-status
+    token: ${NTFY_TOKEN}
+    priority: 4
+    click: https://status.erasmus.works
+    default-alert:
+      failure-threshold: 3
+      success-threshold: 2
+      send-on-resolved: true
 endpoints:
   - name: grafana
     group: internal
@@ -5,18 +16,24 @@ endpoints:
     interval: 1m
     conditions:
       - "[STATUS] == 200"
+    alerts:
+      - type: ntfy
   - name: prometheus
     group: internal
     url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/-/ready
     interval: 1m
     conditions:
       - "[STATUS] == 200"
+    alerts:
+      - type: ntfy
   - name: alertmanager
     group: internal
     url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093/-/ready
     interval: 1m
     conditions:
       - "[STATUS] == 200"
+    alerts:
+      - type: ntfy
 storage:
   type: sqlite
   caching: true
