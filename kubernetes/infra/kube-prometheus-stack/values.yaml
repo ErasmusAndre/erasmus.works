@@ -24,7 +24,7 @@ alertmanager:
       routes:
         - receiver: 'null'
           matchers:
-            - alertname =~ "Watchdog|InfoInhibitor|KubeCPUOvercommit"
+            - alertname =~ "Watchdog|InfoInhibitor|KubeCPUOvercommit|CNPGBackupReconcileErrors.*"
         - receiver: ntfy-critical
           matchers:
             - severity = "critical"
