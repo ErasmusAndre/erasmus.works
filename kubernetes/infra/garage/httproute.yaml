@@ -17,11 +17,14 @@ spec:
   hostnames:
     - s3.erasmus.works
   rules:
-    # Kudos photo and video proof (path-style: /kudos/<key>).
+    # Kudos photo and video proof (path-style: /<bucket>/<key>).
     - matches:
         - path:
             type: PathPrefix
             value: /kudos
+        - path:
+            type: PathPrefix
+            value: /kudos-dev
       timeouts:
         # Envoy's default 15s route timeout would cut off slow mobile uploads.
         request: 0s

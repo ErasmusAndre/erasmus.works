@@ -1,0 +1,20 @@
+# Disposable test data: no backups. CNPG generates the password into kudos-dev-postgres-app.
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: kudos-dev-postgres
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  instances: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  storage:
+    size: 2Gi
+    storageClass: longhorn
+  bootstrap:
+    initdb:
+      database: kudos
+      owner: kudos

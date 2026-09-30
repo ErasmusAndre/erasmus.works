@@ -5,6 +5,7 @@ resources:
   - namespace-app-homepage.yaml
   - namespace-app-immich.yaml
   - namespace-app-kudos.yaml
+  - namespace-app-kudos-dev.yaml
   - namespace-app-landing.yaml
   - namespace-app-media.yaml
   - namespace-app-nextcloud.yaml

@@ -8,6 +8,7 @@ resources:
   - euro-office/application.yaml
   - immich/application.yaml
   - kudos/application.yaml
+  - kudos-dev/application.yaml
   - landing/application.yaml
   - media/application.yaml
   - nextcloud/application.yaml

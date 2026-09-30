@@ -1,0 +1,62 @@
+# Catches every email the dev instance sends (test logins use @example.com addresses),
+# so nothing goes out through SMTP2GO. Inbox: https://kudos-dev.erasmus.works/mail/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailpit
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailpit
+  template:
+    metadata:
+      labels:
+        app: mailpit
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: mailpit
+          image: axllent/mailpit:v1.31.3
+          env:
+            - name: MP_WEBROOT
+              value: mail
+            - name: MP_MAX_MESSAGES
+              value: "500"
+          ports:
+            - name: smtp
+              containerPort: 1025
+            - name: http
+              containerPort: 8025
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mailpit
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  selector:
+    app: mailpit
+  ports:
+    - name: smtp
+      port: 1025
+      targetPort: smtp
+    - name: http
+      port: 8025
+      targetPort: http

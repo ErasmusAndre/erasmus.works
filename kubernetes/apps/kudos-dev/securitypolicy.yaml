@@ -1,0 +1,22 @@
+# The whole host sits behind Authentik: TEST_CLOCK exposes /dev and /api/test/* (sign in as
+# anyone, move the clock, reset data).
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: oidc-authentik
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  targetSelectors:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      matchLabels:
+        security.erasmus.works/oidc: authentik-edge
+  oidc:
+    provider:
+      issuer: https://authentik.erasmus.works/application/o/homelab-edge/
+    clientID: envoy-gateway-erasmus-works
+    clientSecret:
+      name: authentik-edge-oidc
+    redirectURL: https://kudos-dev.erasmus.works/oauth2/callback
+    logoutPath: /oauth2/logout

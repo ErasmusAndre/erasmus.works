@@ -11,6 +11,7 @@ Short reference for what is deployed in this repo.
 | `homepage` | Plain manifests | N/A | N/A | N/A | N/A | N/A |  |
 | `immich` | Helm based | CNPG | None | CNPG | Yes | Yes | Media stored on NAS |
 | `kudos` | Plain manifests | CNPG | None | CNPG | No | No | Private GHCR image; uploads go to Garage via `s3.erasmus.works/kudos` |
+| `kudos-dev` | Plain manifests | CNPG | None | None | No | Yes | Disposable test copy of kudos (`TEST_CLOCK`, `/dev`); email caught by Mailpit at `/mail` |
 | `nextcloud` | Helm based | CNPG | VolSync | CNPG | Yes | Yes |  |
 | `ntfy` | Plain manifests | SQLite | VolSync | N/A | No | No | Push notifications; built-in auth, deny-all by default |
 

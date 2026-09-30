@@ -4,12 +4,23 @@
     "keyId": "GK4f9c40fffda94b6337b0a04d",
     "keyName": "kudos-app",
     "secret": "kudos-s3-secret-access-key",
-    "corsOrigins": ["https://kudos.erasmus.works"]
+    "corsOrigins": [
+      "https://kudos.erasmus.works"
+    ]
   },
   {
     "bucket": "cnpg-kudos",
     "keyId": "GK4e0302d68e355aefb8044467",
     "keyName": "kudos-cnpg",
     "secret": "kudos-cnpg-backup-secret-access-key"
+  },
+  {
+    "bucket": "kudos-dev",
+    "keyId": "GKf5b9923225454d614d32ec63",
+    "keyName": "kudos-dev-app",
+    "secret": "kudos-dev-s3-secret-access-key",
+    "corsOrigins": [
+      "https://kudos-dev.erasmus.works"
+    ]
   }
 ]

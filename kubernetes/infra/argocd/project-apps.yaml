@@ -23,6 +23,8 @@ spec:
       server: https://kubernetes.default.svc
     - namespace: app-kudos
       server: https://kubernetes.default.svc
+    - namespace: app-kudos-dev
+      server: https://kubernetes.default.svc
     - namespace: app-landing
       server: https://kubernetes.default.svc
     - namespace: app-media
