@@ -37,7 +37,7 @@ spec:
             - until nc -z kudos-dev-postgres-rw.app-kudos-dev.svc.cluster.local 5432; do sleep 2; done
         # Keep its tag equal to the app container's.
         - name: migrate
-          image: ghcr.io/erasmusandre/kudos:sha-05af6c3
+          image: ghcr.io/erasmusandre/kudos:sha-33fd58f
           command:
             - npm
             - run
@@ -55,7 +55,7 @@ spec:
                 - ALL
       containers:
         - name: kudos
-          image: ghcr.io/erasmusandre/kudos:sha-05af6c3
+          image: ghcr.io/erasmusandre/kudos:sha-33fd58f
           envFrom:
             - secretRef:
                 name: kudos-dev-app-secrets
