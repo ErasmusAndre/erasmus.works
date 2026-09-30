@@ -62,6 +62,9 @@ spec:
           env:
             - name: TEST_CLOCK
               value: "true"
+            # Sample players in /dev scenarios (game master first).
+            - name: SEED_PLAYER_NAMES
+              value: André,Debby,Hennie,Rian,Jelte,Franna,Lynette,Oupa
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
