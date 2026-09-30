@@ -69,6 +69,18 @@ This cluster has already been bootstrapped with:
 - zone: `homelab`
 - capacity: `100G`
 
+## App Buckets
+
+New app buckets and keys are declared in `kubernetes/infra/garage/buckets.json` and created
+after every `infra` sync by a `PostSync` Job (`bucket-provisioner.yaml`). The older `cnpg-*`
+buckets were made by hand and aren't listed. To add one:
+
+1. Pick a key ID (`echo GK$(openssl rand -hex 12)`) and use it in the app's manifests too.
+2. `./linux/bws-secrets.sh create <app>-s3-secret-access-key:hex`
+3. Add the entry to `buckets.json` and the secret to `garage-bucket-keys`.
+
+Logs: `kubectl -n garage logs job/garage-bucket-provisioner`
+
 ## CNPG Credentials
 
 Per-cluster CNPG backups should use their own Garage S3 key and a separate path

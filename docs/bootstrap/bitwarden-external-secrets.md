@@ -72,8 +72,8 @@ usual cause is a missing tunnel public-hostname entry, not missing DNS.
 
 ## How To Add Another Secret
 
-1. Add the value in Bitwarden Secrets Manager.
-2. Point an `ExternalSecret` at that Bitwarden secret key.
+1. Point an `ExternalSecret` at a Bitwarden secret key.
+2. Create the value with `linux/bws-secrets.sh` (below) or in Bitwarden Secrets Manager.
 
 Example:
 
@@ -84,3 +84,18 @@ spec:
       remoteRef:
         key: example-secret-name-in-bitwarden
 ```
+
+## Creating Secrets From The CLI
+
+`linux/bws-secrets.sh` lists the Bitwarden keys a path's ExternalSecrets still need and creates
+them with random values; it never overwrites. Run it without arguments for usage.
+
+```bash
+./linux/bws-secrets.sh missing kubernetes/apps/<app>
+./linux/bws-secrets.sh create <app>-postgres-password:hex <app>-api-token:prompt
+```
+
+One-time setup: install [`bws`](https://github.com/bitwarden/sdk-sm/releases) into `~/.local/bin`,
+run `bws config server-base https://vault.bitwarden.eu`, and save a token from a machine account
+with **Can read, write** on the project to `~/.config/bws/token` (mode 600). Keep the ESO
+machine account read-only.

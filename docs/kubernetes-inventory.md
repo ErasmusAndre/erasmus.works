@@ -10,6 +10,7 @@ Short reference for what is deployed in this repo.
 | `euro-office` | Plain manifests | Bundled | None | None | No | No | Nextcloud Office backend; state is disposable |
 | `homepage` | Plain manifests | N/A | N/A | N/A | N/A | N/A |  |
 | `immich` | Helm based | CNPG | None | CNPG | Yes | Yes | Media stored on NAS |
+| `kudos` | Plain manifests | CNPG | None | CNPG | No | No | Private GHCR image; uploads go to Garage via `s3.erasmus.works/kudos` |
 | `nextcloud` | Helm based | CNPG | VolSync | CNPG | Yes | Yes |  |
 | `ntfy` | Plain manifests | SQLite | VolSync | N/A | No | No | Push notifications; built-in auth, deny-all by default |
 

@@ -1,0 +1,52 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: kudos-postgres
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  instances: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  monitoring:
+    enablePodMonitor: true
+  storage:
+    size: 5Gi
+    storageClass: longhorn
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://cnpg-kudos
+      endpointURL: http://garage.garage.svc.cluster.local:3900
+      serverName: kudos-postgres
+      s3Credentials:
+        accessKeyId:
+          name: kudos-postgres-backup-s3
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: kudos-postgres-backup-s3
+          key: ACCESS_SECRET_KEY
+      wal:
+        compression: gzip
+    retentionPolicy: "30d"
+  # First deploy starts empty. To rebuild from backups, switch to `recovery` like docmost.
+  bootstrap:
+    initdb:
+      database: kudos
+      owner: kudos
+      secret:
+        name: kudos-postgres-auth
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: kudos-postgres-backup
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  schedule: "0 40 2 * * *" # every day at 2:40am, ahead of the 3:00am block
+  immediate: true
+  backupOwnerReference: cluster
+  cluster:
+    name: kudos-postgres

@@ -1,0 +1,82 @@
+# App buckets and keys from buckets.json, created by provision-buckets.sh after every sync.
+# To add a bucket: add an entry to buckets.json and its secret below (create it with
+# linux/bws-secrets.sh first).
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: garage-bucket-keys
+  namespace: garage
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: bitwarden-secrets-manager
+    kind: ClusterSecretStore
+  target:
+    name: garage-bucket-keys
+    creationPolicy: Owner
+    deletionPolicy: Retain
+  # secretKey must equal the Bitwarden key: buckets.json refers to it by that name.
+  data:
+    - secretKey: kudos-s3-secret-access-key
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        key: kudos-s3-secret-access-key
+        metadataPolicy: None
+        nullBytePolicy: Ignore
+    - secretKey: kudos-cnpg-backup-secret-access-key
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        key: kudos-cnpg-backup-secret-access-key
+        metadataPolicy: None
+        nullBytePolicy: Ignore
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: garage-bucket-provisioner
+  namespace: garage
+  annotations:
+    # PostSync: runs once everything in infra is applied and healthy, so a failure here
+    # (e.g. a secret missing in Bitwarden) never holds back other infra resources.
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: provision
+          image: alpine:3.22
+          command:
+            - sh
+            - -c
+            - apk add --no-cache curl jq openssl >/dev/null && sh /config/provision-buckets.sh
+          env:
+            - name: GARAGE_ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: garage-secrets
+                  key: GARAGE_ADMIN_TOKEN
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+            - name: keys
+              mountPath: /keys
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: garage-bucket-provisioner
+        - name: keys
+          secret:
+            secretName: garage-bucket-keys

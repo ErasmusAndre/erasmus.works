@@ -1,0 +1,145 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kudos
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kudos
+  template:
+    metadata:
+      labels:
+        app: kudos
+    spec:
+      imagePullSecrets:
+        - name: ghcr-pull
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
+      # Lets the app close live-update streams cleanly on shutdown.
+      terminationGracePeriodSeconds: 15
+      initContainers:
+        - name: wait-for-postgres
+          image: busybox:1.38
+          command:
+            - sh
+            - -c
+            - until nc -z kudos-postgres-rw.app-kudos.svc.cluster.local 5432; do sleep 2; done
+        # Forward-only and safe to re-run. Keep its tag equal to the app container's.
+        - name: migrate
+          image: ghcr.io/erasmusandre/kudos:sha-02270a1
+          command:
+            - npm
+            - run
+            - db:migrate
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: kudos-app-secrets
+                  key: DATABASE_URL
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+      containers:
+        - name: kudos
+          image: ghcr.io/erasmusandre/kudos:sha-02270a1
+          envFrom:
+            - secretRef:
+                name: kudos-app-secrets
+          env:
+            - name: AUTH_URL
+              value: https://kudos.erasmus.works
+            - name: AUTH_EMAIL_FROM
+              value: Kudos <no-reply@erasmus.works>
+            - name: S3_ENDPOINT
+              value: http://garage.garage.svc.cluster.local:3900
+            - name: S3_PUBLIC_ENDPOINT
+              value: https://s3.erasmus.works
+            # Must equal s3_region in kubernetes/infra/garage/garage.toml.
+            - name: S3_REGION
+              value: us-east-1
+            - name: S3_BUCKET
+              value: kudos
+            - name: S3_FORCE_PATH_STYLE
+              value: "true"
+            - name: VAPID_SUBJECT
+              value: mailto:no-reply@erasmus.works
+          ports:
+            - name: http
+              containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/live
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kudos
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  selector:
+    app: kudos
+  ports:
+    - name: http
+      port: 3000
+      targetPort: http
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kudos
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+spec:
+  parentRefs:
+    - name: homelab
+      namespace: envoy-gateway-system
+      group: gateway.networking.k8s.io
+      kind: Gateway
+  # No .homelab hostname: sign-in links and upload CORS are tied to AUTH_URL.
+  hostnames:
+    - kudos.erasmus.works
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      timeouts:
+        # Envoy's default 15s route timeout covers the whole response and would
+        # cut the live-update stream (Server-Sent Events) every 15 seconds.
+        request: 0s
+      backendRefs:
+        - name: kudos
+          group: ""
+          kind: Service
+          port: 3000
+          weight: 1

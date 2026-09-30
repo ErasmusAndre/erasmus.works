@@ -13,3 +13,8 @@ Run:
 ```bash
 ./linux/init.sh
 ```
+
+## Bitwarden secrets script
+
+`bws-secrets.sh` creates Bitwarden secrets from the CLI; see
+[Creating Secrets From The CLI](../docs/bootstrap/bitwarden-external-secrets.md#creating-secrets-from-the-cli).
