@@ -19,6 +19,11 @@
         href: https://ntfy.erasmus.works
         siteMonitor: https://ntfy.erasmus.works
         description: Push notifications
+    - Kudos:
+        icon: https://kudos.erasmus.works/icons/icon-192.png
+        href: https://kudos.erasmus.works
+        siteMonitor: https://kudos.erasmus.works/api/health
+        description: Group-trip game
     - Home Assistant:
         icon: home-assistant.png
         href: https://ha.erasmus.works
@@ -76,6 +81,15 @@
         href: http://truenas.homelab
         siteMonitor: http://192.168.20.40
         description: NAS management
+    - Kudos Dev:
+        icon: https://kudos.erasmus.works/icons/icon-192.png
+        href: https://kudos-dev.erasmus.works/dev
+        description: Kudos test copy and dev tools (Authentik)
+    - Bitwarden:
+        icon: bitwarden.png
+        href: https://vault.bitwarden.eu/#/login
+        siteMonitor: https://vault.bitwarden.eu
+        description: Password and secrets manager
     - Cloudflare Dashboard:
         icon: cloudflare.png
         href: https://dash.cloudflare.com
