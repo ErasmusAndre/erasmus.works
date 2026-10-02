@@ -58,7 +58,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: provision
-          image: alpine:3.22
+          image: alpine:3.24
           command:
             - sh
             - -c
