@@ -113,6 +113,11 @@ persistence:
   enabled: true
   existingClaim: nextcloud-html
 
+# Major upgrades run `occ upgrade` before Apache answers; hold off liveness for up to ~10 minutes.
+startupProbe:
+  enabled: true
+  failureThreshold: 60
+
 resources:
   requests:
     cpu: 100m
