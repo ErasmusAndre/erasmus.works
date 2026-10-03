@@ -20,7 +20,7 @@
         siteMonitor: https://ntfy.erasmus.works
         description: Push notifications
     - Kudos:
-        icon: https://kudos.erasmus.works/icons/icon-192.png
+        icon: https://kudos.erasmus.works/icons/icon-192-v2.png
         href: https://kudos.erasmus.works
         siteMonitor: https://kudos.erasmus.works/api/health
         description: Group-trip game
@@ -82,7 +82,7 @@
         siteMonitor: http://192.168.20.40
         description: NAS management
     - Kudos Dev:
-        icon: https://kudos.erasmus.works/icons/icon-192.png
+        icon: https://kudos.erasmus.works/icons/icon-192-v2.png
         href: https://kudos-dev.erasmus.works/dev
         description: Kudos test copy and dev tools (Authentik)
     - Bitwarden:
