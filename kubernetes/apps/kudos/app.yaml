@@ -71,6 +71,9 @@ spec:
               value: kudos
             - name: S3_FORCE_PATH_STYLE
               value: "true"
+            # Bug reports and ideas from players, to the maintainer's phone (in-cluster ntfy).
+            - name: FEEDBACK_NTFY_URL
+              value: http://ntfy.app-ntfy.svc.cluster.local:8080/kudos-feedback
             - name: VAPID_SUBJECT
               value: mailto:no-reply@erasmus.works
           ports:

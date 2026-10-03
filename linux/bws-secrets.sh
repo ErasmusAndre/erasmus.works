@@ -11,6 +11,7 @@
 #   hex      32 random bytes as hex (64 chars). Passwords, Garage secret keys.
 #   base64   32 random bytes as base64. Session/signing secrets.
 #   prompt   Ask for the value (hidden input). Tokens from other services.
+#   ntfy     An ntfy access token: tk_ plus 29 characters. Add it to NTFY_AUTH_TOKENS too.
 #   vapid    Web push key pair: creates <name>-public-key and <name>-private-key.
 #
 # Needs: bws (Bitwarden Secrets Manager CLI), jq, openssl; npx for `vapid`.
@@ -76,11 +77,12 @@ cmd_create() {
     [ "$name" != "$spec" ] && [ -n "$name" ] || die "expected NAME:TYPE, got '$spec'"
 
     case "$type" in
-      hex | base64 | prompt)
+      hex | base64 | prompt | ntfy)
         if exists "$name"; then printf '  exists  %s\n' "$name"; continue; fi
         case "$type" in
           hex) value="$(openssl rand -hex 32)" ;;
           base64) value="$(openssl rand -base64 32)" ;;
+          ntfy) value="tk_$(openssl rand -hex 16 | cut -c1-29)" ;;
           prompt)
             read -rsp "  value for $name: " value </dev/tty; echo
             [ -n "$value" ] || die "empty value for $name"
@@ -98,7 +100,7 @@ cmd_create() {
         create "$name-public-key" "$(jq -r .publicKey <<<"$pair")"
         create "$name-private-key" "$(jq -r .privateKey <<<"$pair")"
         ;;
-      *) die "unknown type '$type' for $name (hex, base64, prompt, vapid)" ;;
+      *) die "unknown type '$type' for $name (hex, base64, prompt, ntfy, vapid)" ;;
     esac
   done
 }
