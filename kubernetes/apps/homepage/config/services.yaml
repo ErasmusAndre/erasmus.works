@@ -14,6 +14,11 @@
         href: https://docmost.erasmus.works
         siteMonitor: https://docmost.erasmus.works
         description: Collaborative wiki and docs
+    - AI:
+        icon: open-webui.png
+        href: https://ai.erasmus.works
+        siteMonitor: https://ai.erasmus.works
+        description: Private AI chat
     - ntfy:
         icon: ntfy.png
         href: https://ntfy.erasmus.works
