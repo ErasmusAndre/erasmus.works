@@ -1,0 +1,21 @@
+# NetworkPolicy enforcement for Flannel (Talos 1.14+), control plane only.
+# KubeFlannelCNIConfig can't coexist with v1alpha1 cluster.network, so the network
+# settings move to KubeNetworkConfig unchanged. Backend values match the live
+# kube-flannel-cfg; leaving backendPort out would change the VXLAN port.
+cluster:
+  network:
+    $patch: delete
+---
+apiVersion: v1alpha1
+kind: KubeNetworkConfig
+dnsDomain: cluster.local
+podSubnets:
+  - 10.244.0.0/16
+serviceSubnets:
+  - 10.96.0.0/12
+---
+apiVersion: v1alpha1
+kind: KubeFlannelCNIConfig
+backendType: vxlan
+backendPort: 4789
+kubeNetworkPoliciesEnabled: true

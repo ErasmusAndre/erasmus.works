@@ -16,6 +16,7 @@
 - `talos/patches/single-node-controlplane.yaml`: keeps workloads schedulable on the current single control-plane node
 - `talos/patches/longhorn-host-path.yaml`: kubelet mount needed for Longhorn nodes
 - `talos/patches/filesystem-trim.yaml`: weekly SSD trim (Talos 1.14+), applied to all nodes
+- `talos/patches/flannel-network-policies.yaml`: NetworkPolicy enforcement in Flannel (Talos 1.14+), control plane only; moves `cluster.network` to `KubeNetworkConfig`. Takes effect after `upgrade-k8s` re-applies the bootstrap manifests
 - `talos/image-factory/longhorn.yaml`: Talos system extensions for Longhorn nodes
 
 ## Add A Worker Node
