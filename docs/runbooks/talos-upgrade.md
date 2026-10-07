@@ -10,7 +10,7 @@ Run this from the home network (or over VPN). The Talos API (`:50000`) and Kuber
 | Step | Talos | Kubernetes after | Done |
 | --- | --- | --- | --- |
 | 1 | `v1.12.12` | `v1.35.x` (optional patch) | 2026-10-07 |
-| 2 | `v1.13.11` | `v1.36.x` | |
+| 2 | `v1.13.11` | `v1.36.x` | 2026-10-07 |
 | 3 | `v1.14.2` | `v1.37.x` | |
 
 Merge the matching Renovate PR after each step, not before.
@@ -87,6 +87,7 @@ talosctl upgrade -n "$CP" -e "$CP" \
 - The Kubernetes API is down for about 1 minute while the control plane reboots.
 - Grafana and VictoriaLogs use single-replica volumes on the control plane, so they are down with it.
 - Pods stopped by the shutdown can stay listed as `Error` (`terminated in response to imminent node shutdown`) next to their running replacements. Delete them; they are not restarted.
+- A single-replica volume can get stuck in `attaching` after the control plane reboots (Longhorn logs `NodeID ... is not the same as the instance manager ... NodeID`). Scale its workload to 0 until the volume is `detached`, then back to 1. Argo CD restores the replica count by itself.
 
 ## After Each Step
 
