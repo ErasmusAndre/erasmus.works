@@ -18,6 +18,8 @@
         "snapshot-controller",
         "envoyproxy/gateway-helm",
         "ghcr.io/siderolabs/installer",
+        "ghcr.io/siderolabs/imager",
+        "/factory\\.talos\\.dev\\/installer\\//",
         "ghcr.io/siderolabs/kubelet",
         "cloudflare/cloudflared",
         "/(^|\\/)(argocd|argo-cd)(\\/|$)/",
@@ -39,10 +41,10 @@
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
     },
     {
-      "description": "Normalize Talos image-factory installer names",
+      "description": "Look up Talos image-factory installer versions via the imager image; ghcr.io/siderolabs/installer is no longer published since Talos 1.14",
       "matchDatasources": ["docker"],
       "matchPackageNames": ["/factory\\.talos\\.dev\\/installer\\//"],
-      "overridePackageName": "ghcr.io/siderolabs/installer"
+      "overridePackageName": "ghcr.io/siderolabs/imager"
     },
     {
       "description": "Talos and Kubernetes upgrade one minor version at a time, so open a separate PR per minor and for patches",
