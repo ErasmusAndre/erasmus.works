@@ -76,11 +76,15 @@ spec:
       ports:
         - port: 8931
           protocol: TCP
+    # The laptop: llama-server (8080) and the Playwright MCP server that drives my own
+    # Chrome through the Playwright Extension (8932, every connection approved in Chrome).
     - to:
         - ipBlock:
             cidr: 192.168.178.81/32
       ports:
         - port: 8080
+          protocol: TCP
+        - port: 8932
           protocol: TCP
     # HTTPS only to Cloudflare (https://www.cloudflare.com/ips-v4, 2026-10-08): the Authentik
     # login (authentik.erasmus.works is proxied by Cloudflare). Nothing else is needed:
