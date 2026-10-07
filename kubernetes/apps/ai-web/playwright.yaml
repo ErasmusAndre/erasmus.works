@@ -1,0 +1,89 @@
+# Headless Chromium that Open WebUI drives to read web pages (WEB_LOADER_ENGINE=playwright).
+# The version must match the playwright Python package inside the Open WebUI image
+# (1.60.0 for Open WebUI 0.11.4); bump both together. Renovate leaves this image alone.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playwright
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: playwright
+  template:
+    metadata:
+      labels:
+        app: playwright
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: playwright
+          image: mcr.microsoft.com/playwright:v1.60.0-noble
+          command:
+            - npx
+            - --yes
+            - playwright@1.60.0
+            - run-server
+            - --port=3000
+            - --host=0.0.0.0
+          env:
+            - name: HOME
+              value: /tmp
+            - name: npm_config_cache
+              value: /tmp/.npm
+          ports:
+            - name: ws
+              containerPort: 3000
+          readinessProbe:
+            tcpSocket:
+              port: ws
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: ws
+            initialDelaySeconds: 60
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: shm
+              mountPath: /dev/shm
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: playwright
+spec:
+  selector:
+    app: playwright
+  ports:
+    - name: ws
+      port: 3000
+      targetPort: ws

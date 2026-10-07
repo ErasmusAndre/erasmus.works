@@ -1,9 +1,10 @@
 # Open WebUI is the pod a prompt injection would try to steer, so it may only reach
-# what it needs: DNS, its Postgres, the laptop's llama-server, and HTTPS on the public
-# internet. Private ranges stay closed, so no other cluster service, node or LAN host.
+# what it needs: DNS, its Postgres, the laptop's llama-server, SearXNG and the Playwright
+# browser in app-ai-web, and HTTPS on the public internet. Private ranges stay closed,
+# so no other cluster service, node or LAN host.
 # Public HTTPS is for the Authentik OIDC calls (authentik.erasmus.works resolves to
-# Cloudflare) and first-start model downloads; phase 3 revisits it once page fetching
-# runs in its own namespace.
+# Cloudflare) and model downloads for document search. Web pages are fetched by the
+# Playwright browser in app-ai-web, not by this pod.
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -47,6 +48,26 @@ spec:
               cnpg.io/cluster: ai-postgres
       ports:
         - port: 5432
+          protocol: TCP
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: app-ai-web
+          podSelector:
+            matchLabels:
+              app: searxng
+      ports:
+        - port: 8080
+          protocol: TCP
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: app-ai-web
+          podSelector:
+            matchLabels:
+              app: playwright
+      ports:
+        - port: 3000
           protocol: TCP
     - to:
         - ipBlock:

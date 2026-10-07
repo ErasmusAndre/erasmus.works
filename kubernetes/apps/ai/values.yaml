@@ -91,9 +91,21 @@ extraEnvVars:
     value: "false"
   - name: ENABLE_VERSION_UPDATE_CHECK
     value: "false"
-  # Web search comes in phase 3, through SearXNG and a sandboxed browser.
+  # Web search and page reading run in app-ai-web (SearXNG + Playwright), never in this pod.
+  # Open WebUI keeps settings in its database after the first start, so these only seed a
+  # fresh install; on the running one they were set in Admin > Settings > Web Search.
   - name: ENABLE_WEB_SEARCH
-    value: "false"
+    value: "true"
+  - name: WEB_SEARCH_ENGINE
+    value: searxng
+  - name: SEARXNG_QUERY_URL
+    value: http://searxng.app-ai-web.svc.cluster.local:8080/search?q=<query>
+  - name: WEB_SEARCH_RESULT_COUNT
+    value: "5"
+  - name: WEB_LOADER_ENGINE
+    value: playwright
+  - name: PLAYWRIGHT_WS_URL
+    value: ws://playwright.app-ai-web.svc.cluster.local:3000
   # Code runs in the browser (Pyodide), never in the pod.
   - name: CODE_EXECUTION_ENGINE
     value: pyodide

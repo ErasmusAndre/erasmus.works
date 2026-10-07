@@ -55,6 +55,18 @@
       ],
       "separateMinorPatch": true,
       "separateMultipleMinor": true
+    },
+    {
+      "description": "Playwright browser server must match the playwright package inside Open WebUI; bump it by hand with the Open WebUI chart",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["mcr.microsoft.com/playwright"],
+      "enabled": false
+    },
+    {
+      "description": "SearXNG tags are YYYY.M.D-<commit>; compare the date, ignore the commit",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["docker.io/searxng/searxng"],
+      "versioning": "regex:^(?<major>\\d{4})\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<build>[0-9a-f]+)$"
     }
   ]
 }

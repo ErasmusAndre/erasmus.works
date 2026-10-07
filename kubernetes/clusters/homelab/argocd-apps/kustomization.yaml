@@ -5,6 +5,7 @@ resources:
   - infra/application.yaml
   - homepage/application.yaml
   - ai/application.yaml
+  - ai-web/application.yaml
   - docmost/application.yaml
   - euro-office/application.yaml
   - immich/application.yaml

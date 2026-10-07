@@ -16,6 +16,8 @@ spec:
   destinations:
     - namespace: app-ai
       server: https://kubernetes.default.svc
+    - namespace: app-ai-web
+      server: https://kubernetes.default.svc
     - namespace: app-docmost
       server: https://kubernetes.default.svc
     - namespace: app-euro-office
