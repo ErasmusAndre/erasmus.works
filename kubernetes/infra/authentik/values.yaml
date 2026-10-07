@@ -73,6 +73,11 @@ worker:
       projected:
         sources:
           - configMap:
+              name: authentik-blueprint-ai
+              items:
+                - key: ai.yaml
+                  path: ai.yaml
+          - configMap:
               name: authentik-blueprint-argocd
               items:
                 - key: argocd.yaml

@@ -4,6 +4,8 @@ resources:
   - namespace.yaml
   - application.yaml
   - nfs-backup-pv.yaml
+  - nfs-backup-pv-app-ai.yaml
+  - nfs-backup-pvc-app-ai.yaml
   - nfs-backup-pv-app-docmost.yaml
   - nfs-backup-pvc-app-docmost.yaml
   - nfs-backup-pv-app-media.yaml

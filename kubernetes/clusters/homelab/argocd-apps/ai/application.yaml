@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ai
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: apps
+  ignoreDifferences:
+    - group: postgresql.cnpg.io
+      kind: Cluster
+      name: ai-postgres
+      namespace: app-ai
+      jsonPointers:
+        - /spec/bootstrap
+  sources:
+    - repoURL: https://helm.openwebui.com
+      chart: open-webui
+      targetRevision: 16.6.0
+      helm:
+        releaseName: open-webui
+        valueFiles:
+          - $values/kubernetes/apps/ai/values.yaml
+    - repoURL: https://github.com/ErasmusAndre/erasmus.works.git
+      targetRevision: main
+      path: kubernetes/apps/ai
+    - repoURL: https://github.com/ErasmusAndre/erasmus.works.git
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: app-ai
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    # Open WebUI's image runs as root, so baseline is enforced; restricted warns until that's solved.
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: baseline
+        pod-security.kubernetes.io/warn: restricted
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - RespectIgnoreDifferences=true

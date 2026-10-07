@@ -9,10 +9,13 @@ spec:
   sourceRepos:
     - https://github.com/ErasmusAndre/erasmus.works.git
     - https://charts.goauthentik.io
+    - https://helm.openwebui.com
     - ghcr.io/immich-app/immich-charts
     - https://immich-app.github.io/immich-charts
     - https://nextcloud.github.io/helm/
   destinations:
+    - namespace: app-ai
+      server: https://kubernetes.default.svc
     - namespace: app-docmost
       server: https://kubernetes.default.svc
     - namespace: app-euro-office

@@ -1,0 +1,52 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: ai-postgres
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  instances: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  monitoring:
+    enablePodMonitor: true
+  storage:
+    size: 5Gi
+    storageClass: longhorn
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://cnpg-ai
+      endpointURL: http://garage.garage.svc.cluster.local:3900
+      serverName: ai-postgres
+      s3Credentials:
+        accessKeyId:
+          name: ai-postgres-backup-s3
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: ai-postgres-backup-s3
+          key: ACCESS_SECRET_KEY
+      wal:
+        compression: gzip
+    retentionPolicy: "30d"
+  # First deploy starts empty. To rebuild from backups, switch to `recovery` like docmost.
+  bootstrap:
+    initdb:
+      database: openwebui
+      owner: openwebui
+      secret:
+        name: ai-postgres-auth
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: ai-postgres-backup
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  schedule: "0 50 2 * * *" # every day at 2:50am, ahead of the 3:00am block
+  immediate: true
+  backupOwnerReference: cluster
+  cluster:
+    name: ai-postgres

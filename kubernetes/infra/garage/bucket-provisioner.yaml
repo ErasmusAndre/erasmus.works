@@ -40,6 +40,13 @@ spec:
         key: kudos-dev-s3-secret-access-key
         metadataPolicy: None
         nullBytePolicy: Ignore
+    - secretKey: ai-cnpg-backup-secret-access-key
+      remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        key: ai-cnpg-backup-secret-access-key
+        metadataPolicy: None
+        nullBytePolicy: Ignore
 ---
 apiVersion: batch/v1
 kind: Job

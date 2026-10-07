@@ -1,0 +1,27 @@
+# llama-server on the laptop (work-victus, Wi-Fi, fixed IP in UniFi). Reachable only from the
+# Servers VLAN through the UniFi policy Allow-Cluster-to-llama and the laptop's ufw.
+# Down whenever the laptop is asleep or away; Open WebUI then shows a connection error.
+apiVersion: v1
+kind: Service
+metadata:
+  name: llama
+spec:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: llama-laptop
+  labels:
+    kubernetes.io/service-name: llama
+addressType: IPv4
+ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+endpoints:
+  - addresses:
+      - 192.168.178.81

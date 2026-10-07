@@ -22,5 +22,11 @@
     "corsOrigins": [
       "https://kudos-dev.erasmus.works"
     ]
+  },
+  {
+    "bucket": "cnpg-ai",
+    "keyId": "GKb09f8e1209e712a593c52e90",
+    "keyName": "ai-cnpg",
+    "secret": "ai-cnpg-backup-secret-access-key"
   }
 ]

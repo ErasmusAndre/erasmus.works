@@ -1,0 +1,99 @@
+# Open WebUI: chat UI and agent loop for the private AI at ai.erasmus.works.
+# The model runs on the laptop (see llama.yaml); plan and safety design in local-ai/LOCAL-AI-PLAN.md.
+
+# Subcharts off: no in-cluster model, and Pipelines would run arbitrary Python.
+ollama:
+  enabled: false
+pipelines:
+  enabled: false
+tika:
+  enabled: false
+
+# Single replica, so the in-memory websocket manager is enough and no Redis is needed.
+websocket:
+  enabled: true
+  manager: ""
+  redis:
+    enabled: false
+
+workload:
+  kind: Deployment
+replicaCount: 1
+strategy:
+  type: Recreate
+
+serviceAccount:
+  automountServiceAccountToken: false
+
+nodeSelector:
+  kubernetes.io/hostname: talos-node-2
+
+persistence:
+  enabled: true
+  existingClaim: open-webui-data
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 1Gi
+
+enableOpenaiApi: true
+openaiBaseApiUrl: http://llama.app-ai.svc.cluster.local:8080/v1
+openaiApiKeyExistingSecret: ai-app-secrets
+openaiApiKeyExistingSecretKey: llama-api-key
+
+sso:
+  enabled: true
+  # Creates the account on first Authentik login. New accounts start as "pending"
+  # (DEFAULT_USER_ROLE below), except the very first one, which becomes admin.
+  enableSignup: true
+  oidc:
+    enabled: true
+    clientId: ai-erasmus-works
+    clientExistingSecret: ai-app-secrets
+    clientExistingSecretKey: oauth-client-secret
+    providerUrl: https://authentik.erasmus.works/application/o/ai/.well-known/openid-configuration
+    providerName: Authentik
+    scopes: openid email profile
+
+extraEnvVars:
+  - name: WEBUI_URL
+    value: https://ai.erasmus.works
+  - name: WEBUI_SECRET_KEY
+    valueFrom:
+      secretKeyRef:
+        name: ai-app-secrets
+        key: webui-secret-key
+  - name: DATABASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: ai-app-secrets
+        key: database-url
+  # Login only through Authentik.
+  - name: ENABLE_SIGNUP
+    value: "false"
+  - name: ENABLE_LOGIN_FORM
+    value: "false"
+  - name: DEFAULT_USER_ROLE
+    value: pending
+  # No model connections besides the laptop, and nothing shared outward.
+  - name: ENABLE_DIRECT_CONNECTIONS
+    value: "false"
+  - name: ENABLE_COMMUNITY_SHARING
+    value: "false"
+  - name: ENABLE_VERSION_UPDATE_CHECK
+    value: "false"
+  # Web search comes in phase 3, through SearXNG and a sandboxed browser.
+  - name: ENABLE_WEB_SEARCH
+    value: "false"
+  # Code runs in the browser (Pyodide), never in the pod.
+  - name: CODE_EXECUTION_ENGINE
+    value: pyodide
+  - name: CODE_INTERPRETER_ENGINE
+    value: pyodide
+  - name: ANONYMIZED_TELEMETRY
+    value: "false"
+  - name: DO_NOT_TRACK
+    value: "true"
+  - name: SCARF_NO_ANALYTICS
+    value: "true"

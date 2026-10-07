@@ -4,6 +4,7 @@ resources:
   - argocd/application.yaml
   - infra/application.yaml
   - homepage/application.yaml
+  - ai/application.yaml
   - docmost/application.yaml
   - euro-office/application.yaml
   - immich/application.yaml
