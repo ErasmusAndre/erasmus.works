@@ -18,6 +18,9 @@ websocket:
 
 workload:
   kind: Deployment
+# After the PVC and Postgres (wave 1); otherwise Argo waits forever on a pod that can't schedule.
+annotations:
+  argocd.argoproj.io/sync-wave: "2"
 replicaCount: 1
 strategy:
   type: Recreate
