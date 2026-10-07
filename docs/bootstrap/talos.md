@@ -14,6 +14,7 @@
 - `talos/node-01/`: current cluster-generated Talos config and secrets
 - `talos/patches/single-node-controlplane.yaml`: keeps workloads schedulable on the current single control-plane node
 - `talos/patches/longhorn-host-path.yaml`: kubelet mount needed for Longhorn nodes
+- `talos/patches/filesystem-trim.yaml`: weekly SSD trim (Talos 1.14+), applied to all nodes
 - `talos/image-factory/longhorn.yaml`: Talos system extensions for Longhorn nodes
 
 ## Add A Worker Node

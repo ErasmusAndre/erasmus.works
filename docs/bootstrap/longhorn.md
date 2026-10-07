@@ -26,6 +26,8 @@ Every node that should host Longhorn replicas needs:
 
 This repo keeps Longhorn on the existing Talos `EPHEMERAL` disk path instead of using a separate `UserVolumeConfig`.
 
+Keep the mount in the v1alpha1 `machine.kubelet.extraMounts` format. Talos 1.14+ still honors it for upgraded clusters, but the new `KubeletConfig` document has no `extraMounts`; moving the patch to it removes the mount. Switching to a `UserVolumeConfig` means moving the data to `/var/mnt/<name>` first ([siderolabs/talos#14411](https://github.com/siderolabs/talos/issues/14411)).
+
 ## Apply To A Node
 
 The committed Longhorn image-factory schematic currently resolves to:

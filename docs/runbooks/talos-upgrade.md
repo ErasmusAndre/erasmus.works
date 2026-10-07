@@ -11,7 +11,7 @@ Run this from the home network (or over VPN). The Talos API (`:50000`) and Kuber
 | --- | --- | --- | --- |
 | 1 | `v1.12.12` | `v1.35.x` (optional patch) | 2026-10-07 |
 | 2 | `v1.13.11` | `v1.36.x` | 2026-10-07 (Kubernetes `v1.36.5`) |
-| 3 | `v1.14.2` | `v1.37.x` | |
+| 3 | `v1.14.2` | `v1.37.x` | 2026-10-07 (Talos) |
 
 Merge the matching Renovate PR after each step, not before.
 
@@ -80,9 +80,16 @@ talosctl upgrade -n "$CP" -e "$CP" \
 
 `talosctl upgrade` drains the node first and keeps the data partition, so Longhorn replicas survive.
 
+From talosctl 1.14 the client drains, and a failed drain stops the upgrade before the reboot: the new version is installed but not booted, and the node stays cordoned. With the PDBs below the drain always fails, so finish by hand:
+
+```bash
+talosctl reboot -n <node> -e "$CP"
+kubectl uncordon <node>
+```
+
 ## What To Expect
 
-- The drain never completes: single-instance CNPG clusters and Longhorn instance managers have PDBs with 0 allowed disruptions. Talos tries for 5 minutes, logs a warning, then reboots anyway. Postgres is stopped cleanly by the shutdown.
+- The drain never completes: single-instance CNPG clusters and Longhorn instance managers have PDBs with 0 allowed disruptions. Up to talosctl 1.13, Talos tries for 5 minutes, logs a warning, then reboots anyway; from 1.14, see above. Postgres is stopped cleanly by the shutdown.
 - Each node takes about 8 minutes from cordon to `Ready`. Pods that could not be evicted keep running until the reboot, so apps whose Postgres runs on that node are down for about 4 minutes.
 - The Kubernetes API is down for about 1 minute while the control plane reboots.
 - Grafana and VictoriaLogs use single-replica volumes on the control plane, so they are down with it.
@@ -115,7 +122,9 @@ It also resets the CoreDNS ConfigMap to the Talos default. Argo CD (`kubernetes/
 - 1.13: Flannel can enforce NetworkPolicy (`kubeNetworkPoliciesEnabled`). Enable it after 1.14, where it moved to the `KubeFlannelCNIConfig` document.
 - 1.14: `ghcr.io/siderolabs/installer` is no longer published. Keep using the Image Factory installer; Renovate looks versions up via `ghcr.io/siderolabs/imager`.
 - 1.14: workload isolation (`SecurityProfileConfig`) stays off on upgraded clusters. Leave it off until Longhorn is tested with it.
-- 1.14: filesystem trim is off on upgraded clusters until a `FilesystemTrimConfig` document is added.
+- 1.14: filesystem trim is off on upgraded clusters until a `FilesystemTrimConfig` document is added; see `talos/patches/filesystem-trim.yaml`.
+- 1.14: etcd moves to 3.7. Rolling Talos back to 1.13 after that means restoring the pre-upgrade etcd snapshot.
+- 1.14: keep the Longhorn mount in the v1alpha1 format; see [longhorn.md](../bootstrap/longhorn.md#talos-requirements).
 - 1.14: `apply-config --mode=reboot` was removed.
 - 1.14: etcd metrics moved from port `2379` to `2383`. Etcd is not scraped here.
 
