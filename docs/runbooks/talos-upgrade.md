@@ -10,7 +10,7 @@ Run this from the home network (or over VPN). The Talos API (`:50000`) and Kuber
 | Step | Talos | Kubernetes after | Done |
 | --- | --- | --- | --- |
 | 1 | `v1.12.12` | `v1.35.x` (optional patch) | 2026-10-07 |
-| 2 | `v1.13.11` | `v1.36.x` | 2026-10-07 |
+| 2 | `v1.13.11` | `v1.36.x` | 2026-10-07 (Kubernetes `v1.36.5`) |
 | 3 | `v1.14.2` | `v1.37.x` | |
 
 Merge the matching Renovate PR after each step, not before.
@@ -104,7 +104,10 @@ talosctl -n "$CP" -e "$CP" upgrade-k8s --to 1.36.5 --dry-run
 talosctl -n "$CP" -e "$CP" upgrade-k8s --to 1.36.5
 ```
 
-Then update the kubelet tag in the node configs and merge the kubelet Renovate PR.
+Then update the Kubernetes image tags in the node configs and merge the kubelet Renovate PR.
+
+`upgrade-k8s` restarts the control-plane components and kubelets in place (no drain or reboot); the API is unreachable a few times for under a minute.
+It also resets the CoreDNS ConfigMap to the Talos default. Argo CD (`kubernetes/infra/coredns-configmap.yaml`, self-heal) restores the custom Corefile within seconds; check that `*.homelab` resolves afterwards.
 
 ## Version Notes
 
