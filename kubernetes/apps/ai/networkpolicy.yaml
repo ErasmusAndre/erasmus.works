@@ -1,7 +1,7 @@
 # Open WebUI is the pod a prompt injection would try to steer, so it may only reach
 # what it needs: DNS, its Postgres, the laptop's llama-server, SearXNG and the Playwright
-# browser in app-ai-web, and HTTPS to Cloudflare for the Authentik login. No other
-# internet, cluster service, node or LAN host.
+# browser in app-ai-web, the Playwright MCP browser agent in app-ai-browser, and HTTPS to
+# Cloudflare for the Authentik login. No other internet, cluster service, node or LAN host.
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -65,6 +65,16 @@ spec:
               app: playwright
       ports:
         - port: 3000
+          protocol: TCP
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: app-ai-browser
+          podSelector:
+            matchLabels:
+              app: playwright-mcp
+      ports:
+        - port: 8931
           protocol: TCP
     - to:
         - ipBlock:

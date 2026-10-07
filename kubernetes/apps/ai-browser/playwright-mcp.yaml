@@ -1,0 +1,106 @@
+# Playwright MCP: a headless Chromium that the "Browser agent" in Open WebUI drives through
+# MCP tools (navigate, click, type). Separate from app-ai-web's Playwright, which only reads.
+# - --isolated: profile in memory only, every restart starts logged out.
+# - --shared-browser-context: Open WebUI opens a new MCP session per chat turn (and after
+#   each tool approval); without this every turn would start on a blank page.
+# - --idle-timeout: closes the browser (and its cookies) after 15 minutes without a tool call.
+# - --allowed-origins: the sites the agent may load. A guard rail, not a security boundary
+#   (it doesn't stop redirects); the NetworkPolicy and approving each action are the real
+#   limits. Adding a site is a deliberate change here.
+# - --image-responses=omit: Qwen runs without its vision projector, screenshots would only
+#   waste context; the agent works from accessibility snapshots.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playwright-mcp
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: playwright-mcp
+  template:
+    metadata:
+      labels:
+        app: playwright-mcp
+    spec:
+      automountServiceAccountToken: false
+      # The pause container becomes PID 1 and reaps Chromium's child processes.
+      shareProcessNamespace: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: playwright-mcp
+          image: mcr.microsoft.com/playwright/mcp:v0.0.82
+          # The image entrypoint already passes --headless --browser chromium --no-sandbox
+          # (Chromium's own sandbox can't run under Pod Security restricted; the pod is the sandbox).
+          args:
+            - --host=0.0.0.0
+            - --port=8931
+            - --allowed-hosts=playwright-mcp.app-ai-browser.svc.cluster.local:8931
+            - --isolated
+            - --shared-browser-context
+            - --idle-timeout=900000
+            - --allowed-origins=https://example.com;https://en.wikipedia.org;https://nl.wikipedia.org;https://books.toscrape.com;https://quotes.toscrape.com
+            - --block-service-workers
+            - --image-responses=omit
+            - --output-dir=/tmp/output
+            - --viewport-size=1280x800
+          env:
+            - name: HOME
+              value: /tmp
+          ports:
+            - name: mcp
+              containerPort: 8931
+          readinessProbe:
+            tcpSocket:
+              port: mcp
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: mcp
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: shm
+              mountPath: /dev/shm
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: playwright-mcp
+spec:
+  selector:
+    app: playwright-mcp
+  ports:
+    - name: mcp
+      port: 8931
+      targetPort: mcp

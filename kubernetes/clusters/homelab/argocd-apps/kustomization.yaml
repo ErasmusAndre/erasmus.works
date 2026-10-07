@@ -6,6 +6,7 @@ resources:
   - homepage/application.yaml
   - ai/application.yaml
   - ai-web/application.yaml
+  - ai-browser/application.yaml
   - docmost/application.yaml
   - euro-office/application.yaml
   - immich/application.yaml

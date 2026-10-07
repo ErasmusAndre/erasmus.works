@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ai-browser
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: apps
+  source:
+    repoURL: https://github.com/ErasmusAndre/erasmus.works.git
+    targetRevision: main
+    path: kubernetes/apps/ai-browser
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: app-ai-browser
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: restricted
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
