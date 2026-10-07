@@ -18,6 +18,9 @@ spec:
         app: playwright
     spec:
       automountServiceAccountToken: false
+      # The pause container becomes PID 1 and reaps the Chromium processes that
+      # run-server leaves behind; without it they pile up as <defunct>.
+      shareProcessNamespace: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001
