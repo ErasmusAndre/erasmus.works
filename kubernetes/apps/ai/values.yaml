@@ -31,6 +31,23 @@ serviceAccount:
 nodeSelector:
   kubernetes.io/hostname: talos-node-2
 
+# Non-root, so app-ai can enforce Pod Security "restricted". fsGroup makes the existing
+# PVC files writable for uid 1001. Tested 2026-10-08: the only side effect is logged
+# "Permission denied" while re-copying favicons into the image's static folder, which
+# already holds the same files.
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+  runAsGroup: 1001
+  fsGroup: 1001
+  seccompProfile:
+    type: RuntimeDefault
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
 persistence:
   enabled: true
   existingClaim: open-webui-data
@@ -107,12 +124,15 @@ extraEnvVars:
   - name: PLAYWRIGHT_WS_URL
     value: ws://playwright.app-ai-web.svc.cluster.local:3000
   # Document search embeddings, on CPU in this pod. Multilingual (Dutch, Afrikaans, ...).
-  # OFFLINE_MODE stops Open WebUI from re-downloading the whole Hugging Face repo
-  # (~4.5 GB of formats it never uses) on every start; it loads from the PVC cache.
-  # To change models: set OFFLINE_MODE to false, pick the model in Admin > Documents,
-  # delete the unused onnx/openvino/tf files, then set it back.
+  # The model lives as plain files on the PVC (backed up by VolSync), loaded by path:
+  # Open WebUI skips Hugging Face entirely for a local folder. Downloading by repo name
+  # pulls every format in the repo (~4.5 GB for a 470 MB model) and, with auto-update,
+  # does it again on each start. OFFLINE_MODE keeps it from ever contacting Hugging Face.
+  # New model: download the repo on a laptop, copy model.safetensors + tokenizer/config
+  # files + 1_Pooling/ into /app/backend/data/models/<name>, set the path in Admin >
+  # Documents (the "Update embedding model" button or POST /api/v1/retrieval/embedding/update).
   - name: RAG_EMBEDDING_MODEL
-    value: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+    value: /app/backend/data/models/paraphrase-multilingual-MiniLM-L12-v2
   - name: OFFLINE_MODE
     value: "true"
   # Code runs in the browser (Pyodide), never in the pod.

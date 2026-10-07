@@ -1,10 +1,7 @@
 # Open WebUI is the pod a prompt injection would try to steer, so it may only reach
 # what it needs: DNS, its Postgres, the laptop's llama-server, SearXNG and the Playwright
-# browser in app-ai-web, and HTTPS on the public internet. Private ranges stay closed,
-# so no other cluster service, node or LAN host.
-# Public HTTPS is for the Authentik OIDC calls (authentik.erasmus.works resolves to
-# Cloudflare) and model downloads for document search. Web pages are fetched by the
-# Playwright browser in app-ai-web, not by this pod.
+# browser in app-ai-web, and HTTPS to Cloudflare for the Authentik login. No other
+# internet, cluster service, node or LAN host.
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -75,15 +72,41 @@ spec:
       ports:
         - port: 8080
           protocol: TCP
+    # HTTPS only to Cloudflare (https://www.cloudflare.com/ips-v4, 2026-10-08): the Authentik
+    # login (authentik.erasmus.works is proxied by Cloudflare). Nothing else is needed:
+    # OFFLINE_MODE keeps Hugging Face out, pages go through Playwright. If Cloudflare adds a
+    # range and logins break, update this list.
     - to:
         - ipBlock:
-            cidr: 0.0.0.0/0
-            except:
-              - 10.0.0.0/8
-              - 172.16.0.0/12
-              - 192.168.0.0/16
-              - 100.64.0.0/10
-              - 169.254.0.0/16
+            cidr: 173.245.48.0/20
+        - ipBlock:
+            cidr: 103.21.244.0/22
+        - ipBlock:
+            cidr: 103.22.200.0/22
+        - ipBlock:
+            cidr: 103.31.4.0/22
+        - ipBlock:
+            cidr: 141.101.64.0/18
+        - ipBlock:
+            cidr: 108.162.192.0/18
+        - ipBlock:
+            cidr: 190.93.240.0/20
+        - ipBlock:
+            cidr: 188.114.96.0/20
+        - ipBlock:
+            cidr: 197.234.240.0/22
+        - ipBlock:
+            cidr: 198.41.128.0/17
+        - ipBlock:
+            cidr: 162.158.0.0/15
+        - ipBlock:
+            cidr: 104.16.0.0/13
+        - ipBlock:
+            cidr: 104.24.0.0/14
+        - ipBlock:
+            cidr: 172.64.0.0/13
+        - ipBlock:
+            cidr: 131.0.72.0/22
       ports:
         - port: 443
           protocol: TCP

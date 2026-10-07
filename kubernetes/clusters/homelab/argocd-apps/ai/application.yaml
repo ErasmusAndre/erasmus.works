@@ -37,7 +37,8 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    # Open WebUI's image runs as root, so baseline is enforced; restricted warns until that's solved.
+    # Open WebUI runs non-root, but the VolSync mover runs as root (and owns its repo on
+    # the NAS), so baseline is enforced and restricted only warns.
     managedNamespaceMetadata:
       labels:
         pod-security.kubernetes.io/enforce: baseline
