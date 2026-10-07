@@ -1,0 +1,21 @@
+# The Longhorn chart's longhorn-manager policy only admits longhorn-system pods.
+# This adds Prometheus scraping of the manager metrics (port 9500).
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: longhorn-manager-metrics
+  namespace: longhorn-system
+spec:
+  podSelector:
+    matchLabels:
+      app: longhorn-manager
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: monitoring
+      ports:
+        - port: 9500
+          protocol: TCP
