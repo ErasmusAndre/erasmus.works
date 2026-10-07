@@ -23,7 +23,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: mailpit
-          image: axllent/mailpit:v1.31.3
+          image: axllent/mailpit:v1.31.4
           env:
             - name: MP_WEBROOT
               value: mail
