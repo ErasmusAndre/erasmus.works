@@ -43,6 +43,16 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["/factory\\.talos\\.dev\\/installer\\//"],
       "overridePackageName": "ghcr.io/siderolabs/installer"
+    },
+    {
+      "description": "Talos and Kubernetes upgrade one minor version at a time, so open a separate PR per minor and for patches",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": [
+        "/factory\\.talos\\.dev\\/installer\\//",
+        "ghcr.io/siderolabs/kubelet"
+      ],
+      "separateMinorPatch": true,
+      "separateMultipleMinor": true
     }
   ]
 }

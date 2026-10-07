@@ -1,0 +1,9 @@
+# Talos and Kubernetes versions running on the cluster.
+# The generated node configs are gitignored (they contain secrets), so this file
+# is what Renovate watches. A Renovate PR here means an upgrade is available;
+# apply it with `talosctl upgrade` / `talosctl upgrade-k8s`, then update the node
+# configs to match.
+installer:
+  image: factory.talos.dev/installer/613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245:v1.12.4
+kubelet:
+  image: ghcr.io/siderolabs/kubelet:v1.35.0
