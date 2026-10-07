@@ -1,0 +1,30 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: network-policy-alerts
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: network-policy-alerts
+      rules:
+        - alert: NetworkPolicyEnforcerDown
+          expr: (count(kube_pod_container_status_ready{namespace="kube-system", container="kube-network-policies"} == 1) or vector(0)) < count(kube_node_info)
+          for: 5m
+          labels:
+            severity: critical
+            category: security
+            component: kube-network-policies
+          annotations:
+            summary: NetworkPolicy enforcement is off on at least one node
+            description: Fewer kube-network-policies containers are ready than there are nodes. It fails open, so NetworkPolicies are not enforced on the affected node(s). Check the kube-flannel DaemonSet in kube-system and the Talos KubeFlannelCNIConfig patch.
+        - alert: NetworkPolicyEnforcerRestarted
+          expr: increase(kube_pod_container_status_restarts_total{namespace="kube-system", container="kube-network-policies"}[30m]) > 0
+          labels:
+            severity: warning
+            category: security
+            component: kube-network-policies
+          annotations:
+            summary: NetworkPolicy enforcer restarted
+            description: kube-network-policies in {{ $labels.pod }} restarted in the last 30 minutes. NetworkPolicies were not enforced on that node while it was down.

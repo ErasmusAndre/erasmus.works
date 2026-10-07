@@ -12,6 +12,7 @@ resources:
 
   # Metrics
   - backup-alerts.yaml
+  - network-policy-alerts.yaml
   - kube-state-metrics-volsync-rbac.yaml
   - victorialogs-datasource.yaml
   - dashboards
