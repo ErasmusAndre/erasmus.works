@@ -1,5 +1,5 @@
 # Open WebUI: chat UI and agent loop for the private AI at ai.erasmus.works.
-# The model runs on the laptop (see llama.yaml); plan and safety design in local-ai/LOCAL-AI-PLAN.md.
+# The model runs on the laptop (see openaiBaseApiUrl); plan and safety design in local-ai/LOCAL-AI-PLAN.md.
 
 # Subcharts off: no in-cluster model, and Pipelines would run arbitrary Python.
 ollama:
@@ -41,7 +41,10 @@ resources:
     memory: 1Gi
 
 enableOpenaiApi: true
-openaiBaseApiUrl: http://llama.app-ai.svc.cluster.local:8080/v1
+# llama-server on the laptop (work-victus, Wi-Fi, fixed IP in UniFi), reachable from the
+# Servers VLAN only through the UniFi policy Allow-Cluster-to-llama and the laptop's ufw.
+# An IP rather than a selectorless Service: Argo CD excludes Endpoints/EndpointSlices.
+openaiBaseApiUrl: http://192.168.178.81:8080/v1
 openaiApiKeyExistingSecret: ai-app-secrets
 openaiApiKeyExistingSecretKey: llama-api-key
 
