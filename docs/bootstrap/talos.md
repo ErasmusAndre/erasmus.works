@@ -11,7 +11,8 @@
 
 ## Repo Paths
 
-- `talos/node-01/`: current cluster-generated Talos config and secrets
+- `talos/node-01/`: current cluster-generated Talos config and secrets. `worker.yaml` here is the generic template, not node 2's config; never apply it to an existing worker.
+- `talos/node-02/worker.yaml`: node 2's live config (hostname, install disk), saved with `talosctl get mc v1alpha1 -o jsonpath='{.spec}'`
 - `talos/patches/single-node-controlplane.yaml`: keeps workloads schedulable on the current single control-plane node
 - `talos/patches/longhorn-host-path.yaml`: kubelet mount needed for Longhorn nodes
 - `talos/patches/filesystem-trim.yaml`: weekly SSD trim (Talos 1.14+), applied to all nodes

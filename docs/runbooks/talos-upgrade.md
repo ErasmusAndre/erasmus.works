@@ -99,7 +99,12 @@ kubectl uncordon <node>
 ## After Each Step
 
 - Run the checks from "Before Each Step" again.
-- Update `machine.install.image` in `node-01/controlplane.yaml` and `node-01/worker.yaml` to the new tag.
+- `talosctl upgrade` does not change `machine.install.image` in the live config, which a reinstall or reset would use. Update it on each node, and in `node-01/controlplane.yaml` and `node-02/worker.yaml`:
+
+  ```bash
+  talosctl patch mc -n <node> -e "$CP" \
+    --patch '{"machine":{"install":{"image":"factory.talos.dev/installer/'"$SCHEMATIC:$TARGET"'"}}}'
+  ```
 - Merge the Renovate PR for the installer, or update [talos/versions.yaml](../../talos/versions.yaml) by hand.
 
 ## Kubernetes
