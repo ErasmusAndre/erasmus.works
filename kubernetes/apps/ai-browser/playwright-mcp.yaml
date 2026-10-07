@@ -1,14 +1,16 @@
 # Playwright MCP: a headless Chromium that the "Browser agent" in Open WebUI drives through
 # MCP tools (navigate, click, type). Separate from app-ai-web's Playwright, which only reads.
-# - --isolated: profile in memory only, every restart starts logged out.
-# - --shared-browser-context: Open WebUI opens a new MCP session per chat turn (and after
-#   each tool approval); without this every turn would start on a blank page.
-# - --idle-timeout: closes the browser (and its cookies) after 15 minutes without a tool call.
+# - --isolated: profile in memory only. Open WebUI opens one MCP session per chat turn and
+#   each session gets a fresh browser context, so every message starts on a blank page with
+#   no cookies: multi-step tasks have to fit in one message.
 # - --allowed-origins: the sites the agent may load. A guard rail, not a security boundary
-#   (it doesn't stop redirects); the NetworkPolicy and approving each action are the real
-#   limits. Adding a site is a deliberate change here.
+#   (it doesn't stop redirects); the NetworkPolicy is the real limit. Adding a site is a
+#   deliberate change here.
 # - --image-responses=omit: Qwen runs without its vision projector, screenshots would only
 #   waste context; the agent works from accessibility snapshots.
+# Open WebUI only offers the model an allowlist of this server's tools (Admin > External
+# Tools > browser > function filter); browser_run_code_unsafe, browser_evaluate and the file
+# tools stay hidden.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -46,8 +48,6 @@ spec:
             - --port=8931
             - --allowed-hosts=playwright-mcp.app-ai-browser.svc.cluster.local:8931
             - --isolated
-            - --shared-browser-context
-            - --idle-timeout=900000
             - --allowed-origins=https://example.com;https://en.wikipedia.org;https://nl.wikipedia.org;https://books.toscrape.com;https://quotes.toscrape.com
             - --block-service-workers
             - --image-responses=omit
