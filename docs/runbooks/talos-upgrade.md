@@ -7,11 +7,11 @@ Run this from the home network (or over VPN). The Talos API (`:50000`) and Kuber
 
 ## Path From 1.12.4
 
-| Step | Talos | Kubernetes after |
-| --- | --- | --- |
-| 1 | `v1.12.12` | `v1.35.x` (optional patch) |
-| 2 | `v1.13.11` | `v1.36.x` |
-| 3 | `v1.14.2` | `v1.37.x` |
+| Step | Talos | Kubernetes after | Done |
+| --- | --- | --- | --- |
+| 1 | `v1.12.12` | `v1.35.x` (optional patch) | 2026-10-07 |
+| 2 | `v1.13.11` | `v1.36.x` | |
+| 3 | `v1.14.2` | `v1.37.x` | |
 
 Merge the matching Renovate PR after each step, not before.
 
@@ -21,19 +21,22 @@ Merge the matching Renovate PR after each step, not before.
 cd talos
 
 export CP=192.168.20.33
-export WORKER=192.168.20.xx   # node 2
+export WORKER=192.168.20.184   # talos-node-2
 export SCHEMATIC=613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245
 export TALOSCONFIG="$PWD/node-01/talosconfig"
 export KUBECONFIG="$PWD/kubeconfig"
 ```
 
-Use a `talosctl` that matches the target version of the step:
+Use a `talosctl` that matches the target version of the step, verified against the release checksums:
 
 ```bash
 export TARGET=v1.12.12
-curl -L -o ~/.local/bin/talosctl \
-  "https://github.com/siderolabs/talos/releases/download/$TARGET/talosctl-linux-amd64"
-chmod +x ~/.local/bin/talosctl
+REL="https://github.com/siderolabs/talos/releases/download/$TARGET"
+mkdir -p ~/.local/share/talosctl/$TARGET && cd ~/.local/share/talosctl/$TARGET
+curl -LO "$REL/talosctl-linux-amd64"
+curl -sL "$REL/sha256sum.txt" | grep ' talosctl-linux-amd64$' | sha256sum -c
+chmod +x talosctl-linux-amd64 && mv talosctl-linux-amd64 talosctl && cd -
+alias talosctl=~/.local/share/talosctl/$TARGET/talosctl
 talosctl version --client --short
 ```
 
@@ -44,16 +47,20 @@ talosctl version -n "$CP","$WORKER" -e "$CP"
 talosctl health -n "$CP" -e "$CP"
 kubectl get nodes -o wide
 kubectl get pods -A | grep -vE 'Running|Completed'
-kubectl -n longhorn-system get volumes.longhorn.io   # every volume healthy, 2 replicas
+kubectl -n longhorn-system get volumes.longhorn.io   # every attached volume healthy
+talosctl get extensions -n "$CP","$WORKER" -e "$CP"  # same schematic on both nodes
 ```
+
+Upgrading a node with another node's schematic silently drops its extensions.
 
 Take an etcd snapshot (single control-plane node, so this is the only way back):
 
 ```bash
-talosctl -n "$CP" -e "$CP" etcd snapshot "etcd-$(date +%F)-before-$TARGET.db"
+mkdir -p ~/talos-backups
+talosctl -n "$CP" -e "$CP" etcd snapshot ~/talos-backups/etcd-$(date +%F-%H%M)-before-$TARGET.db
 ```
 
-Keep the snapshot outside the repo.
+Keep snapshots outside the repo. Take a fresh one right before the control plane.
 
 ## Upgrade
 
@@ -64,15 +71,22 @@ talosctl upgrade -n "$WORKER" -e "$CP" \
   --image "factory.talos.dev/installer/$SCHEMATIC:$TARGET"
 ```
 
-Wait until the node is `Ready` and every Longhorn volume is healthy again, then the control plane:
+Wait until the node is `Ready` and every attached Longhorn volume is healthy again (rebuild takes 5–10 minutes), then the control plane:
 
 ```bash
 talosctl upgrade -n "$CP" -e "$CP" \
   --image "factory.talos.dev/installer/$SCHEMATIC:$TARGET"
 ```
 
-The Kubernetes API is down while the control-plane node reboots.
 `talosctl upgrade` drains the node first and keeps the data partition, so Longhorn replicas survive.
+
+## What To Expect
+
+- The drain never completes: single-instance CNPG clusters and Longhorn instance managers have PDBs with 0 allowed disruptions. Talos tries for 5 minutes, logs a warning, then reboots anyway. Postgres is stopped cleanly by the shutdown.
+- Each node takes about 8 minutes from cordon to `Ready`. Pods that could not be evicted keep running until the reboot, so apps whose Postgres runs on that node are down for about 4 minutes.
+- The Kubernetes API is down for about 1 minute while the control plane reboots.
+- Grafana and VictoriaLogs use single-replica volumes on the control plane, so they are down with it.
+- Pods stopped by the shutdown can stay listed as `Error` (`terminated in response to imminent node shutdown`) next to their running replacements. Delete them; they are not restarted.
 
 ## After Each Step
 

@@ -76,3 +76,25 @@ talosctl health \
 - Do not run `talosctl gen secrets` for an existing cluster.
 - Generated per-node directories such as `talos/node-02/` are operational artifacts, not the source of truth.
 - For Longhorn-specific Talos changes, use `docs/bootstrap/longhorn.md`.
+
+## Backup
+
+`node-01/secrets.yaml` and `node-01/talosconfig` are gitignored and exist only locally. A copy of each is in Bitwarden Secrets Manager, in the `talos-admin` project:
+
+| Bitwarden key | File |
+| --- | --- |
+| `talos-secrets-yaml` | `talos/node-01/secrets.yaml` |
+| `talos-talosconfig` | `talos/node-01/talosconfig` |
+
+`talos-admin` is shared only with the workstation machine account. Never give the External Secrets machine account access: these are the cluster's root keys.
+
+Restore (with the `bws` setup from [bitwarden-external-secrets.md](bitwarden-external-secrets.md#creating-secrets-from-the-cli)):
+
+```bash
+PROJECT=$(bws project list --output json | jq -r '.[] | select(.name == "talos-admin").id')
+bws secret list "$PROJECT" --output json | jq -r '.[] | select(.key == "talos-secrets-yaml").value' > talos/node-01/secrets.yaml
+bws secret list "$PROJECT" --output json | jq -r '.[] | select(.key == "talos-talosconfig").value' > talos/node-01/talosconfig
+chmod 600 talos/node-01/secrets.yaml talos/node-01/talosconfig
+```
+
+Update both secrets whenever these files change.
