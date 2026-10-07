@@ -21,7 +21,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: contact
-          image: python:3.14.7-alpine
+          image: python:3.14.8-alpine
           command: ["python", "/app/contact.py"]
           env:
             - name: PYTHONUNBUFFERED
