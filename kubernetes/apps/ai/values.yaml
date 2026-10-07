@@ -106,6 +106,15 @@ extraEnvVars:
     value: playwright
   - name: PLAYWRIGHT_WS_URL
     value: ws://playwright.app-ai-web.svc.cluster.local:3000
+  # Document search embeddings, on CPU in this pod. Multilingual (Dutch, Afrikaans, ...).
+  # OFFLINE_MODE stops Open WebUI from re-downloading the whole Hugging Face repo
+  # (~4.5 GB of formats it never uses) on every start; it loads from the PVC cache.
+  # To change models: set OFFLINE_MODE to false, pick the model in Admin > Documents,
+  # delete the unused onnx/openvino/tf files, then set it back.
+  - name: RAG_EMBEDDING_MODEL
+    value: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+  - name: OFFLINE_MODE
+    value: "true"
   # Code runs in the browser (Pyodide), never in the pod.
   - name: CODE_EXECUTION_ENGINE
     value: pyodide
