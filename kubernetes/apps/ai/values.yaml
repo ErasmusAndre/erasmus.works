@@ -65,6 +65,8 @@ sso:
 extraEnvVars:
   - name: WEBUI_URL
     value: https://ai.erasmus.works
+  - name: CORS_ALLOW_ORIGIN
+    value: https://ai.erasmus.works
   - name: WEBUI_SECRET_KEY
     valueFrom:
       secretKeyRef:
