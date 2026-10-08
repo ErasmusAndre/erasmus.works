@@ -95,7 +95,7 @@ After the first start, the Admin Panel wins over `values.yaml`. Backed up by CNP
 ## Limits and fixes
 
 - Each chat turn is a new browser session: put the whole task in one message.
-- Long pages exceed the 64k context: not a bug.
+- Long pages exceed the 128k context: not a bug. 128k uses an 8-bit context cache (`--cache-type-k/v q8_0`): same speed as 64k was; plain 128k dropped generation from ~28 to ~21 tok/s.
 - `ERR_BLOCKED_BY_CLIENT`: the site isn't on the allowlist.
 - Stalls on "Executing..." after Allow: the 0.11.4 approval bug.
 - Login breaks after a while: Cloudflare IP ranges changed (update `networkpolicy.yaml`).

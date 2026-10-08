@@ -10,9 +10,10 @@ exec "$BIN/llama-server" \
   -m "$DIR/models/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf" \
   --alias qwen3.6-35b-a3b \
   --fit on \
-  -c 65536 \
+  -c 131072 \
   -b 4096 -ub 4096 \
   -fa on \
+  --cache-type-k q8_0 --cache-type-v q8_0 \
   --jinja \
   --temp 0.6 --top-p 0.95 --top-k 20 --min-p 0 \
   --host 0.0.0.0 --port 8080 \
