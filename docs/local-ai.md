@@ -78,7 +78,7 @@ After the first start, the Admin Panel wins over `values.yaml`. Backed up by CNP
 - Open WebUI egress: Postgres, the sandboxes, the laptop and Cloudflare HTTPS (for login) only.
 - Relies on Flannel NetworkPolicy enforcement (fail-open; alerts go to ntfy).
 - The MCP filter list hides `browser_run_code_unsafe` and any new tools.
-- Sandbox sites allowlist: `--allowed-origins` in `playwright-mcp.yaml` (test sites only).
+- Sandbox sites allowlist: `--allowed-origins` in `playwright-mcp.yaml` (public test sites only; private sites go in the My Chrome list on the laptop).
 - My Chrome: key proxy, ufw (Talos nodes only), Connect click per message. Allowed sites: `~/.config/local-ai/allowed-origins` on the laptop, one origin per line, not in Git (no file = every site, empty file = none). `llm chrome on` reloads it.
 - No community Open WebUI tools/functions.
 
