@@ -1,0 +1,10 @@
+[Unit]
+Description=Playwright MCP (extension mode) for the "My Chrome" agent at ai.erasmus.works
+
+[Service]
+ExecStart=%h/code/ew/local-ai/browser-mcp.sh
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target

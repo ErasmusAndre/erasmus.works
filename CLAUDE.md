@@ -29,8 +29,12 @@ This repository is a homelab Kubernetes GitOps workspace. Prefer small, literal 
 │   └── apps/               # User-facing workloads
 ├── talos/                  # Talos machine config, patches, and node files
 ├── docs/                   # Practical runbooks and notes
-└── linux/                  # Local workstation/helper files
+└── linux/                  # Local workstation/helper files (local-ai/: laptop side of ai.erasmus.works)
 ```
+
+## Local AI (ai.erasmus.works)
+
+See `docs/local-ai.md`. The laptop side (live scripts, model, detailed notes) is in `../local-ai/`; `linux/local-ai/` is a copy.
 
 ## GitOps Rules
 

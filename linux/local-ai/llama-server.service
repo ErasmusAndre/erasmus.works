@@ -1,0 +1,10 @@
+[Unit]
+Description=llama-server (Qwen3.6-35B-A3B) for the private AI at ai.erasmus.works
+
+[Service]
+ExecStart=%h/code/ew/local-ai/run.sh
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target

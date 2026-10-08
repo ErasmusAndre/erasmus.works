@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Start local AI
+Comment=Load the Qwen model for ai.erasmus.works
+Exec=/home/andre/.local/bin/llm -d
+Icon=media-playback-start
+Terminal=false
+Categories=Utility;
