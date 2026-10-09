@@ -6,6 +6,7 @@ Short reference for what is deployed in this repo.
 
 | App | Type | Database | Volume Backup | Database Backup | Prometheus | SSO | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| `diabeteshub` | Plain manifests | N/A | N/A | N/A | No | No | Static page synced from `lynette-erasmus1975/diabeteshub` by git-sync; stats in Umami |
 | `docmost` | Plain manifests | CNPG | VolSync | CNPG | Yes | No |  |
 | `euro-office` | Plain manifests | Bundled | None | None | No | No | Nextcloud Office backend; state is disposable |
 | `homepage` | Plain manifests | N/A | N/A | N/A | N/A | N/A |  |

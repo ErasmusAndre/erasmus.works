@@ -20,6 +20,8 @@ spec:
       server: https://kubernetes.default.svc
     - namespace: app-ai-browser
       server: https://kubernetes.default.svc
+    - namespace: app-diabeteshub
+      server: https://kubernetes.default.svc
     - namespace: app-docmost
       server: https://kubernetes.default.svc
     - namespace: app-euro-office

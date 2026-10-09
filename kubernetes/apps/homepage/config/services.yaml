@@ -29,6 +29,10 @@
         href: https://kudos.erasmus.works
         siteMonitor: https://kudos.erasmus.works/api/health
         description: Group-trip game
+    - Diabetes Hub:
+        href: https://diabeteshub.erasmus.works
+        siteMonitor: https://diabeteshub.erasmus.works
+        description: Diabetes info site
     - Home Assistant:
         icon: home-assistant.png
         href: https://ha.erasmus.works
