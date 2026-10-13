@@ -57,6 +57,14 @@ resources:
     cpu: 100m
     memory: 1Gi
 
+# Startup (migrations, embedding model) takes ~90s; keep the pod out of the Service until it serves.
+readinessProbe:
+  httpGet:
+    path: /health
+    port: http
+  periodSeconds: 10
+  failureThreshold: 3
+
 enableOpenaiApi: true
 # llama-server on the laptop (work-victus, Wi-Fi, fixed IP in UniFi), reachable from the
 # Servers VLAN only through the UniFi policy Allow-Cluster-to-llama and the laptop's ufw.
