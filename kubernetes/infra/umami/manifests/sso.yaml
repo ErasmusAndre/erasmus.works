@@ -25,7 +25,7 @@ spec:
         # The bridge only needs the Postgres driver. Keep the pg version in step
         # with the one bundled in the Umami image when bumping it by hand.
         - name: install-deps
-          image: node:24.21.0-alpine
+          image: node:24.22.0-alpine
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -49,7 +49,7 @@ spec:
               mountPath: /tmp
       containers:
         - name: umami-sso
-          image: node:24.21.0-alpine
+          image: node:24.22.0-alpine
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
