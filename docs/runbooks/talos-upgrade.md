@@ -22,7 +22,7 @@ cd talos
 
 export CP=192.168.20.33
 export WORKER=192.168.20.184   # talos-node-2
-export SCHEMATIC=613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245
+export SCHEMATIC=0751f1135eff2bc906854a62cc450c94f3dc65428d42110fc7998db8959dd5e5
 export TALOSCONFIG="$PWD/node-01/talosconfig"
 export KUBECONFIG="$PWD/kubeconfig"
 ```

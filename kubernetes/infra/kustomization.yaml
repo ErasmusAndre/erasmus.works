@@ -30,3 +30,4 @@ resources:
   - cloudflared
   - blocky
   - status
+  - intel-gpu-plugin

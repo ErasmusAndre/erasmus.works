@@ -12,7 +12,7 @@
 
 - `kubernetes/infra/longhorn/application.yaml`
 - `kubernetes/infra/longhorn/values.yaml`
-- `talos/image-factory/longhorn.yaml`
+- `talos/image-factory/schematic.yaml`
 - `talos/patches/longhorn-host-path.yaml`
 
 ## Talos Requirements
@@ -30,10 +30,10 @@ Keep the mount in the v1alpha1 `machine.kubelet.extraMounts` format. Talos 1.14+
 
 ## Apply To A Node
 
-The committed Longhorn image-factory schematic currently resolves to:
+The committed image-factory schematic currently resolves to:
 
 ```bash
-export SCHEMATIC_ID=613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245
+export SCHEMATIC_ID=0751f1135eff2bc906854a62cc450c94f3dc65428d42110fc7998db8959dd5e5
 ```
 
 Example:
@@ -41,7 +41,7 @@ Example:
 ```bash
 export CONTROL_PLANE_IP=192.168.20.33
 export NODE_IP=192.168.20.xx
-export SCHEMATIC_ID=613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245
+export SCHEMATIC_ID=0751f1135eff2bc906854a62cc450c94f3dc65428d42110fc7998db8959dd5e5
 
 talosctl patch machineconfig \
   --nodes "$NODE_IP" \

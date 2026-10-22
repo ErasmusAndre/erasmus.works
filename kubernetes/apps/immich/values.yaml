@@ -38,6 +38,8 @@ server:
             requests:
               cpu: 250m
               memory: 768Mi
+            limits:
+              gpu.intel.com/i915: 1
 
 machine-learning:
   persistence:
@@ -53,12 +55,15 @@ machine-learning:
             tag: v3.3.5
           env:
             TZ: Europe/Amsterdam
+            # Keep models loaded so the first search after a break doesn't reload them
+            MACHINE_LEARNING_MODEL_TTL: "0"
+            MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL: ViT-B-16-SigLIP2__webli
           securityContext:
             allowPrivilegeEscalation: false
           resources:
             requests:
               cpu: 500m
-              memory: 2Gi
+              memory: 4Gi
             limits:
               cpu: "6"
               memory: 6Gi
