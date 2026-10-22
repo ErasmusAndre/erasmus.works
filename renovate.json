@@ -32,15 +32,27 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Track Talos image references outside Kubernetes manifests",
+      "description": "Track the Talos installer image via Talos GitHub releases, which have release dates (GHCR does not)",
       "managerFilePatterns": [
         "/(^|/)talos/.+\\.ya?ml$/"
       ],
       "matchStrings": [
-        "image:\\s+(?<depName>ghcr\\.io\\/siderolabs\\/kubelet):(?<currentValue>[^\\s#]+)",
         "image:\\s+(?<depName>factory\\.talos\\.dev\\/installer\\/[^:]+):(?<currentValue>[^\\s#]+)"
       ],
-      "datasourceTemplate": "docker"
+      "datasourceTemplate": "github-releases",
+      "packageNameTemplate": "siderolabs/talos"
+    },
+    {
+      "customType": "regex",
+      "description": "Track the Talos kubelet image via Kubernetes GitHub releases, which have release dates (GHCR does not)",
+      "managerFilePatterns": [
+        "/(^|/)talos/.+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "image:\\s+(?<depName>ghcr\\.io\\/siderolabs\\/kubelet):(?<currentValue>[^\\s#]+)"
+      ],
+      "datasourceTemplate": "github-releases",
+      "packageNameTemplate": "kubernetes/kubernetes"
     },
     {
       "customType": "regex",

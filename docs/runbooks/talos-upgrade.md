@@ -126,7 +126,7 @@ It also resets the CoreDNS ConfigMap to the Talos default. Argo CD (`kubernetes/
 
 - 1.13: `machine.network.nameservers` now replaces defaults instead of merging. Not set here.
 - 1.13: Flannel can enforce NetworkPolicy (`kubeNetworkPoliciesEnabled`). Enable it after 1.14, where it moved to the `KubeFlannelCNIConfig` document.
-- 1.14: `ghcr.io/siderolabs/installer` is no longer published. Keep using the Image Factory installer; Renovate looks versions up via `ghcr.io/siderolabs/imager`.
+- 1.14: `ghcr.io/siderolabs/installer` is no longer published. Keep using the Image Factory installer; Renovate looks versions up via the `siderolabs/talos` GitHub releases.
 - 1.14: workload isolation (`SecurityProfileConfig`) stays off on upgraded clusters. Leave it off until Longhorn is tested with it.
 - 1.14: filesystem trim is off on upgraded clusters until a `FilesystemTrimConfig` document is added; see `talos/patches/filesystem-trim.yaml`.
 - 1.14: etcd moves to 3.7. Rolling Talos back to 1.13 after that means restoring the pre-upgrade etcd snapshot.

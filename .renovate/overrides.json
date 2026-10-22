@@ -17,10 +17,8 @@
         "external-dns",
         "snapshot-controller",
         "envoyproxy/gateway-helm",
-        "ghcr.io/siderolabs/installer",
-        "ghcr.io/siderolabs/imager",
-        "/factory\\.talos\\.dev\\/installer\\//",
-        "ghcr.io/siderolabs/kubelet",
+        "siderolabs/talos",
+        "kubernetes/kubernetes",
         "cloudflare/cloudflared",
         "/(^|\\/)(argocd|argo-cd)(\\/|$)/",
         "/(^|\\/)(metallb)(\\/|$)/"
@@ -41,20 +39,17 @@
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
     },
     {
-      "description": "Look up Talos image-factory installer versions via the imager image; ghcr.io/siderolabs/installer is no longer published since Talos 1.14",
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["/factory\\.talos\\.dev\\/installer\\//"],
-      "overridePackageName": "ghcr.io/siderolabs/imager"
-    },
-    {
       "description": "Talos and Kubernetes upgrade one minor version at a time, so open a separate PR per minor and for patches",
-      "matchDatasources": ["docker"],
-      "matchPackageNames": [
-        "/factory\\.talos\\.dev\\/installer\\//",
-        "ghcr.io/siderolabs/kubelet"
-      ],
+      "matchDatasources": ["github-releases"],
+      "matchPackageNames": ["siderolabs/talos", "kubernetes/kubernetes"],
       "separateMinorPatch": true,
       "separateMultipleMinor": true
+    },
+    {
+      "description": "Wait until Talos and Kubernetes releases are 3 weeks old, so a new minor usually has its first patches by the time the PR opens",
+      "matchDatasources": ["github-releases"],
+      "matchPackageNames": ["siderolabs/talos", "kubernetes/kubernetes"],
+      "minimumReleaseAge": "21 days"
     },
     {
       "description": "Playwright browser server must match the playwright package inside Open WebUI; bump it by hand with the Open WebUI chart",
