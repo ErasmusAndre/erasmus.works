@@ -1,7 +1,7 @@
 ---
 name: renovate-review
 description: This skill should be used when the user asks to "review Renovate PRs", "check Renovate pull requests", "triage Renovate updates", "merge Renovate bot PRs", "which Renovate PRs should I merge", "babysit Renovate", "review dependency updates", "check homelab PRs", or wants help deciding which automated dependency update pull requests are safe to merge for this homelab Kubernetes GitOps repo. Always invoke this skill when the user mentions Renovate and PRs together, even casually.
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Renovate Bot PR Review
@@ -20,18 +20,28 @@ The goal is to: check that the cluster is healthy, understand what Renovate has 
 
 Present recommendations, explain risks, and let the user pull the trigger on every action.
 
+## Step 0: Pull Latest main
+
+Renovate merges land on `origin/main`, so the local checkout goes stale quickly. Pull before reviewing anything:
+
+```bash
+git pull --ff-only
+```
+
+Run it from anywhere inside the repo. `--ff-only` never creates a merge commit. Local uncommitted changes are fine as long as the incoming commits don't touch the same files. If the pull refuses (conflicting local changes, or local commits that have diverged), stop and tell the user — do not stash, rebase, or reset on their behalf.
+
 ## Step 1: Verify Cluster Health
 
 Check the cluster is stable before recommending any merges.
 
 First, locate the kubeconfig. Try in order:
 1. Default (`~/.kube/config` or `$KUBECONFIG` if set)
-2. Project path: `talos/kubeconfig` relative to the repo root (i.e. `kubernetes/clusters/../../../talos/kubeconfig` → `<repo-root>/talos/kubeconfig`)
+2. Project path: `talos/kubeconfig` relative to the repo root
 
 For this repo the kubeconfig lives at `talos/kubeconfig` from the repo root. Export it explicitly:
 
 ```bash
-export KUBECONFIG=/home/andre/code/ew/erasmus.works/talos/kubeconfig
+export KUBECONFIG="$(git rev-parse --show-toplevel)/talos/kubeconfig"
 ```
 
 Then run these read-only checks:
@@ -129,7 +139,15 @@ For each High Risk or "do not merge" PR, include a short explanation of what the
 
 ## Step 6: After Merging
 
-Once the user merges a batch, suggest they verify:
+After every merge (whether the user merged it or asked you to), pull so the local checkout matches what Argo CD is applying:
+
+```bash
+git pull --ff-only
+```
+
+Same rule as Step 0: if the pull refuses, stop and tell the user.
+
+Then suggest they verify:
 
 ```bash
 # Watch Argo CD reconcile
@@ -144,7 +162,7 @@ For critical infrastructure updates, suggest waiting 5-10 minutes and checking t
 ## Key Behaviors
 
 - **Never merge PRs** — present the plan and wait for explicit user instruction to merge each batch
-- **Never commit or push** — the user controls all Git operations
+- **Never commit or push** — the user controls all Git operations except `git pull --ff-only` (Step 0 and Step 6)
 - **Never run `kubectl apply`** without confirming with the user first — the only exception is CRD pre-staging steps, which must still be proposed and approved before execution
 - **Never suggest `helm install` or `helm upgrade`** — all changes go through Git/Argo CD
 - **Bias toward caution on critical packages** — it's better to leave a PR open than to take down Longhorn or CNPG

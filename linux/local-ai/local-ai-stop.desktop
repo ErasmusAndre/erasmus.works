@@ -2,7 +2,7 @@
 Type=Application
 Name=Stop local AI
 Comment=Stop the local model and free the GPU
-Exec=/home/andre/.local/bin/llm stop
+Exec=sh -c "\\$HOME/.local/bin/llm stop"
 Icon=media-playback-stop
 Terminal=false
 Categories=Utility;

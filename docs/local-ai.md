@@ -1,6 +1,6 @@
 # Local AI (ai.erasmus.works)
 
-Private ChatGPT at https://ai.erasmus.works. The model runs on the laptop GPU; everything else runs in the cluster. The laptop scripts are copied in [`linux/local-ai/`](../linux/local-ai/); the live copy is `~/code/ew/local-ai/`. Keep both in sync.
+Private ChatGPT at https://ai.erasmus.works. The model runs on the laptop GPU; everything else runs in the cluster. The laptop scripts are copied in [`linux/local-ai/`](../linux/local-ai/); the live copy is `../local-ai/` (next to this repo). Keep both in sync.
 
 ## What runs where
 
@@ -35,7 +35,8 @@ Desktop shortcuts: **Start local AI** (`llm -d`), **Stop local AI** (`llm stop`)
 1. Ubuntu, NVIDIA driver (`nvidia-smi` works), Node 22, Flatpak Google Chrome with the Playwright Extension. Fixed IP `192.168.178.81` in UniFi; a new IP must change in UniFi, `kubernetes/apps/ai/networkpolicy.yaml` and both Open WebUI connections.
 2. Files:
    ```bash
-   D=~/code/ew/local-ai; R=~/code/ew/erasmus.works/linux/local-ai; mkdir -p $D/browser-mcp && cd $D
+   # from the repo root
+   R=$PWD/linux/local-ai; D=$(dirname "$PWD")/local-ai; mkdir -p $D/browser-mcp && cd $D
    cp $R/{run.sh,llm.sh,browser-mcp.sh,browser-mcp-auth.js,*.service} .
    cp $R/browser-mcp-package.json browser-mcp/package.json; cp $R/browser-mcp-package-lock.json browser-mcp/package-lock.json
    npm ci --prefix browser-mcp
@@ -105,7 +106,7 @@ After the first start, the Admin Panel wins over `values.yaml`. Backed up by CNP
 
 - **Open WebUI:** bump the Playwright image in `ai-web/playwright.yaml` to match its `playwright` package.
 - **llama.cpp:** new release folder, update `BIN` in `run.sh` (both copies).
-- **Laptop MCP:** `npm install --prefix ~/code/ew/local-ai/browser-mcp @playwright/mcp@<version>`, copy `package*.json` here.
+- **Laptop MCP:** `npm install --prefix ../local-ai/browser-mcp @playwright/mcp@<version>` from the repo root, copy `package*.json` here.
 - **Rotating the API key:** change the laptop file and Bitwarden, then restart Open WebUI after the ExternalSecret refreshes.
 
 ## Open items

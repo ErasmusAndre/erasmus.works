@@ -18,6 +18,7 @@ This repository is a homelab Kubernetes GitOps workspace. Prefer small, literal 
 - Prefer using Helm Charts where possible.
 - Reuse existing folders, naming, and patterns.
 - Check `docs/` for short runbooks and prior decisions when touching an area.
+- Write paths relative to the repo root (`talos/kubeconfig`), never as absolute paths from one machine (`/home/<user>/...`). Applies to docs, skills, scripts, and config. When a command needs an absolute path, derive it (`$(git rev-parse --show-toplevel)/talos/kubeconfig`); for files outside the repo use `../local-ai/` or `$HOME`.
 
 ## Repository Layout
 
