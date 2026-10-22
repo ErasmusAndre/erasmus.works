@@ -44,7 +44,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: searxng
-          image: docker.io/searxng/searxng:2026.10.16-ff8f5ddcc
+          image: docker.io/searxng/searxng:2026.10.19-d47cb96bf
           env:
             - name: SEARXNG_SETTINGS_PATH
               value: /etc/searxng/settings.yml
