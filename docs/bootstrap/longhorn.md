@@ -30,18 +30,14 @@ Keep the mount in the v1alpha1 `machine.kubelet.extraMounts` format. Talos 1.14+
 
 ## Apply To A Node
 
-The committed image-factory schematic currently resolves to:
-
-```bash
-export SCHEMATIC_ID=0751f1135eff2bc906854a62cc450c94f3dc65428d42110fc7998db8959dd5e5
-```
+The installer image (schematic and version) comes from `talos/versions.yaml`.
 
 Example:
 
 ```bash
 export CONTROL_PLANE_IP=192.168.20.33
 export NODE_IP=192.168.20.xx
-export SCHEMATIC_ID=0751f1135eff2bc906854a62cc450c94f3dc65428d42110fc7998db8959dd5e5
+export INSTALLER=$(grep -oE 'factory\.talos\.dev/installer/[^ ]+' talos/versions.yaml)
 
 talosctl patch machineconfig \
   --nodes "$NODE_IP" \
@@ -53,7 +49,7 @@ talosctl upgrade \
   --nodes "$NODE_IP" \
   --endpoints "$CONTROL_PLANE_IP" \
   --talosconfig ./talos/node-01/talosconfig \
-  --image "factory.talos.dev/installer/${SCHEMATIC_ID}:v1.12.4"
+  --image "$INSTALLER"
 ```
 
 Reboot the node after the upgrade and wait for it to return.
