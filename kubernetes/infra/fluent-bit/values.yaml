@@ -49,6 +49,12 @@ config:
         K8S-Logging.Parser On
         K8S-Logging.Exclude On
 
+    # kube-network-policies is pinned to --v=2 by Talos and logs every packet; keep only W/E/F lines
+    [FILTER]
+        Name grep
+        Match kube.var.log.containers.kube-flannel-*_kube-system_kube-network-policies-*
+        Regex log ^[WEF]\d{4}
+
   outputs: |
     [OUTPUT]
         Name http
