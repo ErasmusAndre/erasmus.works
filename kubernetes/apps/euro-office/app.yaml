@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: euro-office
-          image: ghcr.io/euro-office/documentserver:v9.3.5
+          image: ghcr.io/euro-office/documentserver:v9.3.7
           env:
             - name: JWT_ENABLED
               value: "true"
