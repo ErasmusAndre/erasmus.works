@@ -29,3 +29,6 @@ Thumbs.db
 *.log
 tmp/
 .cache/
+
+# Claude Code agent worktrees
+.claude/worktrees/
