@@ -47,6 +47,10 @@ spec:
               value: /var/lib/ntfy/cache.db
             - name: NTFY_ATTACHMENT_CACHE_DIR
               value: /var/lib/ntfy/attachments
+            - name: NTFY_ATTACHMENT_FILE_SIZE_LIMIT
+              value: 100M
+            - name: NTFY_ATTACHMENT_TOTAL_SIZE_LIMIT
+              value: 1G
             - name: NTFY_AUTH_FILE
               value: /var/lib/ntfy/user.db
             - name: NTFY_AUTH_DEFAULT_ACCESS
