@@ -39,7 +39,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
       containers:
         - name: sonarr
-          image: ghcr.io/home-operations/sonarr:5.0.0.2907
+          image: ghcr.io/home-operations/sonarr:5.0.0.2941
           env:
             - name: TZ
               value: Europe/Amsterdam
