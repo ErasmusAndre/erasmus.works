@@ -4,6 +4,6 @@
 # apply it with `talosctl upgrade` / `talosctl upgrade-k8s`, then update the node
 # configs to match.
 installer:
-  image: factory.talos.dev/installer/0751f1135eff2bc906854a62cc450c94f3dc65428d42110fc7998db8959dd5e5:v1.14.2
+  image: factory.talos.dev/installer/0751f1135eff2bc906854a62cc450c94f3dc65428d42110fc7998db8959dd5e5:v1.14.4
 kubelet:
   image: ghcr.io/siderolabs/kubelet:v1.37.1
