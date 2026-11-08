@@ -13,6 +13,7 @@ Short reference for what is deployed in this repo.
 | `kudos` | Plain manifests | CNPG | None | CNPG | No | No | Private GHCR image; uploads go to Garage via `s3.erasmus.works/kudos` |
 | `kudos-dev` | Plain manifests | CNPG | None | None | No | Yes | Disposable test copy of kudos (`TEST_CLOCK`, `/dev`); email caught by Mailpit at `/mail` |
 | `nextcloud` | Helm based | CNPG | VolSync | CNPG | Yes | Yes |  |
+| `nta-collector` | Plain manifests | N/A | None | N/A | No | No | Dublin bus GTFS-R collector; public image from a friend's repo (`ghcr.io/riansmuts/nta-collector`); raw data on NAS, no backup by design |
 | `ntfy` | Plain manifests | SQLite | VolSync | N/A | No | No | Push notifications; built-in auth, deny-all by default |
 
 ## Infra

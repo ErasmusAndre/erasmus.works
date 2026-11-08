@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nta-collector
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  # The NTA allows each key one call a minute, so never run two copies, not even during an update.
+  strategy:
+    type: Recreate
+    rollingUpdate: null
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nta-collector
+  template:
+    metadata:
+      labels:
+        app: nta-collector
+    spec:
+      # On SIGTERM the collector finishes the round in progress (up to about 40s) before exiting.
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: nta-collector
+          image: ghcr.io/riansmuts/nta-collector:0.1.1
+          envFrom:
+            - secretRef:
+                name: nta-collector-secrets
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 10m
+              memory: 128Mi
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: nta-collector-data
+        - name: tmp
+          emptyDir: {}

@@ -1,0 +1,74 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nta-collector-cleanup
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  # Suspended until a day's size on the NAS is known. Then set RETAIN_DAYS so the dataset
+  # stays under ~80% of its 1T quota, and remove `suspend`.
+  suspend: true
+  schedule: "30 4 * * *"
+  timeZone: Europe/Amsterdam
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      ttlSecondsAfterFinished: 86400
+      template:
+        metadata:
+          labels:
+            app: nta-collector-cleanup
+        spec:
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: cleanup
+              image: busybox:1.38
+              env:
+                - name: RETAIN_DAYS
+                  value: ""
+              # Deletes whole raw/<feed>/<YYYY-MM-DD> folders older than RETAIN_DAYS, going by the
+              # folder name (UTC fetch date). Never touches static/: every timetable version is kept.
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -eu
+                  case "$RETAIN_DAYS" in
+                    ''|*[!0-9]*) echo "RETAIN_DAYS must be a whole number of days" >&2; exit 1 ;;
+                  esac
+                  cutoff=$(date -u -d "@$(( $(date +%s) - RETAIN_DAYS * 86400 ))" +%Y%m%d)
+                  echo "Removing raw data from before $cutoff (UTC)"
+                  for dir in /data/raw/*/????-??-??; do
+                    [ -d "$dir" ] || continue
+                    day=$(basename "$dir" | tr -d -)
+                    if [ "$day" -lt "$cutoff" ]; then
+                      echo "removing $dir"
+                      rm -rf "$dir"
+                    fi
+                  done
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop:
+                    - ALL
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 16Mi
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: nta-collector-data

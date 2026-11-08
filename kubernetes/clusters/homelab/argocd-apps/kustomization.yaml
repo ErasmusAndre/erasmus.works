@@ -15,4 +15,5 @@ resources:
   - landing/application.yaml
   - media/application.yaml
   - nextcloud/application.yaml
+  - nta-collector/application.yaml
   - ntfy/application.yaml
