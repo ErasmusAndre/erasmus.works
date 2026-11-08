@@ -1,0 +1,95 @@
+version: 1
+metadata:
+  name: Application access
+  labels:
+    blueprints.goauthentik.io/instantiate: "true"
+    blueprints.goauthentik.io/description: "GitOps-managed groups and application bindings. An application with no binding is open to every user."
+entries:
+  # Apply the application blueprints first so every application and the admin group exist.
+  - model: authentik_blueprints.metaapplyblueprint
+    attrs:
+      identifiers:
+        name: AI OAuth application
+  - model: authentik_blueprints.metaapplyblueprint
+    attrs:
+      identifiers:
+        name: Argo CD OAuth application
+  - model: authentik_blueprints.metaapplyblueprint
+    attrs:
+      identifiers:
+        name: Envoy Gateway edge OAuth application
+  - model: authentik_blueprints.metaapplyblueprint
+    attrs:
+      identifiers:
+        name: Grafana OAuth application
+  - model: authentik_blueprints.metaapplyblueprint
+    attrs:
+      identifiers:
+        name: Immich OAuth application
+  - model: authentik_blueprints.metaapplyblueprint
+    attrs:
+      identifiers:
+        name: Nextcloud OAuth application
+  - model: authentik_blueprints.metaapplyblueprint
+    attrs:
+      identifiers:
+        name: Umami OAuth application
+
+  # Nextcloud-only access for the NTA collector data.
+  - model: authentik_core.group
+    identifiers:
+      name: NtaCollector
+    attrs:
+      name: NtaCollector
+
+  # Admins get every application.
+  - model: authentik_policies.policybinding
+    identifiers:
+      target: !Find [authentik_core.application, [slug, ai]]
+      order: 0
+    attrs:
+      group: !Find [authentik_core.group, [name, ErasmusWorksAdmin]]
+  - model: authentik_policies.policybinding
+    identifiers:
+      target: !Find [authentik_core.application, [slug, argocd]]
+      order: 0
+    attrs:
+      group: !Find [authentik_core.group, [name, ErasmusWorksAdmin]]
+  - model: authentik_policies.policybinding
+    identifiers:
+      target: !Find [authentik_core.application, [slug, homelab-edge]]
+      order: 0
+    attrs:
+      group: !Find [authentik_core.group, [name, ErasmusWorksAdmin]]
+  - model: authentik_policies.policybinding
+    identifiers:
+      target: !Find [authentik_core.application, [slug, grafana]]
+      order: 0
+    attrs:
+      group: !Find [authentik_core.group, [name, ErasmusWorksAdmin]]
+  - model: authentik_policies.policybinding
+    identifiers:
+      target: !Find [authentik_core.application, [slug, immich]]
+      order: 0
+    attrs:
+      group: !Find [authentik_core.group, [name, ErasmusWorksAdmin]]
+  - model: authentik_policies.policybinding
+    identifiers:
+      target: !Find [authentik_core.application, [slug, nextcloud]]
+      order: 0
+    attrs:
+      group: !Find [authentik_core.group, [name, ErasmusWorksAdmin]]
+  - model: authentik_policies.policybinding
+    identifiers:
+      target: !Find [authentik_core.application, [slug, umami]]
+      order: 0
+    attrs:
+      group: !Find [authentik_core.group, [name, ErasmusWorksAdmin]]
+
+  # Any one matching binding grants access, so NtaCollector members get Nextcloud and nothing else.
+  - model: authentik_policies.policybinding
+    identifiers:
+      target: !Find [authentik_core.application, [slug, nextcloud]]
+      order: 1
+    attrs:
+      group: !Find [authentik_core.group, [name, NtaCollector]]

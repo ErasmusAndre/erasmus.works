@@ -5,6 +5,10 @@ generatorOptions:
     argocd.argoproj.io/sync-wave: "-1"
   disableNameSuffixHash: true
 configMapGenerator:
+  - name: authentik-blueprint-access
+    namespace: authentik
+    files:
+      - blueprints/access.yaml
   - name: authentik-blueprint-ai
     namespace: authentik
     files:
