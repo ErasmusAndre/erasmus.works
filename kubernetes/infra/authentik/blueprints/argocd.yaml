@@ -11,6 +11,8 @@ entries:
       name: ErasmusWorksAdmin
     attrs:
       name: ErasmusWorksAdmin
+      # Members are full authentik admins.
+      is_superuser: true
   - model: authentik_providers_oauth2.oauth2provider
     id: argocd-provider
     identifiers:
