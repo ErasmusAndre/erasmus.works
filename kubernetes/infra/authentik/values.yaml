@@ -108,6 +108,11 @@ worker:
                 - key: nextcloud.yaml
                   path: nextcloud.yaml
           - configMap:
+              name: authentik-blueprint-recovery
+              items:
+                - key: recovery.yaml
+                  path: recovery.yaml
+          - configMap:
               name: authentik-blueprint-session-duration
               items:
                 - key: session-duration.yaml

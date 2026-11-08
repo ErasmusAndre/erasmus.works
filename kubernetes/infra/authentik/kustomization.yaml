@@ -29,6 +29,10 @@ configMapGenerator:
     namespace: authentik
     files:
       - blueprints/nextcloud.yaml
+  - name: authentik-blueprint-recovery
+    namespace: authentik
+    files:
+      - blueprints/recovery.yaml
   - name: authentik-blueprint-session-duration
     namespace: authentik
     files:
