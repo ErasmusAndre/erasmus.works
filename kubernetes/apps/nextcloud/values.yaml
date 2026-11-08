@@ -40,6 +40,16 @@ nextcloud:
         - sh
         - -c
         - until nc -z nextcloud-postgres-rw.app-nextcloud.svc.cluster.local 5432; do sleep 2; done
+  # NTA collector data, read-only. Shown to the nta-collector group as External storage.
+  extraVolumes:
+    - name: nta-collector-data
+      persistentVolumeClaim:
+        claimName: nta-collector-data
+        readOnly: true
+  extraVolumeMounts:
+    - name: nta-collector-data
+      mountPath: /mnt/nta-collector
+      readOnly: true
   defaultConfigs:
     reverse-proxy.config.php: true
     redis.config.php: true

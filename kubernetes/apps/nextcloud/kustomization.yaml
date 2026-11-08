@@ -9,6 +9,7 @@ resources:
 
   # Storage
   - pvc.yaml
+  - pv-nta-collector-nfs.yaml
   - volsync.yaml
 
   # Networking
