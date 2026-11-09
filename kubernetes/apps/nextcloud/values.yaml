@@ -77,6 +77,12 @@ nextcloud:
           0 => 'HTTP_X_FORWARDED_FOR',
         ),
       );
+    # Sign-in is through Authentik only. The local admin can still log in at /login?direct=1.
+    login.config.php: |-
+      <?php
+      $CONFIG = array (
+        'hide_login_form' => true,
+      );
 
 phpClientHttpsFix:
   enabled: true
