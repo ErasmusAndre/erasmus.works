@@ -21,7 +21,7 @@ Other zones (e.g. `erasmuscloud.com`) are not covered unless you add routes for 
 
 ## Update the page
 
-1. Edit [outage-page/worker.js](outage-page/worker.js). The page HTML is the `PAGE` string; the image is a WebP data URI inside it.
+1. Edit [outage-page/worker.js](outage-page/worker.js). The page HTML is the `PAGE` string; the images are WebP data URIs inside it. Landscape screens get the full image; portrait (phones) gets two crops of it stacked, "EISH." text on top and the birds below.
 2. Dashboard → `hadeda-down` → **Edit code** → click in the editor, `Ctrl+A`, paste the file.
 3. Click **Deploy**. A dot next to the Worker name means unsaved changes — pasting alone does not go live.
 
