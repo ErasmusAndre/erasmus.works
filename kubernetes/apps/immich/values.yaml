@@ -30,6 +30,9 @@ server:
           env:
             TZ: Europe/Amsterdam
             IMMICH_TRUSTED_PROXIES: 10.244.0.0/16
+            # v3.4.2 metrics exporter returns 400 when IMMICH_HOST is unset (immich#33466).
+            # Remove once a release includes immich#33480.
+            IMMICH_HOST: 0.0.0.0
           securityContext:
             allowPrivilegeEscalation: false
           envFrom:
