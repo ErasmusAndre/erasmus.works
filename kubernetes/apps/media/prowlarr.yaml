@@ -39,7 +39,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
       containers:
         - name: prowlarr
-          image: ghcr.io/home-operations/prowlarr:2.7.0
+          image: ghcr.io/home-operations/prowlarr:3.0.2
           env:
             - name: TZ
               value: Europe/Amsterdam
