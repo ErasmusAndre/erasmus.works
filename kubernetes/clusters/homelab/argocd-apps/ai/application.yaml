@@ -19,7 +19,7 @@ spec:
   sources:
     - repoURL: https://helm.openwebui.com
       chart: open-webui
-      targetRevision: 17.0.0
+      targetRevision: 17.5.0
       helm:
         releaseName: open-webui
         valueFiles:
