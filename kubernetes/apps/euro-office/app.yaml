@@ -17,6 +17,17 @@ spec:
       labels:
         app: euro-office
     spec:
+      # Keep memory-heavy apps off the control plane when talos-node-2 is up.
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - talos-node-2
       containers:
         - name: euro-office
           image: ghcr.io/euro-office/documentserver:v9.3.8
